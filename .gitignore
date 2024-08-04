@@ -1,0 +1,25 @@
+.idea
+
+server/dist
+server/node_modules
+server/build
+
+#logs
+server/pnpm-debug.log*
+server/*.log
+
+# dotenv environment variable files
+server/.env
+server/.env.development.local
+server/.env.test.local
+server/.env.production.local
+server/.env.local
+
+# Runtime data
+server/pids
+server/*.pid
+server/*.seed
+server/*.pid.lock
+
+# Diagnostic reports (https://nodejs.org/api/report.html)
+server/report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
