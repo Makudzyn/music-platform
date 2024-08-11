@@ -10,6 +10,7 @@ import { FileFieldsInterceptor } from "@nestjs/platform-express";
 @Controller('/tracks')
 export class TrackController {
   constructor(private readonly trackService: TrackService) {}
+
   @Post()
   @UseInterceptors(FileFieldsInterceptor([
     { name: 'thumbnail', maxCount: 1 },
@@ -17,6 +18,13 @@ export class TrackController {
   ]))
   createTrack(@UploadedFiles() files, @Body() dto: CreateTrackDto): Promise<Track> {
     const {thumbnail, audio} = files;
+    if (!thumbnail || thumbnail.length === 0) {
+      throw new Error('Thumbnail file is missing');
+    }
+
+    if (!audio || audio.length === 0) {
+      throw new Error('Audio file is missing');
+    }
     return this.trackService.createTrack(dto, thumbnail[0], audio[0]);
   }
 
