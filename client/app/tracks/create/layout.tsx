@@ -1,23 +1,13 @@
 'use client';
 
-import { Box, Button, Card, Container, Grid, Step, StepLabel, Stepper } from "@mui/material";
-import { ReactNode, useState } from "react";
+import { Container, Step, StepLabel, Stepper } from "@mui/material";
+import { ReactNode } from "react";
 
 const steps = ["Track info", "Upload thumbnail", "Upload audio"];
 
-
-export default function Layout({children}: {children: ReactNode}) {
-  const [activeStep, setActiveStep] = useState(0);
-
-  const nextStep = () => {
-    setActiveStep((prev) => Math.min(prev + 1, steps.length - 1));
-  };
-
-  const prevStep = () => {
-    setActiveStep((prev) => Math.max(prev - 1, 0));
-  };
+export default function Layout({activeStep, children}: {children: ReactNode}) {
   return (
-    <Container>
+    <Container maxWidth="lg" sx={{height: "100%"}}>
       <Stepper activeStep={activeStep}>
         {steps.map((step, i) => (
           <Step key={i} completed={activeStep > i}>
@@ -25,19 +15,19 @@ export default function Layout({children}: {children: ReactNode}) {
           </Step>
         ))}
       </Stepper>
-      <Grid container sx={{justifyContent: "center", margin: "50px 0", height: "600px"}}>
-        <Card style={{width: 1000}}>
-          {children}
-        </Card>
-      </Grid>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 4 }}>
-        <Button disabled={activeStep === 0} onClick={prevStep}>
-          Prev step
-        </Button>
-        <Button disabled={activeStep === steps.length - 1} onClick={nextStep}>
-          Next step
-        </Button>
-      </Box>
+      <Container
+        maxWidth="lg"
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          margin: "60px 5px",
+          padding: "10px 5px",
+          height: "100%",
+          width: "100%"
+        }}>
+        {children}
+      </Container>
     </Container>
   );
 };
