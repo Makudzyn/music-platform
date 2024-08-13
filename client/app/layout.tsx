@@ -7,6 +7,7 @@ import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import { Box, Button, Drawer, List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
 import { HomeOutlined, MusicNoteOutlined, CollectionsOutlined, MenuOpenOutlined } from "@mui/icons-material";
 import Link from "next/link";
+import Player from "@/app/ui/player/Player";
 
 const menuItems = [
   {
@@ -97,6 +98,8 @@ export default function RootLayout({children}: Readonly<{children: ReactNode;}>)
       <main className={"p-6 bg-white rounded-sm min-h-full ml-10"}>
         {children}
       </main>
+
+      <Player/>
     </AppRouterCacheProvider>
     </body>
     </html>
