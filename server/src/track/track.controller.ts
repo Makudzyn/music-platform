@@ -45,10 +45,22 @@ export class TrackController {
     return this.trackService.getOneTrack(trackId);
   }
 
+
+  @Delete('/delete-many')
+  deleteManyTracks(@Body('tracksIds') tracksIds: string[]) {
+    return this.trackService.deleteManyTracks(tracksIds);
+  }
+
+  @Delete('/delete-all')
+  deleteAllTracks() {
+    return this.trackService.deleteAllTracks();
+  }
+
   @Delete(":trackId")
   deleteTrack(@Param("trackId") trackId: ObjectId): Promise<Track> {
     return this.trackService.deleteTrack(trackId);
   }
+
 
   //add update
 
