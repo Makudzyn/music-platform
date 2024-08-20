@@ -5,6 +5,7 @@ import trackReducer from "@/app/features/tracks/trackSlice";
 export const makeStore = () => {
   return configureStore({
     reducer: {
+      player: playerReducer,
     }
   })
 }

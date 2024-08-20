@@ -14,3 +14,15 @@ export type Comment = {
   username: string;
   text: string;
 }
+
+export type RepeatMode = "none" | "all" | "one";
+
+export type PlayerState = {
+  currentTrack: null | Track;
+  volume: number;
+  totalDuration: number;
+  currentPosition: number;
+  paused: boolean;
+  repeatMode: RepeatMode;
+}
+
