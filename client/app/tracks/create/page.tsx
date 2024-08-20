@@ -3,8 +3,8 @@
 import { Box, Breadcrumbs, Button, Container, Grid, Typography } from "@mui/material";
 import Link from "next/link";
 import { useState } from "react";
-import TrackInfoForm from "@/app/ui/tracks/upload/TrackInfoForm";
-import UploadFilesForm from "@/app/ui/tracks/upload/UploadFilesForm";
+import TrackInfoForm from "@/app/features/tracks/upload/TrackInfoForm";
+import UploadFilesForm from "@/app/features/tracks/upload/UploadFilesForm";
 
 
 export default function Page() {

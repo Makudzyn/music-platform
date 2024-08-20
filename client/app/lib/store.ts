@@ -6,6 +6,7 @@ export const makeStore = () => {
   return configureStore({
     reducer: {
       player: playerReducer,
+      tracks: trackReducer
     }
   })
 }

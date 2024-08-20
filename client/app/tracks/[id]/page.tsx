@@ -1,19 +1,25 @@
+'use client';
+
 import { Box, Breadcrumbs, Button, Card, Container, Grid, TextField, Typography } from "@mui/material";
 import Link from "next/link";
-import { Track } from "@/app/lib/defenitions";
 import Image from "next/image";
+import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
+import { useEffect } from "react";
+import { loadTrackById } from "@/app/features/tracks/trackSlice";
 
-export default function Page() {
-  const track: Track = {
-    _id: "1",
-    artist: "Death",
-    title: "Trapped In A Corner",
-    lyrics: "Not added yet",
-    listens: 7281,
-    audio: "audio/eaa2ee4c-3b8b-4798-b6a2-670eca578444.mp3",
-    thumbnail: "/thumbnail/894003a2-4c34-48fc-8ccd-5fd564ba8a24.jpg",
-    comments: []
-  }
+export default function Page({ params }: { params: { id: string } }) {
+  const dispatch = useAppDispatch();
+  const id = params.id;
+  const {tracks, loading} = useAppSelector((state) => state.tracks);
+  console.log(tracks);
+  const track = tracks[0];
+  useEffect(() => {
+    dispatch(loadTrackById(id));
+    console.log(tracks)
+  }, [dispatch, id]);
+
+  if (loading) return <div>Loading...</div>;
+
   return (
     <Container maxWidth="lg">
       <Breadcrumbs aria-label="breadcrumb" sx={{marginBottom: "10px"}}>
@@ -35,7 +41,12 @@ export default function Page() {
       </Breadcrumbs>
       <Card>
         <Box>
-          <Image src={track.thumbnail} alt={"Song thumbnail"} width={64} height={64}/>
+          <Image
+            src={`http://localhost:5000/${track.thumbnail}`}
+            alt={"Song thumbnail"}
+            width={64}
+            height={64}
+          />
           <div>
             <div>Artist: {track.artist}</div>
             <div>title: {track.title}</div>

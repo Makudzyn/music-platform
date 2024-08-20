@@ -1,13 +1,13 @@
 'use client';
 
 import "./globals.css";
-import { inter } from '@/app/ui/fonts';
+import { inter } from '@/app/features/fonts';
 import { ReactNode, useState } from "react";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import { Box, Button, Drawer, List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
 import { HomeOutlined, MusicNoteOutlined, CollectionsOutlined, MenuOpenOutlined } from "@mui/icons-material";
 import Link from "next/link";
-import Player from "@/app/ui/player/Player";
+import Player from "@/app/features/player/Player";
 
 import StoreProvider from "@/app/StoreProvider";
 

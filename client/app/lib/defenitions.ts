@@ -26,3 +26,8 @@ export type PlayerState = {
   repeatMode: RepeatMode;
 }
 
+export type TracksState = {
+  tracks: Track[];
+  loading: boolean;
+  error: string | null;
+}
