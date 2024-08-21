@@ -6,6 +6,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { CreateTrackDto } from "./dto/create-track.dto";
 import { CreateCommentDto } from "./dto/create-comment.dto";
 import { FileService, FileType } from "../file/file.service";
+import { getAudioDuration } from "./track.utils";
 
 @Injectable()
 export class TrackService {
@@ -15,9 +16,11 @@ export class TrackService {
     private fileService: FileService,
   ) {}
   async createTrack(dto: CreateTrackDto, thumbnail, audio): Promise<Track> {
-    const thumbnailPath = this.fileService.createFile(FileType.THUMBNAIL, thumbnail)
-    const audioPath = this.fileService.createFile(FileType.AUDIO, audio)
-    return this.trackModel.create({...dto, listens: 0, audio: audioPath, thumbnail: thumbnailPath})
+    const {dynamicPath: thumbnailPath} = this.fileService.createFile(FileType.THUMBNAIL, thumbnail)
+    const {fullFilePath: fullAudioPath, dynamicPath: dynamicAudioPath} = this.fileService.createFile(FileType.AUDIO, audio)
+    console.log(fullAudioPath, dynamicAudioPath)
+    const audioDuration = await getAudioDuration(fullAudioPath);
+    return this.trackModel.create({...dto, listens: 0, audio: dynamicAudioPath, thumbnail: thumbnailPath, duration: audioDuration});
   }
   async getAllTracks(offset: number, limit: number): Promise<Track[]> {
     return this.trackModel.find().skip(offset).limit(limit);

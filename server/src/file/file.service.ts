@@ -11,7 +11,7 @@ export enum FileType {
 
 @Injectable()
 export class FileService {
-  createFile(type: FileType, file): string {
+  createFile(type: FileType, file): {fullFilePath: string, dynamicPath: string} {
     try {
       const fileExtension = file.originalname.split(".").pop();
       const fileName = uuid.v4() + '.' + fileExtension;
@@ -22,8 +22,8 @@ export class FileService {
       }
       const fullFilePath = path.resolve(filePath, fileName);
       fs.writeFileSync(fullFilePath, file.buffer);
-
-      return `${type}/${fileName}`;
+      const dynamicPath = `${type}/${fileName}`;
+      return {fullFilePath, dynamicPath};
     } catch (e) {
       console.error('Error:', e);
       throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)
