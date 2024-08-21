@@ -5,9 +5,8 @@ import { Card, IconButton } from "@mui/material";
 import { Track } from "@/app/lib/defenitions";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
-import { pause, play, setCurrentTrack } from "@/app/features/player/playerSlice";
+import { nextTrack, pause, play, setCurrentTrack } from "@/app/features/player/playerSlice";
 import { PauseOutlined, PlayArrowOutlined } from "@mui/icons-material";
-import { useState } from "react";
 import { useAppSelector } from "@/app/lib/hooks";
 import { formatTime } from "@/app/lib/utils";
 
@@ -18,12 +17,22 @@ interface TrackItemProps {
 
 export default function TrackItem({track}: TrackItemProps) {
   const dispatch = useDispatch();
-  const {currentPosition, totalDuration} = useAppSelector(state => state.player);
-  const [active, setActive] = useState<boolean>(false)
+  const {currentPosition, paused, currentTrack} = useAppSelector(state => state.player);
+  const isActive = currentTrack && currentTrack._id === track._id;
+
+
   const handleTrackChange = (track: Track) => {
-    dispatch(setCurrentTrack(track));
-    setActive(prevState => !prevState);
+    if (isActive) {
+      if (paused) {
+        dispatch(play());
+      } else {
+        dispatch(pause());
+      }
+    } else {
+      dispatch(setCurrentTrack(track));
+    }
   }
+
   return (
     <Card
       sx={{display: "flex", justifyContent: "space-between", width: "100%", padding: "8px 12px"}}
@@ -41,10 +50,10 @@ export default function TrackItem({track}: TrackItemProps) {
         </div>
       </Link>
       <IconButton onClick={() => handleTrackChange(track)}>
-        {active ? <PauseOutlined/> : <PlayArrowOutlined/>}
+        {isActive && !paused ? <PauseOutlined/> : <PlayArrowOutlined/>}
       </IconButton>
       <div className="flex items-center justify-center w-28 ">
-        {active ? `${formatTime(currentPosition)} / ${formatTime(totalDuration)}` : formatTime(totalDuration)}
+        {isActive ? `${formatTime(currentPosition)} / ${formatTime(track.duration)}` : formatTime(track.duration)}
       </div>
     </Card>
   );

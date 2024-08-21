@@ -14,7 +14,6 @@ export default function TimeSlider({audioRef}: TimeSliderProps) {
   const dispatch = useAppDispatch();
   const {totalDuration, currentPosition} = useAppSelector(state => state.player);
 
-
   const handlePositionChange = (_, value: number | number[]) => {
     const newPosition = Number(value);
     audioRef.current!.currentTime = newPosition;

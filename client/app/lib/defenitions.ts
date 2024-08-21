@@ -4,8 +4,9 @@ export type Track = {
   artist: string;
   lyrics: string;
   listens: number;
-  audio: string;
   thumbnail: string;
+  audio: string;
+  duration: number;
   comments: Comment[];
 }
 
@@ -18,7 +19,10 @@ export type Comment = {
 export type RepeatMode = "none" | "all" | "one";
 
 export type PlayerState = {
-  currentTrack: null | Track;
+  currentTrack: Track | null;
+  queue: Track[] | null;
+  qIndex: number;
+  shuffle: boolean;
   volume: number;
   totalDuration: number;
   currentPosition: number;
