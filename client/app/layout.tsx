@@ -8,7 +8,6 @@ import { Box, Button, Drawer, List, ListItem, ListItemIcon, ListItemText } from 
 import { HomeOutlined, MusicNoteOutlined, CollectionsOutlined, MenuOpenOutlined } from "@mui/icons-material";
 import Link from "next/link";
 import Player from "@/app/features/player/Player";
-
 import StoreProvider from "@/app/StoreProvider";
 
 const menuItems = [
