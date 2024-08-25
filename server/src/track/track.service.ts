@@ -16,13 +16,14 @@ export class TrackService {
     private fileService: FileService
   ) {}
 
-  async createTrack(dto: TrackDto, thumbnail, audio): Promise<Track> {
+  async uploadTrack(trackDto: TrackDto, thumbnail, audio): Promise<Track> {
     const {dynamicPath: thumbnailPath} = this.fileService.createFile(FileType.THUMBNAIL, thumbnail)
     const {fullFilePath: fullAudioPath, dynamicPath: dynamicAudioPath} = this.fileService.createFile(
       FileType.AUDIO, audio)
     const audioDuration = await getAudioDuration(fullAudioPath);
-    return this.trackModel.create(
-      {...dto, listens: 0, audio: dynamicAudioPath, thumbnail: thumbnailPath, duration: audioDuration});
+
+    const trackData = {...trackDto, listens: 0, audio: dynamicAudioPath, thumbnail: thumbnailPath, duration: audioDuration};
+    return this.trackModel.create(trackData);
   }
 
   async getAllTracks(offset: number, limit: number): Promise<Track[]> {
@@ -36,8 +37,15 @@ export class TrackService {
     .populate('comments');
   }
 
-  async updateTrack(trackId: ObjectId, updateTrackDto: UpdateTrackDto): Promise<Track> {
-    const updatedTrack = await this.trackModel.findByIdAndUpdate(trackId, updateTrackDto, { new: true });
+  async updateTrack(trackId: ObjectId, updateTrackDto: UpdateTrackDto, thumbnail: Express.Multer.File, audio: Express.Multer.File): Promise<Track> {
+    const {dynamicPath: thumbnailPath} = this.fileService.createFile(FileType.THUMBNAIL, thumbnail)
+    const {fullFilePath: fullAudioPath, dynamicPath: dynamicAudioPath} = this.fileService.createFile(
+      FileType.AUDIO, audio)
+    const audioDuration = await getAudioDuration(fullAudioPath);
+
+    const updatedTrackData = {...updateTrackDto, audio: dynamicAudioPath, thumbnail: thumbnailPath, duration: audioDuration};
+
+    const updatedTrack = await this.trackModel.findByIdAndUpdate(trackId, updatedTrackData, { new: true });
     if (!updatedTrack) {
       throw new NotFoundException(`Track with ID ${trackId} not found`);
     }

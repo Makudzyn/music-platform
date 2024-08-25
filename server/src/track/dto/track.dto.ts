@@ -13,17 +13,13 @@ export class TrackDto {
 }
 
 export class UpdateTrackDto extends TrackDto{
+  @IsOptional()
   @IsNumber()
-  readonly listens: number;
+  readonly listens?: number;
 
-  @IsString()
-  readonly thumbnail: string;
-
-  @IsString()
-  readonly audio: string;
-
+  @IsOptional()
   @IsArray()
-  readonly comments: string[];
+  readonly comments?: string[];
 }
 
 

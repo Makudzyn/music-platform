@@ -16,7 +16,7 @@ export class TrackController {
     {name: 'thumbnail', maxCount: 1},
     {name: 'audio', maxCount: 1}
   ]))
-  createTrack(@UploadedFiles() files, @Body() dto: TrackDto): Promise<Track> {
+  uploadTrack(@UploadedFiles() files, @Body() dto: TrackDto): Promise<Track> {
     const {thumbnail, audio} = files;
     if (!thumbnail || thumbnail.length === 0) {
       throw new Error('Thumbnail file is missing');
@@ -25,7 +25,7 @@ export class TrackController {
     if (!audio || audio.length === 0) {
       throw new Error('Audio file is missing');
     }
-    return this.trackService.createTrack(dto, thumbnail[0], audio[0]);
+    return this.trackService.uploadTrack(dto, thumbnail[0], audio[0]);
   }
 
   @Get()
@@ -62,11 +62,17 @@ export class TrackController {
   }
 
   @Put(':trackId')
+  @UseInterceptors(FileFieldsInterceptor([
+    {name: 'thumbnail', maxCount: 1},
+    {name: 'audio', maxCount: 1}
+  ]))
   updateTrack(
     @Param('trackId') trackId: ObjectId,
+    @UploadedFiles() files,
     @Body() updateTrackDto: UpdateTrackDto
   ): Promise<Track> {
-    return this.trackService.updateTrack(trackId, updateTrackDto);
+    const {thumbnail, audio} = files;
+    return this.trackService.updateTrack(trackId, updateTrackDto, thumbnail[0], audio[0]);
   }
 
   @Patch(':trackId')
