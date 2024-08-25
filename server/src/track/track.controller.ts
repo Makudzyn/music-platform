@@ -1,8 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Post, Query, UploadedFiles, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query, UploadedFiles, UseInterceptors } from "@nestjs/common";
 import { TrackService } from "./track.service";
 import { Track } from "./schemas/track.schema";
 import { Comment } from "./schemas/comment.schema";
-import { CreateTrackDto } from "./dto/create-track.dto";
+import { TrackDto, UpdateTrackDto, PatchTrackDto } from "./dto/track.dto";
 import { ObjectId } from "mongoose";
 import { CreateCommentDto } from "./dto/create-comment.dto";
 import { FileFieldsInterceptor } from "@nestjs/platform-express";
@@ -13,10 +13,10 @@ export class TrackController {
 
   @Post()
   @UseInterceptors(FileFieldsInterceptor([
-    { name: 'thumbnail', maxCount: 1 },
-    { name: 'audio', maxCount: 1 },
+    {name: 'thumbnail', maxCount: 1},
+    {name: 'audio', maxCount: 1}
   ]))
-  createTrack(@UploadedFiles() files, @Body() dto: CreateTrackDto): Promise<Track> {
+  createTrack(@UploadedFiles() files, @Body() dto: TrackDto): Promise<Track> {
     const {thumbnail, audio} = files;
     if (!thumbnail || thumbnail.length === 0) {
       throw new Error('Thumbnail file is missing');
@@ -31,7 +31,8 @@ export class TrackController {
   @Get()
   getAllTracks(
     @Query('offset') offset: number = 0,
-    @Query('limit') limit: number = 10) {
+    @Query('limit') limit: number = 10
+  ) {
     return this.trackService.getAllTracks(offset, limit);
   }
 
@@ -40,11 +41,10 @@ export class TrackController {
     return this.trackService.search(query);
   }
 
-  @Get(":trackId")
+  @Get(':trackId')
   getOneTrack(@Param("trackId") trackId: ObjectId): Promise<Track> {
     return this.trackService.getOneTrack(trackId);
   }
-
 
   @Delete('/delete-many')
   deleteManyTracks(@Body('tracksIds') tracksIds: string[]) {
@@ -57,12 +57,25 @@ export class TrackController {
   }
 
   @Delete(":trackId")
-  deleteTrack(@Param("trackId") trackId: ObjectId): Promise<Track> {
+  deleteTrack(@Param('trackId') trackId: ObjectId): Promise<Track> {
     return this.trackService.deleteTrack(trackId);
   }
 
+  @Put(':trackId')
+  updateTrack(
+    @Param('trackId') trackId: ObjectId,
+    @Body() updateTrackDto: UpdateTrackDto
+  ): Promise<Track> {
+    return this.trackService.updateTrack(trackId, updateTrackDto);
+  }
 
-  //add update
+  @Patch(':trackId')
+  patchTrack(
+    @Param('trackId') trackId: ObjectId,
+    @Body() patchTrackDto: PatchTrackDto
+  ): Promise<Track> {
+    return this.trackService.patchTrack(trackId, patchTrackDto);
+  }
 
   @Post('/comment')
   createComment(@Body() dto: CreateCommentDto): Promise<Comment> {
@@ -70,7 +83,7 @@ export class TrackController {
   }
 
   @Post('/listen')
-  listen(@Param("trackId") trackId: ObjectId): Promise<void> {
+  listen(@Param('trackId') trackId: ObjectId): Promise<void> {
     return this.trackService.listen(trackId)
   }
 }
