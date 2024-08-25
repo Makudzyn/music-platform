@@ -7,12 +7,12 @@ import VolumeSlider from "@/app/features/player/VolumeSlider";
 import PlayerControls from "@/app/features/player/PlayerControls";
 import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
 import { useEffect, useRef } from "react";
-import { nextTrack, pause, play, setCurrentPosition, setTotalDuration } from "@/app/features/player/playerSlice";
+import { nextTrack, pause, play, setCurrentPosition, setCurrentTrack, setTotalDuration } from "@/app/features/player/playerSlice";
 
 export default function Player() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const dispatch = useAppDispatch();
-  const {volume, currentTrack, repeatMode, paused} = useAppSelector(state => state.player);
+  const {volume, currentTrack, paused} = useAppSelector(state => state.player);
 
   useEffect(() => {
     if(currentTrack) {
@@ -29,20 +29,6 @@ export default function Player() {
       audioRef.current!.ontimeupdate = () => {
         dispatch(setCurrentPosition(audioRef.current!.currentTime));
       };
-
-      // audioRef.current!.onended = () => {
-      //   if (repeatMode === 'all' || repeatMode === 'one') {
-      //     audioRef.current!.currentTime = 0;
-      //     audioRef.current!.play()
-      //     .then(dispatch(play()))
-      //     .catch(error => {
-      //       console.error('Failed to play audio:', error);
-      //     });
-      //   } else {
-      //     audioRef.current?.pause();
-      //     dispatch(pause());
-      //   }
-      // };
 
       audioRef.current!.play()
       .then(dispatch(play()))

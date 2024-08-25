@@ -28,7 +28,7 @@ export default function Page() {
           }}>
             <Typography variant="h2">Track list</Typography>
             <Button>
-              <Link href="/tracks/create">
+              <Link href="/tracks/upload">
                 Upload
               </Link>
             </Button>

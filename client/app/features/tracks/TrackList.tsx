@@ -6,13 +6,20 @@ import TrackItem from "@/app/features/tracks/TrackItem";
 import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
 import { useEffect } from "react";
 import { loadTracks } from "@/app/features/tracks/trackSlice";
+import { setQueue } from "@/app/features/player/playerSlice";
 
 export default function TrackList() {
   const dispatch = useAppDispatch();
   const {tracks, loading} = useAppSelector(state => state.tracks);
   useEffect(() => {
     dispatch(loadTracks());
-  }, [dispatch]);
+  }, []);
+
+  useEffect(() => {
+    if (tracks.length > 0) {
+      dispatch(setQueue(tracks));
+    }
+  }, [tracks]);
 
   if (loading) {
     return <div>Loading...</div>;

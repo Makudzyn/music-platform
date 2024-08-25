@@ -30,8 +30,8 @@ export default function TimeSlider({audioRef}: TimeSliderProps) {
           aria-label="time-indicator"
           size="small"
           min={0}
-          value={Math.ceil(currentPosition)}
-          max={Math.ceil(totalDuration)}
+          value={currentPosition}
+          max={totalDuration}
           onChange={handlePositionChange}
         />
       </Box>
