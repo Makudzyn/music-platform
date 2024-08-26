@@ -76,11 +76,17 @@ export class TrackController {
   }
 
   @Patch(':trackId')
+  @UseInterceptors(FileFieldsInterceptor([
+    {name: 'thumbnail', maxCount: 1},
+    {name: 'audio', maxCount: 1}
+  ]))
   patchTrack(
     @Param('trackId') trackId: ObjectId,
+    @UploadedFiles() files,
     @Body() patchTrackDto: PatchTrackDto
   ): Promise<Track> {
-    return this.trackService.patchTrack(trackId, patchTrackDto);
+    const {thumbnail, audio} = files;
+    return this.trackService.patchTrack(trackId, patchTrackDto, thumbnail ? thumbnail[0] : undefined, audio ? audio[0] : undefined);
   }
 
   @Post('/comment')

@@ -6,7 +6,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { TrackDto, PatchTrackDto, UpdateTrackDto } from "./dto/track.dto";
 import { CreateCommentDto } from "./dto/create-comment.dto";
 import { FileService, FileType } from "../file/file.service";
-import { getAudioDuration } from "./track.utils";
+import { getAudioDuration, getFilePaths } from "./track.utils";
 
 @Injectable()
 export class TrackService {
@@ -17,12 +17,16 @@ export class TrackService {
   ) {}
 
   async uploadTrack(trackDto: TrackDto, thumbnail, audio): Promise<Track> {
-    const {dynamicPath: thumbnailPath} = this.fileService.createFile(FileType.THUMBNAIL, thumbnail)
-    const {fullFilePath: fullAudioPath, dynamicPath: dynamicAudioPath} = this.fileService.createFile(
-      FileType.AUDIO, audio)
+    const {thumbnailPath, fullAudioPath, dynamicAudioPath} = getFilePaths(this.fileService, thumbnail, audio);
     const audioDuration = await getAudioDuration(fullAudioPath);
 
-    const trackData = {...trackDto, listens: 0, audio: dynamicAudioPath, thumbnail: thumbnailPath, duration: audioDuration};
+    const trackData = {
+      ...trackDto,
+      listens: 0,
+      audio: dynamicAudioPath,
+      thumbnail: thumbnailPath,
+      duration: audioDuration
+    };
     return this.trackModel.create(trackData);
   }
 
@@ -37,24 +41,46 @@ export class TrackService {
     .populate('comments');
   }
 
-  async updateTrack(trackId: ObjectId, updateTrackDto: UpdateTrackDto, thumbnail: Express.Multer.File, audio: Express.Multer.File): Promise<Track> {
-    const {dynamicPath: thumbnailPath} = this.fileService.createFile(FileType.THUMBNAIL, thumbnail)
-    const {fullFilePath: fullAudioPath, dynamicPath: dynamicAudioPath} = this.fileService.createFile(
-      FileType.AUDIO, audio)
+  async updateTrack(
+    trackId: ObjectId, updateTrackDto: UpdateTrackDto, thumbnail: Express.Multer.File,
+    audio: Express.Multer.File
+  ): Promise<Track> {
+    const {thumbnailPath, fullAudioPath, dynamicAudioPath} = getFilePaths(this.fileService, thumbnail, audio);
     const audioDuration = await getAudioDuration(fullAudioPath);
 
-    const updatedTrackData = {...updateTrackDto, audio: dynamicAudioPath, thumbnail: thumbnailPath, duration: audioDuration};
+    const updatedTrackData = {
+      ...updateTrackDto,
+      audio: dynamicAudioPath,
+      thumbnail: thumbnailPath,
+      duration: audioDuration
+    };
 
-    const updatedTrack = await this.trackModel.findByIdAndUpdate(trackId, updatedTrackData, { new: true });
+    const updatedTrack = await this.trackModel.findByIdAndUpdate(trackId, updatedTrackData, {new: true});
     if (!updatedTrack) {
       throw new NotFoundException(`Track with ID ${trackId} not found`);
     }
     return updatedTrack;
   }
 
-  async patchTrack(trackId: ObjectId, patchTrackDto: PatchTrackDto): Promise<Track> {
-    console.log('Patching Track:', trackId, patchTrackDto);
-    const patchedTrack = await this.trackModel.findByIdAndUpdate(trackId, {$set: patchTrackDto}, {new: true});
+  async patchTrack(
+    trackId: ObjectId, patchTrackDto: PatchTrackDto,
+    thumbnail: Express.Multer.File | undefined,
+    audio: Express.Multer.File | undefined
+  ): Promise<Track> {
+    let audioDuration: number | undefined;
+    const {thumbnailPath, fullAudioPath, dynamicAudioPath} = getFilePaths(this.fileService, thumbnail, audio);
+    if (fullAudioPath) {
+      audioDuration = await getAudioDuration(fullAudioPath);
+    }
+
+    const patchedTrackData = {
+      ...patchTrackDto,
+      audio: dynamicAudioPath,
+      thumbnail: thumbnailPath,
+      duration: audioDuration
+    };
+
+    const patchedTrack = await this.trackModel.findByIdAndUpdate(trackId, {$set: patchedTrackData}, {new: true});
     if (!patchedTrack) {
       throw new NotFoundException(`Track with ID ${trackId} not found`);
     }

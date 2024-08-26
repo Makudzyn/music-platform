@@ -41,14 +41,6 @@ export class PatchTrackDto {
   readonly listens?: number;
 
   @IsOptional()
-  @IsString()
-  readonly thumbnail?: string;
-
-  @IsOptional()
-  @IsString()
-  readonly audio?: string;
-
-  @IsOptional()
   @IsArray()
   readonly comments?: string[];
 }
