@@ -5,7 +5,7 @@ import { Model, ObjectId } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 import { TrackDto, PatchTrackDto, UpdateTrackDto } from "./dto/track.dto";
 import { CreateCommentDto } from "./dto/create-comment.dto";
-import { FileService, FileType } from "../file/file.service";
+import { FileService } from "../file/file.service";
 import { getAudioDuration, getFilePaths } from "./track.utils";
 
 @Injectable()
@@ -45,45 +45,70 @@ export class TrackService {
     trackId: ObjectId, updateTrackDto: UpdateTrackDto, thumbnail: Express.Multer.File,
     audio: Express.Multer.File
   ): Promise<Track> {
+    const existingTrack = await this.trackModel.findById(trackId).exec();
+    if (!existingTrack) {
+      throw new NotFoundException(`Track with ID ${trackId} not found`);
+    }
+
     const {thumbnailPath, fullAudioPath, dynamicAudioPath} = getFilePaths(this.fileService, thumbnail, audio);
-    const audioDuration = await getAudioDuration(fullAudioPath);
+    const audioDuration = fullAudioPath ? await getAudioDuration(fullAudioPath) : undefined;
+
 
     const updatedTrackData = {
       ...updateTrackDto,
-      audio: dynamicAudioPath,
-      thumbnail: thumbnailPath,
-      duration: audioDuration
+      audio: dynamicAudioPath || existingTrack.audio,
+      thumbnail: thumbnailPath || existingTrack.thumbnail,
+      duration: audioDuration || existingTrack.duration
     };
 
     const updatedTrack = await this.trackModel.findByIdAndUpdate(trackId, updatedTrackData, {new: true});
     if (!updatedTrack) {
       throw new NotFoundException(`Track with ID ${trackId} not found`);
     }
+
+    if (thumbnail && existingTrack.thumbnail) {
+      this.fileService.deleteFile(existingTrack.thumbnail);
+    }
+    if (audio && existingTrack.audio) {
+      this.fileService.deleteFile(existingTrack.audio);
+    }
+
     return updatedTrack;
   }
 
   async patchTrack(
     trackId: ObjectId, patchTrackDto: PatchTrackDto,
-    thumbnail: Express.Multer.File | undefined,
-    audio: Express.Multer.File | undefined
+    thumbnail?: Express.Multer.File | undefined,
+    audio?: Express.Multer.File | undefined
   ): Promise<Track> {
-    let audioDuration: number | undefined;
-    const {thumbnailPath, fullAudioPath, dynamicAudioPath} = getFilePaths(this.fileService, thumbnail, audio);
-    if (fullAudioPath) {
-      audioDuration = await getAudioDuration(fullAudioPath);
+    const existingTrack = await this.trackModel.findById(trackId).exec();
+    if (!existingTrack) {
+      throw new NotFoundException(`Track with ID ${trackId} not found`);
     }
+
+    const {thumbnailPath, fullAudioPath, dynamicAudioPath} = getFilePaths(this.fileService, thumbnail, audio);
+    const audioDuration = fullAudioPath ? await getAudioDuration(fullAudioPath) : undefined;
+
 
     const patchedTrackData = {
       ...patchTrackDto,
-      audio: dynamicAudioPath,
-      thumbnail: thumbnailPath,
-      duration: audioDuration
+      audio: dynamicAudioPath || existingTrack.audio,
+      thumbnail: thumbnailPath || existingTrack.thumbnail,
+      duration: audioDuration || existingTrack.duration
     };
 
     const patchedTrack = await this.trackModel.findByIdAndUpdate(trackId, {$set: patchedTrackData}, {new: true});
     if (!patchedTrack) {
       throw new NotFoundException(`Track with ID ${trackId} not found`);
     }
+
+    if (thumbnail && existingTrack.thumbnail) {
+      this.fileService.deleteFile(existingTrack.thumbnail);
+    }
+    if (audio && existingTrack.audio) {
+      this.fileService.deleteFile(existingTrack.audio);
+    }
+
     return patchedTrack;
   }
 
