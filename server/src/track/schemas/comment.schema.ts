@@ -4,7 +4,7 @@ import { Track } from "./track.schema";
 
 export type CommentDocument = HydratedDocument<Comment>;
 
-@Schema()
+@Schema({timestamps: true})
 export class Comment {
   @Prop()
   username: string;
