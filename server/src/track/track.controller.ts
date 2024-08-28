@@ -94,7 +94,7 @@ export class TrackController {
     return this.trackService.createComment(dto);
   }
 
-  @Post('/listen')
+  @Post('/listen/:trackId')
   listen(@Param('trackId') trackId: ObjectId): Promise<void> {
     return this.trackService.listen(trackId)
   }

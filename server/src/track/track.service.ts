@@ -113,8 +113,7 @@ export class TrackService {
   }
 
   async createComment(dto: CreateCommentDto): Promise<Comment> {
-    const track = await this.trackModel.findById(dto.trackId)
-    .exec();
+    const track = await this.trackModel.findById(dto.trackId).exec();
     if (!track) {throw new Error('Track not found')}
     const comment = await this.commentModel.create({...dto});
     track.comments.push(comment._id);
@@ -123,8 +122,7 @@ export class TrackService {
   }
 
   async listen(trackId: ObjectId): Promise<void> {
-    const track = await this.trackModel.findById(trackId)
-    .exec();
+    const track= await this.trackModel.findById(trackId).exec();
     if (!track) {throw new Error('Track not found')}
     track.listens += 1;
     await track.save();
@@ -133,13 +131,11 @@ export class TrackService {
   async search(query: string): Promise<Track[]> {
     return this.trackModel.find({
       title: {$regex: new RegExp(query, 'i')}
-    })
-    .exec();
+    }).exec();
   }
 
   async deleteTrack(trackId: ObjectId): Promise<Track> {
-    const track = await this.trackModel.findById(trackId)
-    .exec();
+    const track = await this.trackModel.findById(trackId).exec();
     if (!track) {
       throw new HttpException('Track not found', HttpStatus.NOT_FOUND);
     }
@@ -149,7 +145,8 @@ export class TrackService {
   }
 
   async deleteManyTracks(tracksIds: string[]): Promise<void> {
-    const tracks = await this.trackModel.find({_id: {$in: tracksIds}})
+    const tracks = await this.trackModel
+    .find({_id: {$in: tracksIds}})
     .exec();
 
     await Promise.all(tracks.map(async track => {
