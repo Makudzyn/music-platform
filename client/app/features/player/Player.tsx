@@ -1,14 +1,13 @@
 'use client';
 
 import TimeSlider from "@/app/features/player/TimeSlider";
-import { Box } from "@mui/material";
-import Image from "next/image";
 import VolumeSlider from "@/app/features/player/VolumeSlider";
 import PlayerControls from "@/app/features/player/PlayerControls";
 import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
 import { useEffect, useRef, useState } from "react";
 import { nextTrack, pause, play, setCurrentPosition, setCurrentTrack, setTotalDuration } from "@/app/features/player/playerSlice";
 import { updateTrackListens } from "@/app/services/tracksService";
+import SongInfo from "@/app/features/player/SongInfo";
 
 export default function Player() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -98,34 +97,12 @@ export default function Player() {
   return (
     <div className="h-[4.5rem] w-full fixed bottom-0 flex flex-row items-center justify-between py-2.5 bg-black gap-2">
       <div className="min-w-44 flex items-center ps-2 w-1/4">
-        {currentTrack &&
-          <div className="flex flex-row justify-start items-center translate-x-0 transition-transform">
-            <div className="relative flex-shrink-0 rounded overflow-hidden shadow size-14 bg-gray-700 mr-2 cursor-pointer">
-              <Image
-                src={`http://localhost:5000/${currentTrack.thumbnail}`}
-                alt={"Song thumbnail"}
-                width={56}
-                height={56}
-              />
-            </div>
-            <div className="flex flex-col text-white leading-normal text-sm">
-              <div className="text-white">{currentTrack.title}</div>
-              <div className="text-sub-gray text-xs">{currentTrack.artist}</div>
-            </div>
-          </div>
-        }
+        <SongInfo currentTrack={currentTrack}/>
       </div>
-      <Box sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: "space-between",
-        alignItems: 'center',
-        width: "50%",
-        maxWidth: "45.125rem"
-      }}>
+      <div className="flex flex-col justify-between items-center w-1/2 max-w-[45.125rem]">
         <PlayerControls />
         <TimeSlider audioRef={audioRef} />
-      </Box>
+      </div>
       <div className="w-1/4">
         <VolumeSlider />
       </div>
