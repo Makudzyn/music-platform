@@ -11,7 +11,7 @@ const initialState: PlayerState = {
   totalDuration: 0,
   currentPosition: 0,
   paused: true,
-  repeatMode: "none"
+  repeatMode: "none",
 };
 
 const playerSlice = createSlice({

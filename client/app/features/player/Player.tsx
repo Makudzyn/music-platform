@@ -6,13 +6,28 @@ import Image from "next/image";
 import VolumeSlider from "@/app/features/player/VolumeSlider";
 import PlayerControls from "@/app/features/player/PlayerControls";
 import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { nextTrack, pause, play, setCurrentPosition, setCurrentTrack, setTotalDuration } from "@/app/features/player/playerSlice";
+import { updateTrackListens } from "@/app/services/tracksService";
 
 export default function Player() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const hasListenedRef = useRef(false);
   const dispatch = useAppDispatch();
   const {volume, currentTrack, paused} = useAppSelector(state => state.player);
+
+
+  const handleLoadedMetadata = () => {
+    dispatch(setTotalDuration(audioRef.current!.duration));
+  }
+
+  const handleTimeUpdate = () => {
+    dispatch(setCurrentPosition(audioRef.current!.currentTime));
+    if ((audioRef.current!.currentTime > audioRef.current!.duration * 0.2) && !hasListenedRef.current) {
+      updateTrackListens(currentTrack._id);
+      hasListenedRef.current = true;
+    }
+  }
 
   useEffect(() => {
     if(currentTrack) {
@@ -22,13 +37,8 @@ export default function Player() {
       audioRef.current = new Audio(`http://localhost:5000/${currentTrack.audio}`);
       audioRef.current!.volume = volume / 100;
 
-      audioRef.current!.onloadedmetadata = () => {
-        dispatch(setTotalDuration(audioRef.current!.duration));
-      };
-
-      audioRef.current!.ontimeupdate = () => {
-        dispatch(setCurrentPosition(audioRef.current!.currentTime));
-      };
+      audioRef.current!.addEventListener('loadedmetadata', handleLoadedMetadata);
+      audioRef.current!.addEventListener('timeupdate', handleTimeUpdate);
 
       audioRef.current!.play()
       .then(dispatch(play()))
@@ -40,8 +50,11 @@ export default function Player() {
     return () => {
       if (audioRef.current) {
         audioRef.current?.pause();
+        audioRef.current!.removeEventListener('loadedmetadata', handleLoadedMetadata);
+        audioRef.current!.removeEventListener('timeupdate', handleTimeUpdate);
         audioRef.current = null;
         setCurrentTrack(null);
+        hasListenedRef.current = false;
         dispatch(pause())
       }
     };
