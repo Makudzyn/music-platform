@@ -14,7 +14,7 @@ interface TimeSliderProps {
 const StyledTimeSlider = styled(Slider)(({ theme }) => ({
   color: '#fff',
   height: 4,
-  padding: 4,
+  paddingY: 4,
   '&:hover': {
     color: "#1db954",
   },
@@ -37,7 +37,7 @@ const StyledTimeSlider = styled(Slider)(({ theme }) => ({
     transition: 'width 500ms ease',
   },
   '& .MuiSlider-rail': {
-    color: '#ffffff4d',
+    color: 'rgba(255,255,255,0.65)',
     height: 4,
   },
 }));
@@ -53,7 +53,7 @@ export default function TimeSlider({audioRef}: TimeSliderProps) {
   }
 
   return (
-    <div className="flex justify-between flex-row items-center w-full h-4 gap-8">
+    <div className="flex justify-between flex-row items-center w-full h-4 gap-2">
       <div className="flex justify-end items-center text-xs text-white font-medium opacity-65 min-w-10 h-4">
         {formatTime(currentPosition)}
       </div>

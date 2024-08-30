@@ -95,15 +95,15 @@ export default function Player() {
 
 
   return (
-    <div className="h-[4.5rem] w-full fixed bottom-0 flex flex-row items-center justify-between py-2.5 bg-black gap-2">
-      <div className="min-w-44 flex items-center ps-2 w-1/4">
+    <div className="min-w-[38.5rem] w-full fixed bottom-0 flex flex-row items-center justify-between py-2.5 bg-black gap-2">
+      <div className="min-w-40 flex items-center ps-2 w-[30%]">
         <SongInfo currentTrack={currentTrack}/>
       </div>
-      <div className="flex flex-col justify-between items-center w-1/2 max-w-[45.125rem]">
+      <div className="flex flex-col justify-between items-center w-[40%] max-w-[45.125rem]">
         <PlayerControls />
         <TimeSlider audioRef={audioRef} />
       </div>
-      <div className="w-1/4">
+      <div className="flex flex-row justify-end w-[30%] min-w-40 pe-2">
         <VolumeSlider />
       </div>
     </div>

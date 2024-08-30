@@ -40,7 +40,7 @@ export default function PlayerControls() {
     dispatch(toggleShuffle())
   }
   return (
-    <div className="w-full h-8 gap-4 mb-2 flex flex-row justify-between items-center ">
+    <div className="w-full h-8 gap-4 mb-2 flex flex-row justify-between items-center">
       <div className="w-full gap-2 flex justify-end items-center text-sub-gray">
         <div
           className="cursor-pointer pe-1.5 transition-all duration-300 hover:scale-110 hover:text-white"
