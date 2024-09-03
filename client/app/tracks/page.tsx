@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Breadcrumbs, Button, Card, Container, Grid, Typography } from "@mui/material";
 import TrackList from "@/app/features/tracks/TrackList";
+import UploadFileOutlinedIcon from "@mui/icons-material/UploadFileOutlined";
+import IconWrapper from "@/app/features/player/IconWrapper";
 
 export default function Page() {
   return (
@@ -27,11 +29,11 @@ export default function Page() {
             marginBottom: "12px"
           }}>
             <Typography variant="h2">Track list</Typography>
-            <Button>
+            <IconWrapper>
               <Link href="/tracks/upload">
-                Upload
+                <UploadFileOutlinedIcon sx={{width: 32, height: 32, color: "green"}}/>
               </Link>
-            </Button>
+            </IconWrapper>
           </Card>
           <TrackList/>
         </Grid>

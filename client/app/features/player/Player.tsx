@@ -93,6 +93,7 @@ export default function Player() {
     }
   }, [volume]);
 
+  if (!currentTrack) return null;
 
   return (
     <div className="min-w-[38.5rem] w-full fixed bottom-0 flex flex-row items-center justify-between py-2.5 bg-black gap-2">

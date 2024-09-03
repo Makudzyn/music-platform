@@ -5,7 +5,6 @@ import VolumeDownRoundedIcon from "@mui/icons-material/VolumeDownRounded";
 import VolumeOffRoundedIcon from "@mui/icons-material/VolumeOffRounded";
 import VolumeUpRoundedIcon from "@mui/icons-material/VolumeUpRounded";
 import QueueMusicRoundedIcon from '@mui/icons-material/QueueMusicRounded';
-import AudiotrackRoundedIcon from '@mui/icons-material/AudiotrackRounded';
 import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
 import { setVolume } from "@/app/features/player/playerSlice";
 import styled from "@emotion/styled";
@@ -48,9 +47,6 @@ export default function VolumeSlider() {
   }
   return (
     <div className="gap-2 flex flex-row justify-end items-center w-full">
-      <IconWrapper>
-        <AudiotrackRoundedIcon fontSize="small"/>
-      </IconWrapper>
       <IconWrapper>
         <QueueMusicRoundedIcon/>
       </IconWrapper>

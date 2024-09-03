@@ -1,11 +1,15 @@
-'use client';
-
 import { Container, Step, StepLabel, Stepper } from "@mui/material";
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 
 const steps = ["Track info", "Upload thumbnail", "Upload audio"];
 
-export default function Layout({activeStep, children}: {children: ReactNode}) {
+interface LayoutProps {
+  activeStep: number,
+  children: ReactNode,
+}
+
+export default function Layout({activeStep, children}: LayoutProps) {
+  console.log("Active step", activeStep);
   return (
     <Container maxWidth="lg" sx={{height: "100%"}}>
       <Stepper activeStep={activeStep}>
@@ -26,6 +30,7 @@ export default function Layout({activeStep, children}: {children: ReactNode}) {
           height: "100%",
           width: "100%"
         }}>
+
         {children}
       </Container>
     </Container>

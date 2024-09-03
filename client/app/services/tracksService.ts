@@ -18,3 +18,12 @@ export const updateTrackListens = async(id: string): Promise<void> => {
     console.error("Error updating track listens:", error);
   }
 }
+
+export const uploadTrack = async(formData: Object): Promise<void> => {
+  try {
+    const response = await axios.post('http://localhost:5000/tracks', formData);
+    console.log('Track uploaded successfully:', response.data);
+  } catch (error) {
+    console.error('Error uploading track:', error);
+  }
+}
