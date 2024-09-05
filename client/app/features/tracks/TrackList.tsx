@@ -26,10 +26,10 @@ export default function TrackList() {
   }
   return (
     <Grid container direction="column">
-      <Box py={3}>
-        {tracks.map(track =>
+      <Box py={1}>
+        {tracks.map((track, index) =>
           <React.Fragment key={track._id}>
-            <TrackItem track={track}/>
+            <TrackItem track={track} index={index}/>
           </React.Fragment>
         )}
       </Box>

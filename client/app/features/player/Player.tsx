@@ -96,7 +96,7 @@ export default function Player() {
   if (!currentTrack) return null;
 
   return (
-    <div className="min-w-[38.5rem] w-full fixed bottom-0 flex flex-row items-center justify-between py-2.5 bg-black gap-2">
+    <div className="min-w-[38.5rem] w-full fixed bottom-0 flex flex-row items-center justify-between py-2.5 bg-black gap-2 z-[1400]">
       <div className="min-w-40 flex items-center ps-2 w-[30%]">
         <SongInfo currentTrack={currentTrack}/>
       </div>

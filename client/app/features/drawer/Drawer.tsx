@@ -11,7 +11,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Fragment, useState } from "react";
 import { CollectionsOutlined, HomeOutlined, MusicNoteOutlined } from "@mui/icons-material";
-import Appbar from "@/app/features/drawer/Header";
+import Appbar from "@/app/features/header/Header";
 import MenuItem from "@/app/features/drawer/MenuItem";
 
 const drawerWidth = 240;
@@ -41,7 +41,7 @@ const DrawerHeader = styled('div')(({theme}) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'flex-end',
-  padding: theme.spacing(0, 1),
+  padding: theme.spacing(2, 1),
   ...theme.mixins.toolbar
 }));
 

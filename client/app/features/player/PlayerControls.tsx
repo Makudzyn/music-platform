@@ -60,8 +60,10 @@ export default function PlayerControls() {
           onClick={handlePlayPause}
           className="bg-white rounded-full cursor-pointer transition-all duration-300 hover:scale-110 hover:bg-gray-100"
         >
-          {paused ? <PlayArrowRoundedIcon sx={{width: 32, height: 32}}/> :
-            <PauseRoundedIcon sx={{width: 32, height: 32}}/>}
+          {paused ?
+            <PlayArrowRoundedIcon sx={{width: 32, height: 32, color: "black"}} /> :
+            <PauseRoundedIcon sx={{width: 32, height: 32, color: "black"}} />
+          }
         </div>
       </div>
       <div className="w-full gap-2 flex justify-start items-center text-sub-gray">

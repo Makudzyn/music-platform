@@ -17,18 +17,18 @@ const StyledVolumeSlider = styled(Slider)(({theme}) => ({
   maxWidth: 200,
   paddingY: 4,
   '&:hover': {
-    color: "#1db954"
+    color: "#1db954",
+    '& .MuiSlider-thumb': {
+      height: 12,
+      width: 12,
+      boxShadow: '0 0 0 8px rgba(58, 133, 137, 0.16)'
+    }
   },
   '& .MuiSlider-thumb': {
     height: 0,
     width: 0,
     backgroundColor: '#fff',
     border: 0,
-    '&:hover': {
-      height: 12,
-      width: 12,
-      boxShadow: '0 0 0 8px rgba(58, 133, 137, 0.16)'
-    }
   },
   '& .MuiSlider-track': {
     height: 4,

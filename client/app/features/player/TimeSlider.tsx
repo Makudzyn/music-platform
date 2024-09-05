@@ -17,6 +17,11 @@ const StyledTimeSlider = styled(Slider)(({ theme }) => ({
   paddingY: 4,
   '&:hover': {
     color: "#1db954",
+    '& .MuiSlider-thumb': {
+      height: 12,
+      width: 12,
+      boxShadow: '0 0 0 8px rgba(58, 133, 137, 0.16)'
+    }
   },
   '& .MuiSlider-thumb': {
     height: 0,
@@ -25,11 +30,6 @@ const StyledTimeSlider = styled(Slider)(({ theme }) => ({
     border: 0,
     transition: 'left 500ms ease',
     willChange: 'left',
-    '&:hover': {
-      height: 12,
-      width: 12,
-      boxShadow: '0 0 0 8px rgba(58, 133, 137, 0.16)',
-    },
   },
   '& .MuiSlider-track': {
     height: 4,

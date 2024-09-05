@@ -1,5 +1,6 @@
 import { Typography } from "@mui/material";
 
+
 export default function Home() {
   return (
     <div className={"flex flex-col justify-center mt-32 items-center w-full h-full"}>
