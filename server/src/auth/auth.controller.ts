@@ -1,6 +1,6 @@
-import { Controller, Post, Body, Request, UnauthorizedException } from '@nestjs/common';
+import { Controller, Post, Body, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { CreateUserDto } from "../createUser.dto";
+import { CreateUserDto } from "../user/createUser.dto";
 import { LoginDto } from "./login.dto";
 
 @Controller('auth')

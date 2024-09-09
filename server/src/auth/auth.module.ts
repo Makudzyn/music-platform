@@ -2,7 +2,7 @@ import { forwardRef, Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtModule } from "@nestjs/jwt";
-import { UserModule } from "../user.module";
+import { UserModule } from "../user/user.module";
 import { PassportModule } from "@nestjs/passport";
 import { JwtStrategy } from "./jwt.strategy";
 
@@ -13,7 +13,7 @@ import { JwtStrategy } from "./jwt.strategy";
     JwtModule.register({
       global: true,
       secret: 'secretKey',
-      signOptions: { expiresIn: '6h' },
+      signOptions: { expiresIn: '12h' },
     }),
   ],
   controllers: [AuthController],
