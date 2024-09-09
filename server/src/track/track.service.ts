@@ -17,14 +17,14 @@ export class TrackService {
   ) {}
 
   async uploadTrack(trackDto: TrackDto, thumbnail, audio): Promise<Track> {
-    const {thumbnailPath, fullAudioPath, dynamicAudioPath} = getFilePaths(this.fileService, thumbnail, audio);
+    const {dynamicThumbnailPath, fullAudioPath, dynamicAudioPath} = getFilePaths(this.fileService, thumbnail, audio);
     const audioDuration = await getAudioDuration(fullAudioPath);
 
     const trackData = {
       ...trackDto,
       listens: 0,
       audio: dynamicAudioPath,
-      thumbnail: thumbnailPath,
+      thumbnail: dynamicThumbnailPath,
       duration: audioDuration
     };
     return this.trackModel.create(trackData);
@@ -50,14 +50,14 @@ export class TrackService {
       throw new NotFoundException(`Track with ID ${trackId} not found`);
     }
 
-    const {thumbnailPath, fullAudioPath, dynamicAudioPath} = getFilePaths(this.fileService, thumbnail, audio);
+    const {dynamicThumbnailPath, fullAudioPath, dynamicAudioPath} = getFilePaths(this.fileService, thumbnail, audio);
     const audioDuration = fullAudioPath ? await getAudioDuration(fullAudioPath) : undefined;
 
 
     const updatedTrackData = {
       ...updateTrackDto,
       audio: dynamicAudioPath || existingTrack.audio,
-      thumbnail: thumbnailPath || existingTrack.thumbnail,
+      thumbnail: dynamicThumbnailPath || existingTrack.thumbnail,
       duration: audioDuration || existingTrack.duration
     };
 
@@ -86,26 +86,23 @@ export class TrackService {
       throw new NotFoundException(`Track with ID ${trackId} not found`);
     }
 
-    const {thumbnailPath, fullAudioPath, dynamicAudioPath} = getFilePaths(this.fileService, thumbnail, audio);
+    const {dynamicThumbnailPath, fullAudioPath, dynamicAudioPath} = getFilePaths(this.fileService, thumbnail, audio);
     const audioDuration = fullAudioPath ? await getAudioDuration(fullAudioPath) : undefined;
 
 
     const patchedTrackData = {
       ...patchTrackDto,
       audio: dynamicAudioPath || existingTrack.audio,
-      thumbnail: thumbnailPath || existingTrack.thumbnail,
+      thumbnail: dynamicThumbnailPath || existingTrack.thumbnail,
       duration: audioDuration || existingTrack.duration
     };
 
     const patchedTrack = await this.trackModel.findByIdAndUpdate(trackId, {$set: patchedTrackData}, {new: true});
-    if (!patchedTrack) {
-      throw new NotFoundException(`Track with ID ${trackId} not found`);
-    }
 
-    if (thumbnail && existingTrack.thumbnail) {
+    if (thumbnail && existingTrack.thumbnail && existingTrack.thumbnail !== dynamicThumbnailPath) {
       this.fileService.deleteFile(existingTrack.thumbnail);
     }
-    if (audio && existingTrack.audio) {
+    if (audio && existingTrack.audio && existingTrack.audio !== dynamicAudioPath) {
       this.fileService.deleteFile(existingTrack.audio);
     }
 

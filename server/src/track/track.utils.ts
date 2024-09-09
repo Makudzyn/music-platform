@@ -29,5 +29,5 @@ export function getFilePaths(fileService: FileService, thumbnail?: Express.Multe
     fullAudioPath = audioPaths.fullFilePath;
     dynamicAudioPath = audioPaths.dynamicPath;
   }
-  return {thumbnailPath, fullAudioPath, dynamicAudioPath}
+  return {dynamicThumbnailPath: thumbnailPath, fullAudioPath, dynamicAudioPath}
 }
