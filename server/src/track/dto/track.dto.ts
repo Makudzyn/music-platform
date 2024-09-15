@@ -11,6 +11,10 @@ export class TrackDto {
   @IsOptional()
   @IsString()
   readonly lyrics?: string;
+
+  @IsOptional()
+  @IsString()
+  readonly album?: string;
 }
 
 export class UpdateTrackDto extends TrackDto {

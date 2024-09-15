@@ -14,6 +14,8 @@ import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 export class TrackController {
   constructor(private readonly trackService: TrackService) {}
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles("ADMIN")
   @Post()
   @UseInterceptors(FileFieldsInterceptor([
     {name: 'thumbnail', maxCount: 1},
@@ -49,21 +51,29 @@ export class TrackController {
     return this.trackService.getOneTrack(trackId);
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles("ADMIN")
   @Delete('/delete-many')
   deleteManyTracks(@Body('tracksIds') tracksIds: string[]) {
     return this.trackService.deleteManyTracks(tracksIds);
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles("ADMIN")
   @Delete('/delete-all')
   deleteAllTracks() {
     return this.trackService.deleteAllTracks();
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles("ADMIN")
   @Delete(":trackId")
   deleteTrack(@Param('trackId') trackId: mongoose.Types.ObjectId): Promise<Track> {
     return this.trackService.deleteTrack(trackId);
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles("ADMIN")
   @Put(':trackId')
   @UseInterceptors(FileFieldsInterceptor([
     {name: 'thumbnail', maxCount: 1},
@@ -78,6 +88,8 @@ export class TrackController {
     return this.trackService.updateTrack(trackId, updateTrackDto, thumbnail[0], audio[0]);
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles("ADMIN")
   @Patch(':trackId')
   @UseInterceptors(FileFieldsInterceptor([
     {name: 'thumbnail', maxCount: 1},
@@ -92,7 +104,10 @@ export class TrackController {
     return this.trackService.patchTrack(trackId, patchTrackDto, thumbnail ? thumbnail[0] : undefined, audio ? audio[0] : undefined);
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles("ADMIN", "USER")
   @Post('/comment')
+  @UseInterceptors(FileInterceptor(''))
   createComment(@Body() dto: CreateCommentDto): Promise<Comment> {
     return this.trackService.createComment(dto);
   }

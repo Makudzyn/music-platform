@@ -20,7 +20,8 @@ export class Track {
   audio: string;
   @Prop()
   duration: number;
-
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Playlist', required: false })
+  album: mongoose.Types.ObjectId;
   @Prop({type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Comment'}]})
   comments: mongoose.Types.ObjectId[];
 }

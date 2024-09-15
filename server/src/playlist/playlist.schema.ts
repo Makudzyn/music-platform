@@ -15,6 +15,8 @@ export class Playlist {
   owner: mongoose.Types.ObjectId;
   @Prop({type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Track'}]})
   tracks: mongoose.Types.ObjectId[];
+  @Prop({ enum: ['playlist', 'album'], default: 'playlist' })
+  type: string; // 'playlist' or 'album'
 }
 
 export const PlaylistSchema = SchemaFactory.createForClass(Playlist);

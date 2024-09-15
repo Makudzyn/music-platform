@@ -5,10 +5,14 @@ import { PlaylistService } from "./playlist.service";
 import { Playlist, PlaylistSchema } from "./playlist.schema";
 import { AuthModule } from "../auth/auth.module";
 import { FileService } from "../file/file.service";
+import { Track, TrackSchema } from "../track/schemas/track.schema";
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{name: Playlist.name, schema: PlaylistSchema}]),
+    MongooseModule.forFeature([
+      {name: Playlist.name, schema: PlaylistSchema},
+      { name: Track.name, schema: TrackSchema }
+    ]),
     AuthModule
   ],
   controllers: [PlaylistController],

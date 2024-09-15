@@ -1,19 +1,46 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Playlist, PlaylistDocument } from "./playlist.schema";
-import mongoose, { Model, ObjectId } from "mongoose";
-import { PlaylistDto } from "./playlist.dto";
-import { PatchPlaylistDto } from "./patch-playlist.dto";
+import mongoose, { Model } from "mongoose";
+import { CreatePlaylistDto } from "./dto/create-playlist.dto";
 import { FileService, FileType } from "../file/file.service";
+import { EditHeaderDto } from "./dto/edit-header.dto";
+import { Track, TrackDocument } from "../track/schemas/track.schema";
 
 @Injectable()
 export class PlaylistService {
   constructor(
     @InjectModel(Playlist.name) private playlistModel: Model<PlaylistDocument>,
+    @InjectModel(Track.name) private trackModel: Model<TrackDocument>,
     private fileService: FileService
   ) {}
 
-  async createPlaylist(playlistDto: PlaylistDto, userId) {
+  async findPlaylistById(playlistId: mongoose.Types.ObjectId): Promise<PlaylistDocument> {
+    const playlist = await this.playlistModel.findById(playlistId).exec();
+    if (!playlist) {
+      throw new NotFoundException(`Playlist with ID ${playlistId} not found`);
+    }
+    return playlist;
+  }
+
+  async getAllPlaylists(): Promise<Playlist[]> {
+    return this.playlistModel.find().exec();
+  }
+
+  async getPlaylistById(playlistId: mongoose.Types.ObjectId): Promise<Playlist> {
+    return this.findPlaylistById(playlistId);
+  }
+
+  async getAllTracksInPlaylist(playlistId: mongoose.Types.ObjectId): Promise<mongoose.Types.ObjectId[]> {
+    const existingPlaylist = await this.playlistModel.findById(playlistId).populate('tracks').exec();
+    if (!existingPlaylist) {
+      throw new NotFoundException(`Playlist with ID ${playlistId} not found`);
+    }
+    return existingPlaylist.tracks;
+  }
+
+
+  async createPlaylist(playlistDto: CreatePlaylistDto, userId: mongoose.Types.ObjectId) {
     const playlistData = {
       ...playlistDto,
       owner: userId
@@ -21,37 +48,82 @@ export class PlaylistService {
     return this.playlistModel.create(playlistData);
   }
 
-  async patchPlaylist(playlistId: ObjectId, patchPlaylistDto: PatchPlaylistDto, coverImage: Express.Multer.File): Promise<Playlist> {
-    const existingPlaylist = await this.playlistModel.findById(playlistId).exec();
-    if (!existingPlaylist) {
-      throw new NotFoundException(`Playlist with ID ${playlistId} not found`);
-    }
+  async editPlaylistHeader(playlistId: mongoose.Types.ObjectId, editHeaderDto: EditHeaderDto, coverImage: Express.Multer.File): Promise<Playlist> {
+    const existingPlaylist = await this.findPlaylistById(playlistId);
 
     let dynamicImagePath: string | undefined;
     if (coverImage) {
       dynamicImagePath = this.fileService.createFile(FileType.COVER_IMAGE, coverImage).dynamicPath;
     }
 
-    if (patchPlaylistDto.trackIds && patchPlaylistDto.trackIds.length > 0) {
-      existingPlaylist.tracks = [
-        ...existingPlaylist.tracks,
-        ...patchPlaylistDto.trackIds.map(id => new mongoose.Types.ObjectId(id))
-      ];
-    }
-
     const patchedPlaylistData = {
-      title: patchPlaylistDto.title || existingPlaylist.title,
-      description: patchPlaylistDto.description || existingPlaylist.description,
+      title: editHeaderDto.title || existingPlaylist.title,
+      description: editHeaderDto.description || existingPlaylist.description,
       coverImage: dynamicImagePath || existingPlaylist.coverImage,
-      tracks: existingPlaylist.tracks
     }
 
-    const patchedPlaylist = await this.playlistModel.findByIdAndUpdate(playlistId, {$set: patchedPlaylistData}, {new: true});
+    if (coverImage && existingPlaylist.coverImage) {
+      if (existingPlaylist.coverImage !== dynamicImagePath) {
+        this.fileService.deleteFile(existingPlaylist.coverImage);
+      }
+    }
 
-    if (coverImage && existingPlaylist.coverImage && existingPlaylist.coverImage !== dynamicImagePath) {
+    return this.playlistModel.findByIdAndUpdate(playlistId, {$set: patchedPlaylistData}, {new: true});
+  }
+
+  async editPlaylistTracks(playlistId: mongoose.Types.ObjectId, trackIds: mongoose.Types.ObjectId[]): Promise<Playlist> {
+    const existingPlaylist = await this.findPlaylistById(playlistId);
+
+    if (trackIds && trackIds.length > 0) {
+      existingPlaylist.tracks = trackIds;
+    }
+
+    return existingPlaylist.save();
+  }
+
+  async addTrackToPlaylist(playlistId: mongoose.Types.ObjectId, trackId: mongoose.Types.ObjectId): Promise<Playlist> {
+    const existingPlaylist = await this.findPlaylistById(playlistId);
+
+    if (existingPlaylist.tracks.includes(trackId)) {
+      throw new ConflictException('Track already exists in the playlist');
+    } else {
+      existingPlaylist.tracks.push(trackId);
+    }
+
+    return existingPlaylist.save();
+  }
+
+  async addTrackToAlbum(playlistId: mongoose.Types.ObjectId, trackId: mongoose.Types.ObjectId): Promise<Playlist> {
+    const existingPlaylist = await this.findPlaylistById(playlistId);
+    const track = await this.trackModel.findById(trackId).exec();
+    if (!track) {
+      throw new NotFoundException('Track not found');
+    }
+    track.album = playlistId;
+    await track.save();
+
+    existingPlaylist.tracks.push(trackId);
+    return existingPlaylist.save();
+  }
+
+
+  async removeTracks(playlistId: mongoose.Types.ObjectId, trackIds: mongoose.Types.ObjectId[]): Promise<Playlist> {
+    const existingPlaylist = await this.findPlaylistById(playlistId);
+    
+    existingPlaylist.tracks = existingPlaylist.tracks.filter(trackId =>
+      !trackIds.includes(trackId)
+    );
+
+    return existingPlaylist.save();
+  }
+
+  async deletePlaylist(playlistId: mongoose.Types.ObjectId): Promise<Playlist> {
+    const existingPlaylist = await this.findPlaylistById(playlistId)
+
+    if (existingPlaylist.coverImage) {
       this.fileService.deleteFile(existingPlaylist.coverImage);
     }
 
-    return patchedPlaylist;
+    return this.playlistModel.findByIdAndDelete(playlistId);
   }
 }

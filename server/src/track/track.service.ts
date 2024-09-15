@@ -127,8 +127,13 @@ export class TrackService {
 
   async search(query: string): Promise<Track[]> {
     return this.trackModel.find({
-      title: {$regex: new RegExp(query, 'i')}
-    }).exec();
+      $or: [
+        { title: { $regex: new RegExp(query, 'i') } },  // поиск по названию трека
+        { artist: { $regex: new RegExp(query, 'i') } }  // поиск по исполнителю
+      ]
+    })
+    .populate('album', 'title')
+    .exec();
   }
 
   async deleteTrack(trackId: mongoose.Types.ObjectId): Promise<Track> {
