@@ -1,4 +1,5 @@
-import { IsArray, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsArray, IsMongoId, IsNumber, IsOptional, IsString } from "class-validator";
+import mongoose from "mongoose";
 
 export class TrackDto {
   @IsString()
@@ -12,16 +13,16 @@ export class TrackDto {
   readonly lyrics?: string;
 }
 
-export class UpdateTrackDto extends TrackDto{
+export class UpdateTrackDto extends TrackDto {
   @IsOptional()
   @IsNumber()
   readonly listens?: number;
 
   @IsOptional()
   @IsArray()
-  readonly comments?: string[];
+  @IsMongoId({each: true})
+  readonly comments?: mongoose.Types.ObjectId[];
 }
-
 
 export class PatchTrackDto {
   @IsOptional()
@@ -42,7 +43,8 @@ export class PatchTrackDto {
 
   @IsOptional()
   @IsArray()
-  readonly comments?: string[];
+  @IsMongoId({each: true})
+  readonly comments?: mongoose.Types.ObjectId[];
 }
 
 

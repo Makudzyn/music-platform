@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable, NotFoundException } from "@nestjs/common";
 import { Track, TrackDocument } from "./schemas/track.schema";
 import { Comment, CommentDocument } from "./schemas/comment.schema";
-import { Model, ObjectId } from "mongoose";
+import mongoose, { Model, ObjectId } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 import { TrackDto, PatchTrackDto, UpdateTrackDto } from "./dto/track.dto";
 import { CreateCommentDto } from "./dto/create-comment.dto";
@@ -36,13 +36,13 @@ export class TrackService {
     .limit(limit);
   }
 
-  async getOneTrack(trackId: ObjectId): Promise<Track> {
+  async getOneTrack(trackId: mongoose.Types.ObjectId): Promise<Track> {
     return this.trackModel.findById(trackId)
     .populate('comments');
   }
 
   async updateTrack(
-    trackId: ObjectId, updateTrackDto: UpdateTrackDto, thumbnail: Express.Multer.File,
+    trackId: mongoose.Types.ObjectId, updateTrackDto: UpdateTrackDto, thumbnail: Express.Multer.File,
     audio: Express.Multer.File
   ): Promise<Track> {
     const existingTrack = await this.trackModel.findById(trackId).exec();
@@ -77,7 +77,7 @@ export class TrackService {
   }
 
   async patchTrack(
-    trackId: ObjectId, patchTrackDto: PatchTrackDto,
+    trackId: mongoose.Types.ObjectId, patchTrackDto: PatchTrackDto,
     thumbnail?: Express.Multer.File | undefined,
     audio?: Express.Multer.File | undefined
   ): Promise<Track> {
@@ -118,7 +118,7 @@ export class TrackService {
     return comment;
   }
 
-  async listen(trackId: ObjectId): Promise<void> {
+  async listen(trackId: mongoose.Types.ObjectId): Promise<void> {
     const track= await this.trackModel.findById(trackId).exec();
     if (!track) {throw new Error('Track not found')}
     track.listens += 1;
@@ -131,7 +131,7 @@ export class TrackService {
     }).exec();
   }
 
-  async deleteTrack(trackId: ObjectId): Promise<Track> {
+  async deleteTrack(trackId: mongoose.Types.ObjectId): Promise<Track> {
     const track = await this.trackModel.findById(trackId).exec();
     if (!track) {
       throw new HttpException('Track not found', HttpStatus.NOT_FOUND);

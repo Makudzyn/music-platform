@@ -16,10 +16,15 @@ export class RolesGuard extends JwtAuthGuard implements CanActivate {
     ]);
 
     if (!requiredRoles) {
-      return true; // Если роль не требуется, пропускаем
+      return true;
     }
 
     const { user } = context.switchToHttp().getRequest();
+    if (!user) {
+      return false; // Возвращаем false, если пользователь отсутствует
+    }
+
+
     return requiredRoles.includes(user.role);  // Сравниваем роль пользователя с требуемой ролью
   }
 }

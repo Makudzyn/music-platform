@@ -9,7 +9,12 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule);
     app.enableCors();
     app.useGlobalPipes(
-      new ValidationPipe({whitelist: true, forbidNonWhitelisted: true}));
+      new ValidationPipe({
+        whitelist: true,
+        forbidNonWhitelisted: true,
+        transform: true
+      })
+    );
     await app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
   } catch (e) {
     console.log(e);
@@ -17,3 +22,4 @@ async function bootstrap() {
 }
 
 bootstrap();
+

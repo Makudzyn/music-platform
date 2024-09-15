@@ -1,11 +1,14 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query, UploadedFiles, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query, UploadedFiles, UseGuards, UseInterceptors } from "@nestjs/common";
 import { TrackService } from "./track.service";
 import { Track } from "./schemas/track.schema";
 import { Comment } from "./schemas/comment.schema";
 import { TrackDto, UpdateTrackDto, PatchTrackDto } from "./dto/track.dto";
-import { ObjectId } from "mongoose";
+import mongoose from "mongoose";
 import { CreateCommentDto } from "./dto/create-comment.dto";
-import { FileFieldsInterceptor } from "@nestjs/platform-express";
+import { FileFieldsInterceptor, FileInterceptor } from "@nestjs/platform-express";
+import { RolesGuard } from "../auth/guards/roles.guard";
+import { Roles } from "../auth/roles.decorator";
+import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 
 @Controller('/tracks')
 export class TrackController {
@@ -16,7 +19,7 @@ export class TrackController {
     {name: 'thumbnail', maxCount: 1},
     {name: 'audio', maxCount: 1}
   ]))
-  uploadTrack(@UploadedFiles() files, @Body() dto: TrackDto): Promise<Track> {
+  uploadTrack(@UploadedFiles() files, @Body() createTrackDto: TrackDto): Promise<Track> {
     const {thumbnail, audio} = files;
     if (!thumbnail || thumbnail.length === 0) {
       throw new Error('Thumbnail file is missing');
@@ -25,7 +28,7 @@ export class TrackController {
     if (!audio || audio.length === 0) {
       throw new Error('Audio file is missing');
     }
-    return this.trackService.uploadTrack(dto, thumbnail[0], audio[0]);
+    return this.trackService.uploadTrack(createTrackDto, thumbnail[0], audio[0]);
   }
 
   @Get()
@@ -42,7 +45,7 @@ export class TrackController {
   }
 
   @Get(':trackId')
-  getOneTrack(@Param("trackId") trackId: ObjectId): Promise<Track> {
+  getOneTrack(@Param("trackId") trackId: mongoose.Types.ObjectId): Promise<Track> {
     return this.trackService.getOneTrack(trackId);
   }
 
@@ -57,7 +60,7 @@ export class TrackController {
   }
 
   @Delete(":trackId")
-  deleteTrack(@Param('trackId') trackId: ObjectId): Promise<Track> {
+  deleteTrack(@Param('trackId') trackId: mongoose.Types.ObjectId): Promise<Track> {
     return this.trackService.deleteTrack(trackId);
   }
 
@@ -67,7 +70,7 @@ export class TrackController {
     {name: 'audio', maxCount: 1}
   ]))
   updateTrack(
-    @Param('trackId') trackId: ObjectId,
+    @Param('trackId') trackId: mongoose.Types.ObjectId,
     @UploadedFiles() files,
     @Body() updateTrackDto: UpdateTrackDto
   ): Promise<Track> {
@@ -81,7 +84,7 @@ export class TrackController {
     {name: 'audio', maxCount: 1}
   ]))
   patchTrack(
-    @Param('trackId') trackId: ObjectId,
+    @Param('trackId') trackId: mongoose.Types.ObjectId,
     @UploadedFiles() files,
     @Body() patchTrackDto: PatchTrackDto
   ): Promise<Track> {
@@ -95,7 +98,7 @@ export class TrackController {
   }
 
   @Post('/listen/:trackId')
-  listen(@Param('trackId') trackId: ObjectId): Promise<void> {
+  listen(@Param('trackId') trackId: mongoose.Types.ObjectId): Promise<void> {
     return this.trackService.listen(trackId)
   }
 }
