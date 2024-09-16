@@ -1,12 +1,11 @@
 import { HttpException, HttpStatus, Injectable, NotFoundException } from "@nestjs/common";
 import { Track, TrackDocument } from "./schemas/track.schema";
 import { Comment, CommentDocument } from "./schemas/comment.schema";
-import mongoose, { Model, ObjectId } from "mongoose";
+import mongoose, { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
-import { TrackDto, PatchTrackDto, UpdateTrackDto } from "./dto/track.dto";
+import { PatchTrackDto, TrackDto, UpdateTrackDto } from "./dto/track.dto";
 import { CreateCommentDto } from "./dto/create-comment.dto";
-import { FileService } from "../file/file.service";
-import { getAudioDuration, getFilePaths } from "./track.utils";
+import { FileService, FileType } from "../file/file.service";
 
 @Injectable()
 export class TrackService {
@@ -17,15 +16,17 @@ export class TrackService {
   ) {}
 
   async uploadTrack(trackDto: TrackDto, thumbnail, audio): Promise<Track> {
-    const {dynamicThumbnailPath, fullAudioPath, dynamicAudioPath} = getFilePaths(this.fileService, thumbnail, audio);
-    const audioDuration = await getAudioDuration(fullAudioPath);
+    const processedImage = await this.fileService.processImage(thumbnail, FileType.THUMBNAIL)
+    const processedAudio = await this.fileService.processAudio(audio);
 
     const trackData = {
       ...trackDto,
       listens: 0,
-      audio: dynamicAudioPath,
-      thumbnail: dynamicThumbnailPath,
-      duration: audioDuration
+      thumbnail: processedImage.dynamicPath,
+      audio: processedAudio.dynamicPath,
+      duration: processedAudio.metadata.duration,
+      bitrate: processedAudio.metadata.bitrate,
+      format: processedAudio.metadata.format_name,
     };
     return this.trackModel.create(trackData);
   }
@@ -42,7 +43,9 @@ export class TrackService {
   }
 
   async updateTrack(
-    trackId: mongoose.Types.ObjectId, updateTrackDto: UpdateTrackDto, thumbnail: Express.Multer.File,
+    trackId: mongoose.Types.ObjectId,
+    updateTrackDto: UpdateTrackDto,
+    thumbnail: Express.Multer.File,
     audio: Express.Multer.File
   ): Promise<Track> {
     const existingTrack = await this.trackModel.findById(trackId).exec();
@@ -50,15 +53,16 @@ export class TrackService {
       throw new NotFoundException(`Track with ID ${trackId} not found`);
     }
 
-    const {dynamicThumbnailPath, fullAudioPath, dynamicAudioPath} = getFilePaths(this.fileService, thumbnail, audio);
-    const audioDuration = fullAudioPath ? await getAudioDuration(fullAudioPath) : undefined;
-
+    const processedImage = await this.fileService.processImage(thumbnail, FileType.THUMBNAIL)
+    const processedAudio = await this.fileService.processAudio(audio);
 
     const updatedTrackData = {
       ...updateTrackDto,
-      audio: dynamicAudioPath || existingTrack.audio,
-      thumbnail: dynamicThumbnailPath || existingTrack.thumbnail,
-      duration: audioDuration || existingTrack.duration
+      thumbnail: processedImage.dynamicPath || existingTrack.thumbnail,
+      audio: processedAudio.dynamicPath || existingTrack.audio,
+      duration: processedAudio.metadata.duration || existingTrack.duration,
+      bitrate: processedAudio.metadata.bitrate || existingTrack.bitrate,
+      format: processedAudio.metadata.format_name || existingTrack.format,
     };
 
     const updatedTrack = await this.trackModel.findByIdAndUpdate(trackId, updatedTrackData, {new: true});
@@ -86,23 +90,25 @@ export class TrackService {
       throw new NotFoundException(`Track with ID ${trackId} not found`);
     }
 
-    const {dynamicThumbnailPath, fullAudioPath, dynamicAudioPath} = getFilePaths(this.fileService, thumbnail, audio);
-    const audioDuration = fullAudioPath ? await getAudioDuration(fullAudioPath) : undefined;
+    const processedImage = await this.fileService.processImage(thumbnail, FileType.THUMBNAIL)
+    const processedAudio = await this.fileService.processAudio(audio);
 
 
     const patchedTrackData = {
       ...patchTrackDto,
-      audio: dynamicAudioPath || existingTrack.audio,
-      thumbnail: dynamicThumbnailPath || existingTrack.thumbnail,
-      duration: audioDuration || existingTrack.duration
+      thumbnail: processedImage.dynamicPath || existingTrack.thumbnail,
+      audio: processedAudio.dynamicPath || existingTrack.audio,
+      duration: processedAudio.metadata.duration || existingTrack.duration,
+      bitrate: processedAudio.metadata.bitrate || existingTrack.bitrate,
+      format: processedAudio.metadata.format_name || existingTrack.format,
     };
 
     const patchedTrack = await this.trackModel.findByIdAndUpdate(trackId, {$set: patchedTrackData}, {new: true});
 
-    if (thumbnail && existingTrack.thumbnail && existingTrack.thumbnail !== dynamicThumbnailPath) {
+    if (thumbnail && existingTrack.thumbnail && existingTrack.thumbnail !== processedImage.dynamicPath) {
       this.fileService.deleteFile(existingTrack.thumbnail);
     }
-    if (audio && existingTrack.audio && existingTrack.audio !== dynamicAudioPath) {
+    if (audio && existingTrack.audio && existingTrack.audio !== processedAudio.dynamicPath) {
       this.fileService.deleteFile(existingTrack.audio);
     }
 

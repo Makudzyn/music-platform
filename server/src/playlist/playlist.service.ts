@@ -15,7 +15,7 @@ export class PlaylistService {
     private fileService: FileService
   ) {}
 
-  async findPlaylistById(playlistId: mongoose.Types.ObjectId): Promise<PlaylistDocument> {
+  private async findPlaylistById(playlistId: mongoose.Types.ObjectId): Promise<PlaylistDocument> {
     const playlist = await this.playlistModel.findById(playlistId).exec();
     if (!playlist) {
       throw new NotFoundException(`Playlist with ID ${playlistId} not found`);
@@ -51,19 +51,19 @@ export class PlaylistService {
   async editPlaylistHeader(playlistId: mongoose.Types.ObjectId, editHeaderDto: EditHeaderDto, coverImage: Express.Multer.File): Promise<Playlist> {
     const existingPlaylist = await this.findPlaylistById(playlistId);
 
-    let dynamicImagePath: string | undefined;
+    let processedImage;
     if (coverImage) {
-      dynamicImagePath = this.fileService.createFile(FileType.COVER_IMAGE, coverImage).dynamicPath;
+      processedImage = await this.fileService.processImage(coverImage, FileType.COVER_IMAGE);
     }
 
     const patchedPlaylistData = {
       title: editHeaderDto.title || existingPlaylist.title,
       description: editHeaderDto.description || existingPlaylist.description,
-      coverImage: dynamicImagePath || existingPlaylist.coverImage,
+      coverImage: processedImage.dynamicPath || existingPlaylist.coverImage,
     }
 
     if (coverImage && existingPlaylist.coverImage) {
-      if (existingPlaylist.coverImage !== dynamicImagePath) {
+      if (existingPlaylist.coverImage !== processedImage.dynamicPath) {
         this.fileService.deleteFile(existingPlaylist.coverImage);
       }
     }

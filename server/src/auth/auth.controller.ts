@@ -16,8 +16,13 @@ export class AuthController {
     return this.authService.login(user);
   }
 
+  @Post('refresh')
+  refreshToken(@Body('refreshToken') refreshToken: string): Promise<{ accessToken: string }> {
+    return this.authService.refreshAccessToken(refreshToken);
+  }
+
   @Post('register')
-  async register(@Body() createUserDto: CreateUserDto) {
+  register(@Body() createUserDto: CreateUserDto) {
     return this.authService.register(createUserDto);
   }
 }

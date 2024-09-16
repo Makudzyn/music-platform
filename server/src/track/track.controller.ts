@@ -16,7 +16,7 @@ export class TrackController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles("ADMIN")
-  @Post()
+  @Post('/upload')
   @UseInterceptors(FileFieldsInterceptor([
     {name: 'thumbnail', maxCount: 1},
     {name: 'audio', maxCount: 1}

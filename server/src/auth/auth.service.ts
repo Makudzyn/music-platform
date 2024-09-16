@@ -24,9 +24,30 @@ export class AuthService {
   async login(user: any) {
     const { username, _id, role } = user._doc;
     const payload = { username, sub: _id, role };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+
+    // Генерация access-токена с коротким сроком действия
+    const accessToken = this.jwtService.sign(payload, { expiresIn: '15m' });
+
+    // Генерация refresh-токена с более долгим сроком действия
+    const refreshToken = this.jwtService.sign(payload, { expiresIn: '7d' });
+
+    return {accessToken, refreshToken};
+  }
+
+  async refreshAccessToken(refreshToken: string): Promise<{accessToken: string}> {
+    try {
+      const payload = this.jwtService.verify(refreshToken); // Верификация refresh-токена
+
+      // Генерация нового access-токена
+      const accessToken = this.jwtService.sign(
+        { sub: payload.sub, role: payload.role },
+        { expiresIn: '15m' }
+      );
+
+      return { accessToken };
+    } catch (error) {
+      throw new UnauthorizedException('Invalid refresh token');
+    }
   }
 
   async register(createUserDto: CreateUserDto): Promise<User> {
