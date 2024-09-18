@@ -1,15 +1,14 @@
 'use client';
 
 import Image from "next/image";
-import { Container, IconButton } from "@mui/material";
 import { Track } from "@/app/lib/defenitions";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { nextTrack, pause, play, setCurrentTrack } from "@/app/features/player/playerSlice";
-import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
-import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import { useAppSelector } from "@/app/lib/hooks";
 import { formatTime } from "@/app/lib/utils";
+import { Pause, Play } from "lucide-react";
+
 
 interface TrackItemProps {
   track: Track;
@@ -34,12 +33,7 @@ export default function TrackItem({track, index}: TrackItemProps) {
   }
 
   return (
-    <Container sx={{
-      display: "flex",
-      justifyContent: "space-between",
-      width: "100%",
-      padding: "6px 10px",
-    }}>
+    <div className="flex justify-between w-full py-1.5 px-2.5">
       <Link href={`tracks/${track._id}`} className="flex items-center w-4/5">
         <div className="min-w-6 h-full flex items-center justify-center mx-1">{index+1}</div>
         <div className={"min-w-80 flex items-center justify-start mx-1"}>
@@ -60,16 +54,16 @@ export default function TrackItem({track, index}: TrackItemProps) {
         </div>
       </Link>
       <div className={"min-w-28 items-center mx-1"}>
-        <IconButton
+        <div
           onClick={() => handleTrackChange(track)}
-          sx={{marginX: 1, width: 40, height: 40}}
+          className={"mx-0.5 size-10"}
         >
-          {isActive && !paused ? <PauseRoundedIcon/> : <PlayArrowRoundedIcon/>}
-        </IconButton>
+          {isActive && !paused ? <Pause/> : <Play/>}
+        </div>
       </div>
       <div className="flex items-center justify-center w-28 mx-1">
         {isActive ? `${formatTime(currentPosition)} / ${formatTime(track.duration)}` : formatTime(track.duration)}
       </div>
-    </Container>
+    </div>
   );
 };

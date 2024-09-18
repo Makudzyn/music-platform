@@ -1,6 +1,5 @@
 'use client';
 
-import { Box, Grid } from "@mui/material";
 import React from "react";
 import TrackItem from "@/app/features/tracks/TrackItem";
 import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
@@ -25,14 +24,14 @@ export default function TrackList() {
     return <div>Loading...</div>;
   }
   return (
-    <Grid container direction="column">
-      <Box py={1}>
+    <div className={"container flex-col"}>
+      <div className={"py-0.5"}>
         {tracks.map((track, index) =>
           <React.Fragment key={track._id}>
             <TrackItem track={track} index={index}/>
           </React.Fragment>
         )}
-      </Box>
-    </Grid>
+      </div>
+    </div>
   );
 };

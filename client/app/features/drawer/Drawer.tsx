@@ -69,7 +69,6 @@ const menuItems = [
 ];
 
 export default function MiniDrawer() {
-  const theme = useTheme();
   const [open, setOpen] = useState(false);
 
 
@@ -79,7 +78,6 @@ export default function MiniDrawer() {
 
   return (
     <Box sx={{display: 'flex'}}>
-      <CssBaseline/>
       <Appbar open={open} setOpen={setOpen} drawerWidth={drawerWidth}/>
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>

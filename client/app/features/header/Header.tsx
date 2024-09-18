@@ -48,7 +48,7 @@ interface HeaderProps extends MuiAppBarProps {
 }
 
 // Main Header component
-const Header = React.memo(({ open, setOpen, drawerWidth }: HeaderProps) => {
+const Header = ({ open, setOpen, drawerWidth }: HeaderProps) => {
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -73,6 +73,6 @@ const Header = React.memo(({ open, setOpen, drawerWidth }: HeaderProps) => {
       </Toolbar>
     </Appbar>
   );
-});
+};
 
 export default Header;

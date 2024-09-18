@@ -1,8 +1,10 @@
 import "./globals.css";
 import { inter } from '@/app/features/fonts';
 import { ReactNode } from "react";
-import ClientProviders from "@/app/features/ClientProviders";
 import { Metadata } from "next";
+import DrawerSh from "@/app/features/drawer/DrawerSh";
+import Player from "@/app/features/player/Player";
+import StoreProvider from "@/app/StoreProvider";
 
 export const metadata: Metadata = {
   title: {
@@ -16,11 +18,14 @@ export default function RootLayout({children}: {children: ReactNode}) {
   return (
     <html lang="en">
     <body className={`${inter.className} antialiasing`}>
-    <ClientProviders>
-      <main className={"p-6 rounded-sm min-h-full ml-10"}>
-        {children}
-      </main>
-    </ClientProviders>
+    <StoreProvider>
+      {/*<DrawerSh/>*/}
+
+      {children}
+
+      {/*<Player/>*/}
+
+    </StoreProvider>
     </body>
     </html>
   );

@@ -1,24 +1,13 @@
 'use client';
 
-import { Box, Breadcrumbs, Button, Container, Grid, Typography } from "@mui/material";
 import Link from "next/link";
 import { useState } from "react";
 import TrackInfoForm from "@/app/features/upload/TrackInfoForm";
 import UploadFilesForm from "@/app/features/upload/UploadFilesForm";
 import { uploadTrack } from "@/app/services/tracksService";
-import styled from "@emotion/styled";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import { Button } from "@/components/ui/button";
 
-const StyledContainer = styled(Container)(({ theme }) => ({
-  height: "600px",
-  maxWidth: "960px",
-  margin: "0 auto",
-}));
-
-const NavigationBox = styled(Box)(({ theme }) => ({
-  display: "flex",
-  justifyContent: "space-between",
-  marginTop: "16px",
-}));
 
 export default function Page() {
   const [activeStep, setActiveStep] = useState(0);
@@ -28,7 +17,8 @@ export default function Page() {
 
   const nextStep = () => setActiveStep(prev => Math.min(prev + 1, 2));
   const prevStep = () => setActiveStep(prev => Math.max(prev - 1, 0));
-  console.log("Active Step in Page:", activeStep);
+
+
   const handleSubmit = async () => {
     const formData = new FormData();
     formData.append('artist', trackInfo.artist);
@@ -54,23 +44,33 @@ export default function Page() {
   };
 
   return (
-    <StyledContainer>
-      <Breadcrumbs aria-label="breadcrumb" style={{ marginBottom: "10px" }}>
-        <Link href="/">Home</Link>
-        <Link href="/tracks">Tracks</Link>
-        <Typography color="text.primary">Add track</Typography>
-      </Breadcrumbs>
-      <Grid container direction="column" justifyContent="space-between" style={{ height: "100%" }}>
+    <div className={"h-[600px] max-w-[960px] my-0 mx-auto"}>
+      <Breadcrumb aria-label="breadcrumb" className={"mb-2.5"}>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Home</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/tracks">Tracks</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Upload track</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      <div className={"container flex-col justify-between h-full"}>
         {renderStepContent(activeStep)}
-      </Grid>
-      <NavigationBox>
+      </div>
+      <div className={"flex justify-between mt-4"}>
         <Button disabled={activeStep === 0} onClick={prevStep}>Prev step</Button>
         {activeStep === 2 ? (
           <Button onClick={handleSubmit}>Submit</Button>
         ) : (
           <Button onClick={nextStep}>Next step</Button>
         )}
-      </NavigationBox>
-    </StyledContainer>
+      </div>
+    </div>
   );
 }

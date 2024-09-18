@@ -9,30 +9,19 @@ interface LayoutProps {
 }
 
 export default function Layout({activeStep, children}: LayoutProps) {
-  console.log("Active step", activeStep);
-  return (
-    <Container maxWidth="lg" sx={{height: "100%"}}>
-      <Stepper activeStep={activeStep}>
-        {steps.map((step, i) => (
-          <Step key={i} completed={activeStep > i}>
-            <StepLabel>{step}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
-      <Container
-        maxWidth="lg"
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          margin: "60px 5px",
-          padding: "10px 5px",
-          height: "100%",
-          width: "100%"
-        }}>
 
+  return (
+    <div className={"max-w-screen-lg h-full"}>
+      {/*<Stepper activeStep={activeStep}>*/}
+      {/*  {steps.map((step, i) => (*/}
+      {/*    <Step key={i} completed={activeStep > i}>*/}
+      {/*      <StepLabel>{step}</StepLabel>*/}
+      {/*    </Step>*/}
+      {/*  ))}*/}
+      {/*</Stepper>*/}
+      <div className={"max-w-screen-lg flex items-center justify-center my-14 mx-1.5 py-2.5 px-1.5 h-full w-full"}>
         {children}
-      </Container>
-    </Container>
+      </div>
+    </div>
   );
 };

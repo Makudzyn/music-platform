@@ -1,14 +1,8 @@
 'use client';
 
-import SkipPreviousRoundedIcon from '@mui/icons-material/SkipPreviousRounded';
-import SkipNextRoundedIcon from "@mui/icons-material/SkipNextRounded";
-import PauseRoundedIcon from '@mui/icons-material/PauseRounded';
-import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
-import RepeatRoundedIcon from '@mui/icons-material/RepeatRounded';
-import RepeatOneRoundedIcon from '@mui/icons-material/RepeatOneRounded';
-import ShuffleRoundedIcon from '@mui/icons-material/ShuffleRounded';
 import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
 import { nextTrack, pause, play, previousTrack, setRepeatMode, toggleShuffle } from "@/app/features/player/playerSlice";
+import { Pause, Play, Repeat, Repeat1, Shuffle, SkipBack, SkipForward } from "lucide-react";
 
 export default function PlayerControls() {
   const dispatch = useAppDispatch();
@@ -46,13 +40,13 @@ export default function PlayerControls() {
           className="cursor-pointer pe-1.5 transition-all duration-300 hover:scale-110 hover:text-white"
           onClick={handleShuffleToggle}
         >
-          <ShuffleRoundedIcon sx={{width: 28, height: 28, color: shuffle ? "green" : "inherit"}}/>
+          <Shuffle className={"size-7"} /> {/*TODO color: shuffle ? "green" : "inherit"}} */}
         </div>
         <div
           className="cursor-pointer transition-all duration-300 hover:scale-110 hover:text-white"
           onClick={goToPreviousTrack}
         >
-          <SkipPreviousRoundedIcon sx={{width: 32, height: 32}}/>
+          <SkipBack sx={{width: 32, height: 32}}/>
         </div>
       </div>
       <div className="flex justify-center items-center">
@@ -61,8 +55,8 @@ export default function PlayerControls() {
           className="bg-white rounded-full cursor-pointer transition-all duration-300 hover:scale-110 hover:bg-gray-100"
         >
           {paused ?
-            <PlayArrowRoundedIcon sx={{width: 32, height: 32, color: "black"}} /> :
-            <PauseRoundedIcon sx={{width: 32, height: 32, color: "black"}} />
+            <Play className={"size-8 text-black"} /> :
+            <Pause className={"size-8 text-black"} />
           }
         </div>
       </div>
@@ -71,17 +65,15 @@ export default function PlayerControls() {
           className="cursor-pointer transition-all duration-300 hover:scale-110 hover:text-white"
           onClick={goToNextTrack}
         >
-          <SkipNextRoundedIcon sx={{width: 32, height: 32}}/>
+          <SkipForward className={"size-8"}/>
         </div>
         <div
           className="cursor-pointer ps-1.5 transition-all duration-300 hover:scale-110 hover:text-white"
           onClick={handleRepeatToggle}
         >
-          {repeatMode === "none" && <RepeatRoundedIcon sx={{width: 28, height: 28}}/>}
-          {repeatMode === "all" &&
-            <RepeatRoundedIcon sx={{width: 28, height: 28, color: repeatMode === "all" ? "green" : "inherit"}}/>}
-          {repeatMode === "one" &&
-            <RepeatOneRoundedIcon sx={{width: 28, height: 28, color: repeatMode === "one" ? "green" : "inherit"}}/>}
+          {repeatMode === "none" && <Repeat className={"size-7"}/>}
+          {repeatMode === "all" && <Repeat className={"size-7"}/> }{/*TODO color: repeatMode === "all" ? "green" : "inherit"}}/>*/}
+          {repeatMode === "one" && <Repeat1 className={"size-7"}/> }{/*TODO color: repeatMode === "one" ? "green" : "inherit"}}/>*/}
         </div>
       </div>
     </div>
