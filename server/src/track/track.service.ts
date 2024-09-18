@@ -19,6 +19,7 @@ export class TrackService {
     const processedImage = await this.fileService.processImage(thumbnail, FileType.THUMBNAIL)
     const processedAudio = await this.fileService.processAudio(audio);
 
+    console.log(processedAudio.metadata)
     const trackData = {
       ...trackDto,
       listens: 0,
@@ -26,7 +27,7 @@ export class TrackService {
       audio: processedAudio.dynamicPath,
       duration: processedAudio.metadata.duration,
       bitrate: processedAudio.metadata.bitrate,
-      format: processedAudio.metadata.format_name,
+      format: processedAudio.metadata.format,
     };
     return this.trackModel.create(trackData);
   }
@@ -62,7 +63,7 @@ export class TrackService {
       audio: processedAudio.dynamicPath || existingTrack.audio,
       duration: processedAudio.metadata.duration || existingTrack.duration,
       bitrate: processedAudio.metadata.bitrate || existingTrack.bitrate,
-      format: processedAudio.metadata.format_name || existingTrack.format,
+      format: processedAudio.metadata.format || existingTrack.format,
     };
 
     const updatedTrack = await this.trackModel.findByIdAndUpdate(trackId, updatedTrackData, {new: true});
@@ -90,17 +91,23 @@ export class TrackService {
       throw new NotFoundException(`Track with ID ${trackId} not found`);
     }
 
-    const processedImage = await this.fileService.processImage(thumbnail, FileType.THUMBNAIL)
-    const processedAudio = await this.fileService.processAudio(audio);
+    let processedImage;
+    if (thumbnail) {
+      processedImage = await this.fileService.processImage(thumbnail, FileType.THUMBNAIL)
+    }
+    let processedAudio;
+    if (audio) {
+      processedAudio = await this.fileService.processAudio(audio);
+    }
 
 
     const patchedTrackData = {
       ...patchTrackDto,
-      thumbnail: processedImage.dynamicPath || existingTrack.thumbnail,
-      audio: processedAudio.dynamicPath || existingTrack.audio,
-      duration: processedAudio.metadata.duration || existingTrack.duration,
-      bitrate: processedAudio.metadata.bitrate || existingTrack.bitrate,
-      format: processedAudio.metadata.format_name || existingTrack.format,
+      thumbnail: processedImage ? processedImage.dynamicPath : existingTrack.thumbnail,
+      audio: processedAudio ? processedAudio.dynamicPath : existingTrack.audio,
+      duration: processedAudio ? processedAudio.metadata.duration : existingTrack.duration,
+      bitrate: processedAudio ? processedAudio.metadata.bitrate : existingTrack.bitrate,
+      format: processedAudio ? processedAudio.metadata.format : existingTrack.format,
     };
 
     const patchedTrack = await this.trackModel.findByIdAndUpdate(trackId, {$set: patchedTrackData}, {new: true});
@@ -162,21 +169,18 @@ export class TrackService {
       await this.fileService.deleteFile(track.thumbnail);
     }));
 
-    await this.trackModel.deleteMany({_id: {$in: tracksIds}})
-    .exec();
+    await this.trackModel.deleteMany({_id: {$in: tracksIds}}).exec();
   }
 
   async deleteAllTracks(): Promise<void> {
-    const tracks = await this.trackModel.find()
-    .exec();
+    const tracks = await this.trackModel.find().exec();
 
     await Promise.all(tracks.map(async track => {
       await this.fileService.deleteFile(track.audio);
       await this.fileService.deleteFile(track.thumbnail);
     }));
 
-    await this.trackModel.deleteMany({})
-    .exec();
+    await this.trackModel.deleteMany({}).exec();
   }
 
 }
