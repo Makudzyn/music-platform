@@ -1,13 +1,14 @@
 'use client';
 
-import { Box, Breadcrumbs, Button, Card, Container, Grid, TextField, Typography } from "@mui/material";
-import Link from "next/link";
 import Image from "next/image";
 import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
 import { useEffect } from "react";
 import { loadTrackById } from "@/app/features/tracks/trackSlice";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage } from "@/components/ui/breadcrumb";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
 
-export default function Page({ params }: { params: { id: string } }) {
+export default function Page({params}: {params: {id: string}}) {
   const dispatch = useAppDispatch();
   const id = params.id;
   const {tracks, loading} = useAppSelector((state) => state.tracks);
@@ -18,29 +19,35 @@ export default function Page({ params }: { params: { id: string } }) {
     console.log(tracks)
   }, [dispatch, id]);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <Container maxWidth="lg">
-      <Breadcrumbs aria-label="breadcrumb" sx={{marginBottom: "10px"}}>
-        <Link
-          underline="hover"
-          color="inherit"
-          href="/"
-        >
-          Home
-        </Link>
-        <Link
-          underline="hover"
-          color="inherit"
-          href="/tracks"
-        >
-          Tracks
-        </Link>
-        <Typography color="text.primary">Selected track</Typography>
-      </Breadcrumbs>
-      <Card>
-        <Box>
+    <div className={"container max-w-screen-lg"}>
+      <Breadcrumb aria-label="breadcrumb" className={"mb-2.5"}>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink
+              color="inherit"
+              href="/"
+            >
+              Home
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbItem>
+            <BreadcrumbLink
+              color="inherit"
+              href="/tracks"
+            >
+              Tracks
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbPage>Selected track</BreadcrumbPage>
+        </BreadcrumbList>
+      </Breadcrumb>
+      <div>
+        <div>
           <Image
             src={`http://localhost:5000/${track.thumbnail}`}
             alt={"Song thumbnail"}
@@ -52,20 +59,20 @@ export default function Page({ params }: { params: { id: string } }) {
             <div>title: {track.title}</div>
             <div>Listens: {track.listens}</div>
           </div>
-        </Box>
-        <Box>
-          <Typography variant="h4">Lyrics</Typography>
-          <Box>{track.lyrics}</Box>
-        </Box>
-      </Card>
-      <Grid container className="mt-5">
-        <Typography variant="h5">
+        </div>
+        <div>
+          <h4 >Lyrics</h4>
+          <div>{track.lyrics}</div>
+        </div>
+      </div>
+      <div className={"container mt-5"}>
+        <h5>
           Share you opinion about this song
-        </Typography>
-        <TextField label="Your name" fullWidth variant="outlined"/>
-        <TextField label="Your comment..." fullWidth multiline variant="outlined" rows={4}/>
-        <Button variant="contained" color="primary" sx={{mt: 1}}>Submit</Button>
-      </Grid>
+        </h5>
+        <Textarea placeholder="Your name" className={"w-full "}/>
+        <Textarea placeholder="Your comment..." className={"w-full "}/>
+        <Button>Submit</Button>
+      </div>
       <div>
         {track.comments.map(comment =>
           <div key={comment._id}>
@@ -74,6 +81,6 @@ export default function Page({ params }: { params: { id: string } }) {
           </div>
         )}
       </div>
-    </Container>
+    </div>
   );
 };

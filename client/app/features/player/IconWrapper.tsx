@@ -1,4 +1,3 @@
-import { IconButton } from "@mui/material";
 import { ReactNode } from "react";
 
 interface IconWrapperProps {
@@ -8,17 +7,11 @@ interface IconWrapperProps {
 
 export default function IconWrapper({children, onClick}: IconWrapperProps) {
   return (
-    <IconButton
-      sx={{
-        width: 24,
-        height: 24,
-        color: '#b3b3b3',
-        transition: 'transform 0.3s',
-        '&:hover': {transform: 'scale(1.1)', color: 'white'}
-      }}
+    <div
+      className={"size-6 text-gray-400 transition-all hover:scale-110 hover:text-white"}
       onClick={onClick}
     >
       {children}
-    </IconButton>
+    </div>
   );
 };

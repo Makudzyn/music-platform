@@ -93,19 +93,19 @@ export default function Player() {
     }
   }, [volume]);
 
-  if (!currentTrack) return null;
+  // if (!currentTrack) return null;
 
   return (
-    <div className="min-w-[38.5rem] w-full fixed bottom-0 flex flex-row items-center justify-between py-2.5 bg-black gap-2 z-[1400]">
+    <div className="min-w-[38.5rem] w-full h-[4.5rem] flex flex-row items-center justify-between py-2.5 bg-yellow-500/70 gap-2 z-50">
       <div className="min-w-40 flex items-center ps-2 w-[30%]">
         <SongInfo currentTrack={currentTrack}/>
       </div>
       <div className="flex flex-col justify-between items-center w-[40%] max-w-[45.125rem]">
         <PlayerControls />
-        <TimeSlider audioRef={audioRef} />
+        {/*<TimeSlider audioRef={audioRef} />*/}
       </div>
       <div className="flex flex-row justify-end w-[30%] min-w-40 pe-2">
-        <VolumeSlider />
+        {/*<VolumeSlider />*/}
       </div>
     </div>
   );

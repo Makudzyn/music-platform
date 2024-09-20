@@ -1,19 +1,25 @@
 export type Track = {
   _id: string;
-  title: string;
   artist: string;
+  title: string;
   lyrics: string;
   listens: number;
   thumbnail: string;
   audio: string;
   duration: number;
+  bitrate: string;
+  format: string;
   comments: Comment[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export type Comment = {
   _id: string;
   username: string;
   text: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export type RepeatMode = "none" | "all" | "one";

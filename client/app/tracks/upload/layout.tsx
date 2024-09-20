@@ -1,4 +1,3 @@
-import { Container, Step, StepLabel, Stepper } from "@mui/material";
 import { ReactNode, useEffect } from "react";
 
 const steps = ["Track info", "Upload thumbnail", "Upload audio"];
