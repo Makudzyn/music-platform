@@ -3,6 +3,8 @@
 import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
 import { nextTrack, pause, play, previousTrack, setRepeatMode, toggleShuffle } from "@/app/features/player/playerSlice";
 import { Pause, Play, Repeat, Repeat1, Shuffle, SkipBack, SkipForward } from "lucide-react";
+import { cn } from "@/lib/utils";
+import PlayerButton from "@/app/features/player/PlayerButton";
 
 export default function PlayerControls() {
   const dispatch = useAppDispatch();
@@ -34,47 +36,37 @@ export default function PlayerControls() {
     dispatch(toggleShuffle())
   }
   return (
-    <div className="w-full h-8 gap-4 mb-2 flex flex-row justify-between items-center">
-      <div className="w-full gap-2 flex justify-end items-center text-sub-gray">
-        <div
-          className="cursor-pointer pe-1.5 transition-all duration-300 hover:scale-110 hover:text-white"
+    <div className="mb-2 flex h-8 w-full flex-row items-center justify-between gap-4 text-white">
+      <div className="flex w-full items-center justify-end gap-2">
+        <PlayerButton
           onClick={handleShuffleToggle}
-        >
-          <Shuffle className={"size-7"} /> {/*TODO color: shuffle ? "green" : "inherit"}} */}
-        </div>
-        <div
-          className="cursor-pointer transition-all duration-300 hover:scale-110 hover:text-white"
-          onClick={goToPreviousTrack}
-        >
-          <SkipBack sx={{width: 32, height: 32}}/>
-        </div>
+          icon={<Shuffle/>}
+          className={shuffle ? "text-accent" : "text-foreground"}
+        />
+        <PlayerButton onClick={goToPreviousTrack} icon={<SkipBack/>}/>
       </div>
-      <div className="flex justify-center items-center">
+      <div className="flex items-center justify-center">
         <div
           onClick={handlePlayPause}
-          className="bg-white rounded-full cursor-pointer transition-all duration-300 hover:scale-110 hover:bg-gray-100"
+          className="cursor-pointer rounded-full bg-white p-1 shadow-sm transition-all duration-300 shadow-foreground hover:scale-110 hover:shadow-accent hover:shadow"
         >
           {paused ?
-            <Play className={"size-8 text-black"} /> :
-            <Pause className={"size-8 text-black"} />
+            <Play className={"size-6 pl-0.5 fill-foreground text-foreground"}/> :
+            <Pause className={"size-6 fill-foreground text-foreground"}/>
           }
         </div>
       </div>
-      <div className="w-full gap-2 flex justify-start items-center text-sub-gray">
-        <div
-          className="cursor-pointer transition-all duration-300 hover:scale-110 hover:text-white"
-          onClick={goToNextTrack}
-        >
-          <SkipForward className={"size-8"}/>
-        </div>
-        <div
-          className="cursor-pointer ps-1.5 transition-all duration-300 hover:scale-110 hover:text-white"
+      <div className="flex w-full items-center justify-start gap-2">
+        <PlayerButton onClick={goToNextTrack} icon={<SkipForward/>}/>
+        <PlayerButton
           onClick={handleRepeatToggle}
-        >
-          {repeatMode === "none" && <Repeat className={"size-7"}/>}
-          {repeatMode === "all" && <Repeat className={"size-7"}/> }{/*TODO color: repeatMode === "all" ? "green" : "inherit"}}/>*/}
-          {repeatMode === "one" && <Repeat1 className={"size-7"}/> }{/*TODO color: repeatMode === "one" ? "green" : "inherit"}}/>*/}
-        </div>
+          icon={
+            repeatMode === "none"
+              ? <Repeat/>
+              : repeatMode === "all" ? <Repeat/> : <Repeat1/>
+          }
+          className={repeatMode !== "none" ? "text-accent" : "text-foreground"}
+        />
       </div>
     </div>
   );

@@ -24,8 +24,8 @@ export default function TrackList() {
     return <div>Loading...</div>;
   }
   return (
-    <div className={"container flex-col"}>
-      <div className={"py-0.5"}>
+    <div className="container flex-col">
+      <div className="py-0.5">
         {tracks.map((track, index) =>
           <React.Fragment key={track._id}>
             <TrackItem track={track} index={index}/>

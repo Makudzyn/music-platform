@@ -9,17 +9,17 @@ export default function GridWrapper({children}: {children: ReactNode}) {
   const [isExpanded, setIsExpanded] = useState(false)
   const toggleDrawer = () => setIsExpanded(!isExpanded)
   return (
-    <div className="h-screen grid grid-rows-[4rem_1fr_4.5rem] grid-cols-6 gap-0">
-      <div className={"col-span-6 row-start-1"}>
+    <div className="grid h-screen grid-cols-6 gap-0 grid-rows-[4rem_1fr_4.5rem]">
+      <div className="col-span-6 row-start-1">
         <Header isExpanded={isExpanded} toggleDrawer={toggleDrawer}/>
       </div>
-      <aside className={"col-span-1 row-start-2 overflow-y-auto"}>
+      <aside className="col-span-1 row-start-2 overflow-y-auto">
         <SidePanel isExpanded={isExpanded}/>
       </aside>
-      <main className={"col-start-2 col-end-7 row-start-2 overflow-auto"}>
+      <main className="col-start-2 col-end-6 row-start-2 overflow-auto">
         {children}
       </main>
-      <div className={"col-span-6 row-start-3"}>
+      <div className="col-span-6 row-start-3">
         <Player/>
       </div>
     </div>
