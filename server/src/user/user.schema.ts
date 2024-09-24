@@ -7,14 +7,25 @@ export type UserDocument = HydratedDocument<User>;
 export class User {
   @Prop()
   username: string;
+
   @Prop()
   email: string;
+
   @Prop()
   role: string;
+
   @Prop()
   passwordHash: string;
+
   @Prop()
   profilePicture: string;
+
+  @Prop()
+  isVerified: boolean;
+
+  @Prop()
+  verificationToken: string;
+
   @Prop({type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Playlist'}]})
   playlists: mongoose.Types.ObjectId[];
 }

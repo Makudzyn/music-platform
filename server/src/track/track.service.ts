@@ -19,7 +19,6 @@ export class TrackService {
     const processedImage = await this.fileService.processImage(thumbnail, FileType.THUMBNAIL)
     const processedAudio = await this.fileService.processAudio(audio);
 
-    console.log(processedAudio.metadata)
     const trackData = {
       ...trackDto,
       listens: 0,
