@@ -2,13 +2,24 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Track, TracksState } from "@/app/lib/defenitions";
 import { fetchTrackById, fetchTracks } from "@/app/services/tracksService";
 
-export const loadTracks = createAsyncThunk<Track[], void>('tracks/loadTracks', async() => {
-  return fetchTracks();
-});
+interface FetchTracksParams {
+  limit?: string;
+  offset?: string;
+}
 
-export const loadTrackById = createAsyncThunk<Track, string>('tracks/loadTrackById', async(id: string) => {
-  return await fetchTrackById(id);
-});
+export const loadTracks = createAsyncThunk<Track[], FetchTracksParams>(
+  'tracks/loadTracks',
+  async({limit, offset}: FetchTracksParams) => {
+    return fetchTracks(limit, offset);
+  }
+);
+
+export const loadTrackById = createAsyncThunk<Track, string>(
+  'tracks/loadTrackById',
+  async(id: string) => {
+    return await fetchTrackById(id);
+  }
+);
 
 const initialState: TracksState = {
   tracks: [],

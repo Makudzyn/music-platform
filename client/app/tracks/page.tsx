@@ -1,31 +1,24 @@
-import Link from "next/link";
 import TrackList from "@/app/features/tracks/TrackList";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
-import { Clock, Upload } from "lucide-react";
+import { ChevronRight, Clock, Upload } from "lucide-react";
+import Breadcrumbs from "@/app/features/breadcrumbs/Breadcrumbs";
+import Link from "next/link";
 
 export default function Page() {
   return (
-    <div className={"max-w-screen-lg"}>
-      <Breadcrumb aria-label="breadcrumb">
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/">Home</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator/>
-          <BreadcrumbItem>
-            <BreadcrumbPage>Tracks</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
-      <div>
+    <div className="max-w-screen-lg">
+      <Breadcrumbs
+        items={[
+          {title: "Home", href: "/"},
+          {title: "Track list"}
+        ]}
+      />
+      <div className="">
         <div className={"flex justify-between w-full py-1.5 mb-0.5"}>
-          <h2>Track list</h2>
-          <div>
-            <Link href="/tracks/upload">
-              <Upload className={"size-6 text-green-500"}/>
-            </Link>
-          </div>
+          <Link href={"#"} className="flex flex-row items-center">
+            <h2>All uploaded songs</h2>
+            <ChevronRight/>
+          </Link>
         </div>
         <div className={"flex flex-col w-full"}>
           <div className={"flex flex-nowrap flex-row py-1 mb-1"}>

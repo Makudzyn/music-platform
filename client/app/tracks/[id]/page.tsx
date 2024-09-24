@@ -7,6 +7,7 @@ import { loadTrackById } from "@/app/features/tracks/trackSlice";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage } from "@/components/ui/breadcrumb";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import Breadcrumbs from "@/app/features/breadcrumbs/Breadcrumbs";
 
 export default function Page({params}: {params: {id: string}}) {
   const dispatch = useAppDispatch();
@@ -25,27 +26,13 @@ export default function Page({params}: {params: {id: string}}) {
 
   return (
     <div className={"container max-w-screen-lg"}>
-      <Breadcrumb aria-label="breadcrumb" className={"mb-2.5"}>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink
-              color="inherit"
-              href="/"
-            >
-              Home
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbItem>
-            <BreadcrumbLink
-              color="inherit"
-              href="/tracks"
-            >
-              Tracks
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbPage>Selected track</BreadcrumbPage>
-        </BreadcrumbList>
-      </Breadcrumb>
+      <Breadcrumbs
+        items={[
+          {title: "Home", href: "/"},
+          {title: "Track list", href: "/tracks"},
+          {title: "Current track"}
+        ]}
+      />
       <div>
         <div>
           <Image

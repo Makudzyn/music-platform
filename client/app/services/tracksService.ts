@@ -1,8 +1,10 @@
 import axios from "axios";
 import { Track } from "@/app/lib/defenitions";
 
-export const fetchTracks = async(): Promise<Track[]> => {
-  const response = await axios.get('http://localhost:5000/tracks');
+export const fetchTracks = async(limit?: string, offset?: string): Promise<Track[]> => {
+  const response = await axios.get(
+    `http://localhost:5000/tracks/?limit=${limit}&offset=${offset}`
+  );
   return response.data;
 };
 
