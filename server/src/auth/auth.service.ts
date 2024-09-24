@@ -1,15 +1,17 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserService } from "../user/user.service";
 import * as bcrypt from 'bcrypt';
 import { JwtService } from "@nestjs/jwt";
 import { User } from "../user/user.schema";
 import { CreateUserDto } from "../user/create-user.dto";
+import { MailService } from "./mail/mail.service";
 
 @Injectable()
 export class AuthService {
   constructor(
     private userService: UserService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private mailService: MailService,
     ) {}
 
   async validateUser(email: string, password: string): Promise<Omit<User, "passwordHash"> | null> {
@@ -52,6 +54,26 @@ export class AuthService {
 
   async register(createUserDto: CreateUserDto): Promise<User> {
     const passwordHash = await bcrypt.hash(createUserDto.password, 5);
-    return this.userService.createUser(createUserDto, passwordHash);
+    const newUser = await this.userService.createUser(createUserDto, passwordHash);
+
+    // Отправляем письмо для подтверждения email
+    await this.mailService.sendEmailConfirmation(newUser.email, newUser.verificationToken);
+
+    return newUser;
   }
+
+  async confirmEmail(token: string): Promise<User> {
+    const user = await this.userService.findByEmailToken(token);
+    console.log(user)
+    if (!user) {
+      throw new BadRequestException('Invalid or expired token');
+    }
+
+    // Обновляем статус пользователя
+    user.isVerified = true;
+    user.verificationToken = null;
+
+    return this.userService.updateEmailConfirmation(user);
+  }
+
 }

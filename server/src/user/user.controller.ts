@@ -4,6 +4,7 @@ import { User } from "./user.schema";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import { RolesGuard } from "../auth/guards/roles.guard";
 import { Roles } from "../auth/roles.decorator";
+import mongoose from "mongoose";
 
 @Controller('user')
 export class UserController {
@@ -24,7 +25,7 @@ export class UserController {
 
 
   @Get(':id')
-  getUserById(@Param('id') id: string) {
+  getUserById(@Param('id') id: mongoose.Types.ObjectId) {
     return this.userService.findById(id);
   }
 
@@ -32,7 +33,7 @@ export class UserController {
   @Roles('ADMIN')
   @Patch(':id')
   updateUser(
-    @Param('id') id: string,
+    @Param('id') id: mongoose.Types.ObjectId,
     @Body() updateData: Partial<User>
   ) {
     return this.userService.updateUser(id, updateData);
@@ -41,7 +42,7 @@ export class UserController {
   @UseGuards(RolesGuard)
   @Roles('ADMIN')
   @Delete(':id')
-  deleteUser(@Param('id') id: string) {
+  deleteUser(@Param('id') id: mongoose.Types.ObjectId) {
     return this.userService.deleteUser(id);
   }
 }
