@@ -94,7 +94,7 @@ export default function Player() {
 
 
   return (
-    <div className="z-50 flex w-full flex-row items-center justify-between gap-2 bg-background min-w-[38.5rem] h-[4.5rem] py-2.5 border-t border-accent">
+    <div className="z-50 flex w-full flex-row items-center justify-between gap-2 bg-background min-w-[38.5rem] h-[4.5rem] py-2.5 border-t border-border">
       <div className="flex items-center min-w-40 ps-2 w-[30%]">
         <SongInfo currentTrack={currentTrack}/>
       </div>

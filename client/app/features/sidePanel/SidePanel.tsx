@@ -17,11 +17,11 @@ export default function SidePanel({isExpanded}: SidePanelProps) {
   return (
     <div
       className={cn(
-        "h-full bg-background box-border border-r border-yellow-500 transition-all duration-300 ease-in-out flex flex-col z-40 ",
+        "h-full bg-background box-border border-r border-border transition-all duration-300 flex flex-col z-40",
         isExpanded ? "w-64" : "w-16"
       )}
     >
-      <nav className={"flex-1 overflow-y-auto py-4"}>
+      <nav className="flex-1 py-3 transition-all duration-300">
         {sidePanelItems.map((item) => (
           <Fragment key={item.href}>
             <SidePanelItem item={item} isExpanded={isExpanded}/>

@@ -14,18 +14,17 @@ interface SidePanelItemProps {
 
 export default function SidePanelItem({item, isExpanded}: SidePanelItemProps) {
   return (
-    <Button variant="ghost" className={cn(
-      "flex items-center my-2 py-2 px-3 rounded-sm text-base font-medium transition-all w-full",
-      "hover:bg-accent hover:text-accent-foreground",
-      isExpanded ? "justify-start" : "justify-center"
-    )}>
-      <Link href={item.href} className={"flex items-center justify-center transition-all"}>
+    <Link href={item.href} className="my-1 flex items-center justify-center rounded-sm transition-all p-1.5 h-[63px] hover:bg-accent group ">
+      <Button variant="ghost" className={cn(
+        "flex items-center text-base font-medium w-full group-hover:text-background",
+        isExpanded ? "justify-start" : "justify-center"
+      )}>
         <span className={cn(isExpanded ? "mr-4" : "mx-auto")}>
           {item.icon}
         </span>
         {isExpanded && <span>{item.label}</span>}
-      </Link>
+      </Button>
       <span className="sr-only">{item.label}</span>
-    </Button>
+    </Link>
   )
 }
