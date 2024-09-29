@@ -1,9 +1,9 @@
 'use client';
 
 import { MutableRefObject } from "react";
-import { setCurrentPosition } from "@/app/features/player/playerSlice";
-import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
-import { formatTime } from "@/app/lib/utils";
+import { setCurrentPosition } from "@/lib/reducers/playerSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { formatTime } from "@/lib/utils";
 import * as Slider from '@radix-ui/react-slider';
 
 interface TimeSliderProps {

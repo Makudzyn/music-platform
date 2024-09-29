@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Track, TracksState } from "@/app/lib/defenitions";
+import { Track, TracksState } from "@/lib/defenitions";
 import { fetchTrackById, fetchTracks } from "@/app/services/tracksService";
 
 interface FetchTracksParams {

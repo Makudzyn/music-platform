@@ -1,10 +1,9 @@
 'use client';
 
 import Image from "next/image";
-import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { useEffect } from "react";
-import { loadTrackById } from "@/app/features/tracks/trackSlice";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage } from "@/components/ui/breadcrumb";
+import { loadTrackById } from "@/lib/reducers/trackSlice";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import Breadcrumbs from "@/app/features/breadcrumbs/Breadcrumbs";

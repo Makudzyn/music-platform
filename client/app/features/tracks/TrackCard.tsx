@@ -1,10 +1,10 @@
 'use client';
 
 import { Card, CardContent } from "@/components/ui/card";
-import { Track } from "@/app/lib/defenitions";
+import { Track } from "@/lib/defenitions";
 import { useDispatch } from "react-redux";
-import { useAppSelector } from "@/app/lib/hooks";
-import { pause, play, setCurrentTrack } from "@/app/features/player/playerSlice";
+import { useAppSelector } from "@/lib/hooks";
+import { pause, play, setCurrentTrack } from "@/lib/reducers/playerSlice";
 import Image from "next/image";
 import { Pause, Play } from "lucide-react";
 

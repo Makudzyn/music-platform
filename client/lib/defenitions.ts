@@ -41,3 +41,9 @@ export type TracksState = {
   loading: boolean;
   error: string | null;
 }
+
+export type DecodedToken = {
+  role: string;
+  sub: string;
+  exp: number;
+}

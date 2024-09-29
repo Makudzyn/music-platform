@@ -1,8 +1,8 @@
 import { Input } from "@/components/ui/input";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Menu, Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import CookieLogo from "@/app/features/logo/CookieLogo";
+import CurrentIcon from "@/app/features/header/CurrentIcon";
 
 interface HeaderProps {
   isExpanded: boolean;
@@ -32,10 +32,7 @@ export default function Header({isExpanded, toggleDrawer}: HeaderProps) {
           </div>
         </div>
 
-        <Avatar>
-          <AvatarImage src="https://github.com/makudzyn.png" alt="User"/>
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
+        <CurrentIcon/>
       </div>
     </header>
   );

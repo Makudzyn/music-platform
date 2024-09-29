@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Track } from "@/app/lib/defenitions";
+import { Track } from "@/lib/defenitions";
 
 interface SongInfoProps {
   currentTrack: Track | null;

@@ -1,12 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit'
-import playerReducer from "@/app/features/player/playerSlice";
-import trackReducer from "@/app/features/tracks/trackSlice";
+import playerReducer from "@/lib/reducers/playerSlice";
+import trackReducer from "@/lib/reducers/trackSlice";
+import authReducer from "@/lib/reducers/authSlice";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       player: playerReducer,
-      tracks: trackReducer
+      tracks: trackReducer,
+      auth: authReducer,
     }
   })
 }

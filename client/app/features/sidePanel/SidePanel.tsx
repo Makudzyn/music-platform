@@ -1,12 +1,12 @@
 import { Fragment } from "react"
-import { Home, Music, Album, Menu, X } from "lucide-react"
+import { Home, Music, Album } from "lucide-react"
 import SidePanelItem from "@/app/features/sidePanel/SidePanelItem";
 import { cn } from "@/lib/utils";
 
 const sidePanelItems = [
   {icon: <Home className="size-6"/>, label: 'Main page', href: "/"},
   {icon: <Music className="size-6"/>, label: 'Track list', href: "/tracks"},
-  {icon: <Album className="size-6"/>, label: 'Album list', href: "/albums"}
+  {icon: <Album className="size-6"/>, label: 'Album list', href: "/albums"},
 ];
 
 interface SidePanelProps {

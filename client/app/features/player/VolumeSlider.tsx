@@ -1,7 +1,7 @@
 'use client';
 
-import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
-import { setVolume } from "@/app/features/player/playerSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { setVolume } from "@/lib/reducers/playerSlice";
 import * as Slider from '@radix-ui/react-slider';
 import { ListMusic, Volume1, Volume2, VolumeOff } from "lucide-react";
 import PlayerButton from "@/app/features/player/PlayerButton";

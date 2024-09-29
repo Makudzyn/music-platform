@@ -1,11 +1,9 @@
 'use client';
 
-import Link from "next/link";
 import { useState } from "react";
 import TrackInfoForm from "@/app/features/upload/TrackInfoForm";
 import UploadFilesForm from "@/app/features/upload/UploadFilesForm";
 import { uploadTrack } from "@/app/services/tracksService";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import Breadcrumbs from "@/app/features/breadcrumbs/Breadcrumbs";
 
@@ -40,7 +38,7 @@ export default function Page() {
       case 2:
         return <UploadFilesForm formTitle="Upload audio" accept="audio/*" setFile={setAudio} />;
       default:
-        return <Typography>Unknown step</Typography>;
+        return <div>Unknown step</div>;
     }
   };
 

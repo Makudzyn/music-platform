@@ -1,12 +1,12 @@
 'use client';
 
 import Image from "next/image";
-import { Track } from "@/app/lib/defenitions";
+import { Track } from "@/lib/defenitions";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
-import { nextTrack, pause, play, setCurrentTrack } from "@/app/features/player/playerSlice";
-import { useAppSelector } from "@/app/lib/hooks";
-import { formatTime } from "@/app/lib/utils";
+import { nextTrack, pause, play, setCurrentTrack } from "@/lib/reducers/playerSlice";
+import { useAppSelector } from "@/lib/hooks";
+import { formatTime } from "@/lib/utils";
 import { Pause, Play } from "lucide-react";
 
 

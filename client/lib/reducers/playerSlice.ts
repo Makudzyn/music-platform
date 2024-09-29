@@ -1,6 +1,6 @@
-import { PlayerState, RepeatMode, Track } from "@/app/lib/defenitions";
+import { PlayerState, RepeatMode, Track } from "@/lib/defenitions";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { shuffleArray } from "@/app/lib/utils";
+import { shuffleArray } from "@/lib/utils";
 
 const initialState: PlayerState = {
   currentTrack: null,

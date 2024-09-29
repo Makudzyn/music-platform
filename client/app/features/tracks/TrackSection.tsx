@@ -1,9 +1,9 @@
 'use client';
 
-import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { Fragment, useEffect } from "react";
-import { loadTracks } from "@/app/features/tracks/trackSlice";
-import { setQueue } from "@/app/features/player/playerSlice";
+import { loadTracks } from "@/lib/reducers/trackSlice";
+import { setQueue } from "@/lib/reducers/playerSlice";
 import TrackCard from "@/app/features/tracks/TrackCard";
 
 export default function TrackSection() {

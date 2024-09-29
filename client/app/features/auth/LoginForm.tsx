@@ -1,14 +1,13 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
-import { setCookie } from 'cookies-next';
 import { useState } from 'react';
-import { authenticate } from "@/app/services/authService";
+import { useAuthenticate } from "@/app/services/authService";
 import { AtSign, Key } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 interface LoginFormInputs {
   email: string;
@@ -17,21 +16,17 @@ interface LoginFormInputs {
 
 export default function LoginForm() {
   const {register, handleSubmit, formState: {errors}} = useForm<LoginFormInputs>();
-  const router = useRouter();
   const [loginError, setLoginError] = useState<string | null>(null);
+  const router = useRouter();
+  const { login } = useAuthenticate();
 
   const onSubmit = async(data: LoginFormInputs) => {
     try {
-      const response = await authenticate(data);
+      await login(data);
 
-      // Установка access и refresh токенов в куки
-      setCookie('accessToken', response.accessToken);
-      setCookie('refreshToken', response.refreshToken);
-
-      // Перенаправляем на домашнюю страницу или другую защищённую страницу
       router.push('/');
-    } catch (error: any) {
-      setLoginError(error.response?.data?.message || 'Authorization error');
+    } catch (error) {
+      setLoginError(error.message || 'Authorization error');
     }
   };
 

@@ -1,5 +1,9 @@
 import axios from 'axios';
-import { getCookie, setCookie } from 'cookies-next'; // cookies-next для работы с куки
+import { getCookie, setCookie } from 'cookies-next';
+import { jwtDecode } from "jwt-decode";
+import { DecodedToken } from "@/lib/defenitions";
+import { useDispatch } from "react-redux";
+import { updateRole } from "@/lib/reducers/authSlice"; // cookies-next для работы с куки
 
 // Создание экземпляра axios
 const axiosClient = axios.create({
@@ -60,7 +64,7 @@ axiosClient.interceptors.response.use(
 
       if (!refreshToken) {
         // Если нет refresh-токена, редиректим на страницу логина
-        window.location.href = '/auth/auth';
+        window.location.href = '/auth/login';
         return Promise.reject(error);
       }
 
@@ -73,6 +77,11 @@ axiosClient.interceptors.response.use(
         // Обновляем куки с новым access-токеном
         setCookie('accessToken', accessToken);
 
+        // Обновляем роль пользователя, если нужно
+        const dispatch = useDispatch();
+        const decoded: DecodedToken = jwtDecode(accessToken);
+        dispatch(updateRole(decoded.role));
+
         // Повторяем исходный запрос с новым токеном
         originalRequest.headers.Authorization = `Bearer ${accessToken}`;
 
@@ -82,7 +91,7 @@ axiosClient.interceptors.response.use(
       } catch (refreshError) {
         processQueue(refreshError, null);
         // Если обновление токена не удалось, редиректим на страницу логина
-        window.location.href = '/auth/auth';
+        window.location.href = '/auth/login';
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;
