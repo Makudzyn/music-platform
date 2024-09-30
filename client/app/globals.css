@@ -65,3 +65,24 @@
   }
 }
 
+@layer utilities {
+  /* Стили для скролл-бара */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: hsl(217 12% 59%);
+    border-radius: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: hsl(40.6 96.1% 40.4%);
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background-color: hsl(35 98% 85%);
+  }
+}
+
+

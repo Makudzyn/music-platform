@@ -141,7 +141,7 @@ export class TrackService {
     return this.trackModel.find({
       $or: [
         { title: { $regex: new RegExp(query, 'i') } },  // поиск по названию трека
-        { artist: { $regex: new RegExp(query, 'i') } }  // поиск по исполнителю
+        { artist: { $regex: new RegExp(query, 'i') } },  // поиск по исполнителю
       ]
     })
     .populate('album', 'title')

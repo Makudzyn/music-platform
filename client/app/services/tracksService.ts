@@ -27,3 +27,15 @@ export const uploadTrack = async(formData: Object): Promise<void> => {
     console.error('Error uploading track:', error);
   }
 }
+
+export const searchTracks = async (query: string) => {
+  try {
+    const response = await axiosClient.get(`/tracks/search`, {
+      params: { query }
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Search error:", error);
+    throw error;
+  }
+};
