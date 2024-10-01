@@ -13,7 +13,8 @@ const ffprobe = promisify(ffmpeg.ffprobe);
 export enum FileType {
   AUDIO = 'audio',
   THUMBNAIL = 'thumbnail',
-  COVER_IMAGE = 'cover'
+  COVER_IMAGE = 'cover',
+  ARTIST_IMAGE = 'artist',
 }
 
 interface ProcessedFile {
@@ -82,7 +83,7 @@ export class FileService {
 
   async processImage(
     file: Express.Multer.File,
-    type: FileType.COVER_IMAGE | FileType.THUMBNAIL,
+    type: FileType.COVER_IMAGE | FileType.THUMBNAIL | FileType.ARTIST_IMAGE,
     options: {
       width?: number,
       height?: number,

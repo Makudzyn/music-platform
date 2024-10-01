@@ -1,32 +1,50 @@
-import { HttpException, HttpStatus, Injectable, NotFoundException } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable, NotAcceptableException, NotFoundException } from "@nestjs/common";
 import { Track, TrackDocument } from "./schemas/track.schema";
 import { Comment, CommentDocument } from "./schemas/comment.schema";
 import mongoose, { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
-import { PatchTrackDto, TrackDto, UpdateTrackDto } from "./dto/track.dto";
+import { PatchTrackDto } from "./dto/patch-track.dto";
 import { CreateCommentDto } from "./dto/create-comment.dto";
 import { FileService, FileType } from "../file/file.service";
+import { Artist, ArtistDocument } from "../artist/artist.schema";
+import { CreateTrackDto } from "./dto/create-track.dto";
+import { UpdateTrackDto } from "./dto/update-track.dto";
+import { Playlist, PlaylistDocument } from "../playlist/playlist.schema";
 
 @Injectable()
 export class TrackService {
   constructor(
     @InjectModel(Track.name) private trackModel: Model<TrackDocument>,
     @InjectModel(Comment.name) private commentModel: Model<CommentDocument>,
+    @InjectModel(Artist.name) private artistModel: Model<ArtistDocument>,
+    @InjectModel(Playlist.name) private playlistModel: Model<PlaylistDocument>,
     private fileService: FileService
   ) {}
 
-  async uploadTrack(trackDto: TrackDto, thumbnail, audio): Promise<Track> {
+  async uploadTrack(createTrackDto: CreateTrackDto, thumbnail: Express.Multer.File, audio: Express.Multer.File): Promise<Track> {
+    const artist = await this.artistModel.findById(createTrackDto.artist);
+    if (!artist) {
+      throw new NotFoundException(`Artist with ID ${createTrackDto.artist} not found`);
+    }
+
+    const album = await this.playlistModel.findById(createTrackDto.album).exec();
+    if (!album) {
+      throw new NotFoundException(`Playlist with ID ${createTrackDto.album} not found`);
+    } else if (album.type !== 'album') {
+      throw new NotAcceptableException(`Playlist must be type of album, but it's not. Id: ${createTrackDto.album}`);
+    }
+
     const processedImage = await this.fileService.processImage(thumbnail, FileType.THUMBNAIL)
     const processedAudio = await this.fileService.processAudio(audio);
 
     const trackData = {
-      ...trackDto,
+      ...createTrackDto,
       listens: 0,
       thumbnail: processedImage.dynamicPath,
       audio: processedAudio.dynamicPath,
       duration: processedAudio.metadata.duration,
       bitrate: processedAudio.metadata.bitrate,
-      format: processedAudio.metadata.format,
+      format: processedAudio.metadata.format
     };
     return this.trackModel.create(trackData);
   }
@@ -34,12 +52,15 @@ export class TrackService {
   async getAllTracks(offset: number, limit: number): Promise<Track[]> {
     return this.trackModel.find()
     .skip(offset)
-    .limit(limit);
+    .limit(limit)
+    .populate('artist')
+    .exec();
   }
 
   async getOneTrack(trackId: mongoose.Types.ObjectId): Promise<Track> {
     return this.trackModel.findById(trackId)
-    .populate('comments');
+    .populate(['comments', 'artist'])
+    .exec();
   }
 
   async updateTrack(
@@ -49,8 +70,21 @@ export class TrackService {
     audio: Express.Multer.File
   ): Promise<Track> {
     const existingTrack = await this.trackModel.findById(trackId).exec();
+
     if (!existingTrack) {
       throw new NotFoundException(`Track with ID ${trackId} not found`);
+    }
+
+    const artist = await this.artistModel.findById(updateTrackDto.artist);
+    if (!artist) {
+      throw new NotFoundException(`Artist with ID ${updateTrackDto.artist} not found`);
+    }
+
+    const album = await this.playlistModel.findById(updateTrackDto.album).exec();
+    if (!album) {
+      throw new NotFoundException(`Playlist with ID ${updateTrackDto.album} not found`);
+    } else if (album.type !== 'album') {
+      throw new NotAcceptableException(`Playlist must be type of album, but it's not. Id: ${updateTrackDto.album}`);
     }
 
     const processedImage = await this.fileService.processImage(thumbnail, FileType.THUMBNAIL)
@@ -62,10 +96,13 @@ export class TrackService {
       audio: processedAudio.dynamicPath || existingTrack.audio,
       duration: processedAudio.metadata.duration || existingTrack.duration,
       bitrate: processedAudio.metadata.bitrate || existingTrack.bitrate,
-      format: processedAudio.metadata.format || existingTrack.format,
+      format: processedAudio.metadata.format || existingTrack.format
     };
 
-    const updatedTrack = await this.trackModel.findByIdAndUpdate(trackId, updatedTrackData, {new: true});
+    const updatedTrack = await this.trackModel
+    .findByIdAndUpdate(trackId, updatedTrackData, {new: true})
+    .populate('artist');
+
     if (!updatedTrack) {
       throw new NotFoundException(`Track with ID ${trackId} not found`);
     }
@@ -81,13 +118,31 @@ export class TrackService {
   }
 
   async patchTrack(
-    trackId: mongoose.Types.ObjectId, patchTrackDto: PatchTrackDto,
+    trackId: mongoose.Types.ObjectId,
+    patchTrackDto: PatchTrackDto,
     thumbnail?: Express.Multer.File | undefined,
     audio?: Express.Multer.File | undefined
   ): Promise<Track> {
     const existingTrack = await this.trackModel.findById(trackId).exec();
+
     if (!existingTrack) {
       throw new NotFoundException(`Track with ID ${trackId} not found`);
+    }
+
+    if (patchTrackDto.artist) {
+      const artist = await this.artistModel.findById(patchTrackDto.artist);
+      if (!artist) {
+        throw new NotFoundException(`Artist with ID ${patchTrackDto.artist} not found`);
+      }
+    }
+
+    if (patchTrackDto.album) {
+      const album = await this.playlistModel.findById(patchTrackDto.album).exec();
+      if (!album) {
+        throw new NotFoundException(`Album with ID ${patchTrackDto.album} not found`);
+      } else if (album.type !== 'album') {
+        throw new NotAcceptableException(`Playlist must be type of album, but it's not. Id: ${patchTrackDto.album}`);
+      }
     }
 
     let processedImage;
@@ -99,14 +154,13 @@ export class TrackService {
       processedAudio = await this.fileService.processAudio(audio);
     }
 
-
     const patchedTrackData = {
       ...patchTrackDto,
       thumbnail: processedImage ? processedImage.dynamicPath : existingTrack.thumbnail,
       audio: processedAudio ? processedAudio.dynamicPath : existingTrack.audio,
       duration: processedAudio ? processedAudio.metadata.duration : existingTrack.duration,
       bitrate: processedAudio ? processedAudio.metadata.bitrate : existingTrack.bitrate,
-      format: processedAudio ? processedAudio.metadata.format : existingTrack.format,
+      format: processedAudio ? processedAudio.metadata.format : existingTrack.format
     };
 
     const patchedTrack = await this.trackModel.findByIdAndUpdate(trackId, {$set: patchedTrackData}, {new: true});
@@ -123,6 +177,7 @@ export class TrackService {
 
   async createComment(dto: CreateCommentDto): Promise<Comment> {
     const track = await this.trackModel.findById(dto.trackId).exec();
+
     if (!track) {throw new Error('Track not found')}
     const comment = await this.commentModel.create({...dto});
     track.comments.push(comment._id);
@@ -131,7 +186,8 @@ export class TrackService {
   }
 
   async listen(trackId: mongoose.Types.ObjectId): Promise<void> {
-    const track= await this.trackModel.findById(trackId).exec();
+    const track = await this.trackModel.findById(trackId).exec();
+
     if (!track) {throw new Error('Track not found')}
     track.listens += 1;
     await track.save();
@@ -140,16 +196,18 @@ export class TrackService {
   async search(query: string): Promise<Track[]> {
     return this.trackModel.find({
       $or: [
-        { title: { $regex: new RegExp(query, 'i') } },  // поиск по названию трека
-        { artist: { $regex: new RegExp(query, 'i') } },  // поиск по исполнителю
+        {title: {$regex: new RegExp(query, 'i')}},  // поиск по названию трека
+        {artist: {$regex: new RegExp(query, 'i')}}, // поиск по исполнителю
+        {album: {$regex: new RegExp(query, 'i')}}  // поиск по альбому
       ]
     })
-    .populate('album', 'title')
+    .populate('album', 'title') //TODO
     .exec();
   }
 
   async deleteTrack(trackId: mongoose.Types.ObjectId): Promise<Track> {
     const track = await this.trackModel.findById(trackId).exec();
+
     if (!track) {
       throw new HttpException('Track not found', HttpStatus.NOT_FOUND);
     }

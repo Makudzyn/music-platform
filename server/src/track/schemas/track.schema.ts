@@ -6,8 +6,8 @@ export type TrackDocument = HydratedDocument<Track>;
 
 @Schema({timestamps: true})
 export class Track {
-  @Prop()
-  artist: string;
+  @Prop({type: mongoose.Schema.Types.ObjectId, ref: 'Artist'})
+  artist: mongoose.Types.ObjectId;
   @Prop()
   title: string;
   @Prop()

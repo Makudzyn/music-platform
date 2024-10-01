@@ -2,13 +2,15 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query, Uploaded
 import { TrackService } from "./track.service";
 import { Track } from "./schemas/track.schema";
 import { Comment } from "./schemas/comment.schema";
-import { TrackDto, UpdateTrackDto, PatchTrackDto } from "./dto/track.dto";
+import { PatchTrackDto } from "./dto/patch-track.dto";
 import mongoose from "mongoose";
 import { CreateCommentDto } from "./dto/create-comment.dto";
 import { FileFieldsInterceptor, FileInterceptor } from "@nestjs/platform-express";
 import { RolesGuard } from "../auth/guards/roles.guard";
 import { Roles } from "../auth/roles.decorator";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
+import { CreateTrackDto } from "./dto/create-track.dto";
+import { UpdateTrackDto } from "./dto/update-track.dto";
 
 @Controller('/tracks')
 export class TrackController {
@@ -21,7 +23,7 @@ export class TrackController {
     {name: 'thumbnail', maxCount: 1},
     {name: 'audio', maxCount: 1}
   ]))
-  uploadTrack(@UploadedFiles() files, @Body() createTrackDto: TrackDto): Promise<Track> {
+  uploadTrack(@UploadedFiles() files, @Body() createTrackDto: CreateTrackDto): Promise<Track> {
     const {thumbnail, audio} = files;
     if (!thumbnail || thumbnail.length === 0) {
       throw new Error('Thumbnail file is missing');
