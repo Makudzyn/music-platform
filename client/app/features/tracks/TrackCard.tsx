@@ -50,7 +50,7 @@ export default function TrackCard({track}: TrackCardProps) {
         </div>
         <div className="flex flex-col text-sm font-semibold leading-normal text-foreground pl-3 overflow-hidden">
           <div className="truncate">{track.title}</div>
-          <div className="text-xs text-secondary truncate">{track.artist}</div>
+          <div className="text-xs text-secondary truncate">{track.artist.name}</div>
         </div>
       </CardContent>
     </Card>

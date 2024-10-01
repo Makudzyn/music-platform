@@ -1,6 +1,7 @@
 export type Track = {
   _id: string;
-  artist: string;
+  artist: Artist;
+  album: Album;
   title: string;
   lyrics: string;
   listens: number;
@@ -10,6 +11,33 @@ export type Track = {
   bitrate: string;
   format: string;
   comments: Comment[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export type Artist = {
+  _id: string;
+  name: string;
+  aboutInfo: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export type Album = {
+  _id: string;
+  title: string;
+  description: string;
+  owner: User;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export type User = {
+  _id: string;
+  username: string;
+  email: string;
+  role: string;
+  isVerified: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
