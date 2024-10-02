@@ -40,3 +40,13 @@ export const useAuthenticate = () => {
 
   return { login };
 };
+
+export const registration = async (formData: Object) => {
+  try {
+    const response = await axiosClient.post(`/auth/register`, formData);
+    return response.data
+  } catch (error) {
+    console.error("Registration error:", error.response?.data?.message || error.message);
+    throw new Error(error.response?.data?.message || 'Error during registration');
+  }
+}
