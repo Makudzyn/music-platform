@@ -64,7 +64,7 @@ export class AuthService {
 
   async confirmEmail(token: string): Promise<User> {
     const user = await this.userService.findByEmailToken(token);
-    console.log(user)
+
     if (!user) {
       throw new BadRequestException('Invalid or expired token');
     }

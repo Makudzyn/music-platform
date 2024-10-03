@@ -14,7 +14,7 @@ export class MailService {
   });
 
   async sendEmailConfirmation(email: string, token: string) {
-    const confirmationUrl = `http://localhost:5000/auth/confirm-email?token=${token}`;
+    const confirmationUrl = `http://localhost:3000/auth/email-confirmation/${token}`;
 
     await this.transporter.sendMail({
       from: '"Cookie Music" <your-email@example.com>',

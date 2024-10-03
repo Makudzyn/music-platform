@@ -50,3 +50,12 @@ export const registration = async (formData: Object) => {
     throw new Error(error.response?.data?.message || 'Error during registration');
   }
 }
+
+export const emailConfirmation = async (token: string) => {
+  try {
+    return await axiosClient.get(`/auth/confirm-email?token=${token}`)
+  } catch (error) {
+    console.error("Email confirmation error:", error.response?.data?.message || error.message);
+    throw new Error(error.response?.data?.message || 'Error during email confirmation');
+  }
+}
