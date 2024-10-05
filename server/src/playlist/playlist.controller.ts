@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Req, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Req, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
 import { PlaylistService } from "./playlist.service";
 import { Playlist } from "./playlist.schema";
 import { CreatePlaylistDto } from "./dto/create-playlist.dto";
@@ -18,8 +18,17 @@ export class PlaylistController {
   constructor(private readonly playlistService: PlaylistService) {}
 
   @Get('/')
-  getAllPlaylists(): Promise<Playlist[]> {
-    return this.playlistService.getAllPlaylists();
+  getAllPlaylists(
+    @Query('limit') limit: number = 0,
+  ): Promise<Playlist[]> {
+    return this.playlistService.getAllPlaylists(limit);
+  }
+
+  @Get('/albums')
+  getAllAlbums(
+    @Query('limit') limit: number = 0,
+  ): Promise<Playlist[]> {
+    return this.playlistService.getAllAlbums(limit);
   }
 
   @Get('/:playlistId')

@@ -23,8 +23,20 @@ export class PlaylistService {
     return playlist;
   }
 
-  async getAllPlaylists(): Promise<Playlist[]> {
-    return this.playlistModel.find().exec();
+  async getAllPlaylists(limit: number): Promise<Playlist[]> {
+    return this.playlistModel
+    .find()
+    .limit(limit)
+    .populate('tracks', '_id artist title')
+    .exec();
+  }
+
+  async getAllAlbums(limit: number): Promise<Playlist[]> {
+    return this.playlistModel
+    .find({type: 'album'})
+    .limit(limit)
+    .populate('tracks', '_id artist title')
+    .exec()
   }
 
   async getPlaylistById(playlistId: mongoose.Types.ObjectId): Promise<Playlist> {
@@ -126,4 +138,6 @@ export class PlaylistService {
 
     return this.playlistModel.findByIdAndDelete(playlistId);
   }
+
+
 }

@@ -46,14 +46,21 @@ export class TrackService {
       bitrate: processedAudio.metadata.bitrate,
       format: processedAudio.metadata.format
     };
-    return this.trackModel.create(trackData);
+    const track = await this.trackModel.create(trackData);
+
+    // Обновляем Playlist, добавляя в него новый трек
+    album.tracks.push(track._id);
+    await album.save();
+
+    return track;
   }
 
   async getAllTracks(offset: number, limit: number): Promise<Track[]> {
     return this.trackModel.find()
     .skip(offset)
     .limit(limit)
-    .populate('artist')
+    .populate('artist', '_id name')
+    .populate('album', '_id title owner')
     .exec();
   }
 

@@ -28,7 +28,7 @@ export class AuthService {
     const payload = { username, sub: _id, role };
 
     // Генерация access-токена с коротким сроком действия
-    const accessToken = this.jwtService.sign(payload, { expiresIn: '15m' });
+    const accessToken = this.jwtService.sign(payload, { expiresIn: '1d' }); //Replace with 15m when done filling DB
 
     // Генерация refresh-токена с более долгим сроком действия
     const refreshToken = this.jwtService.sign(payload, { expiresIn: '7d' });
