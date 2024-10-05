@@ -1,7 +1,7 @@
 import axiosClient from "@/lib/axiosClient";
 import { Track } from "@/lib/defenitions";
 
-export const fetchTracks = async(limit?: string, offset?: string): Promise<Track[]> => {
+export const fetchTracks = async(limit?: number, offset?: number): Promise<Track[]> => {
   const response = await axiosClient.get(`/tracks/?limit=${limit}&offset=${offset}`);
   return response.data;
 };
@@ -22,16 +22,15 @@ export const updateTrackListens = async(id: string): Promise<void> => {
 export const uploadTrack = async(formData: Object): Promise<void> => {
   try {
     const response = await axiosClient.post('/tracks', formData);
-    console.log('Track uploaded successfully:', response.data);
   } catch (error) {
     console.error('Error uploading track:', error);
   }
 }
 
-export const searchTracks = async (query: string) => {
+export const searchTracks = async(query: string) => {
   try {
     const response = await axiosClient.get(`/tracks/search`, {
-      params: { query }
+      params: {query}
     });
     return response.data;
   } catch (error) {

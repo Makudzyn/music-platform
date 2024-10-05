@@ -1,6 +1,6 @@
 'use client';
 
-import React from "react";
+import { Fragment } from "react";
 import TrackItem from "@/app/features/tracks/TrackItem";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { useEffect } from "react";
@@ -27,9 +27,9 @@ export default function TrackList() {
     <div className="container flex-col">
       <div className="py-0.5">
         {tracks.map((track, index) =>
-          <React.Fragment key={track._id}>
+          <Fragment key={track._id}>
             <TrackItem track={track} index={index}/>
-          </React.Fragment>
+          </Fragment>
         )}
       </div>
     </div>

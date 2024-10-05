@@ -13,10 +13,10 @@ export default function GridWrapper({children}: {children: ReactNode}) {
       <div className="col-span-6 row-start-1">
         <Header isExpanded={isExpanded} toggleDrawer={toggleDrawer}/>
       </div>
-      <aside className="col-span-1 row-start-2 overflow-y-auto">
+      <aside className="col-span-1 row-start-2 overflow-hidden">
         <SidePanel isExpanded={isExpanded}/>
       </aside>
-      <main className="col-start-2 col-end-6 row-start-2 overflow-auto">
+      <main className="col-start-2 col-end-6 row-start-2 overflow-x-hidden">
         {children}
       </main>
       <div className="col-span-6 row-start-3">

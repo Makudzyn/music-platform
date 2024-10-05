@@ -29,7 +29,7 @@ export default function TrackCard({track}: TrackCardProps) {
     }
   }
   return (
-    <Card className="w-full">
+    <Card className="w-full max-w-80">
       <CardContent className="flex flex-row items-center p-2">
         <div
           onClick={() => handleTrackChange(track)}
@@ -42,7 +42,7 @@ export default function TrackCard({track}: TrackCardProps) {
           </div>
           <Image
             src={`http://localhost:5000/${track.thumbnail}`}
-            alt="Song thumbnail"
+            alt={`${track.title} song thumbnail`}
             className="rounded-sm object-cover transition-all duration-300 group-hover:brightness-75"
             width={56}
             height={56}

@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import playerReducer from "@/lib/reducers/playerSlice";
 import trackReducer from "@/lib/reducers/trackSlice";
 import authReducer from "@/lib/reducers/authSlice";
+import albumReducer from "@/lib/reducers/albumSlice";
 
 export const makeStore = () => {
   return configureStore({
@@ -9,6 +10,7 @@ export const makeStore = () => {
       player: playerReducer,
       tracks: trackReducer,
       auth: authReducer,
+      albums: albumReducer
     }
   })
 }

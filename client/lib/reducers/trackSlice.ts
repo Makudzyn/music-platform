@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Track, TracksState } from "@/lib/defenitions";
+import { RepeatMode, Track } from "@/lib/defenitions";
 import { fetchTrackById, fetchTracks } from "@/app/services/tracksService";
 
 interface FetchTracksParams {
-  limit?: string;
-  offset?: string;
+  limit?: number;
+  offset?: number;
 }
 
 export const loadTracks = createAsyncThunk<Track[], FetchTracksParams>(
@@ -20,6 +20,25 @@ export const loadTrackById = createAsyncThunk<Track, string>(
     return await fetchTrackById(id);
   }
 );
+
+type PlayerState = {
+  currentTrack: Track | null;
+  queue: Track[] | null;
+  qIndex: number;
+  shuffle: boolean;
+  volume: number;
+  totalDuration: number;
+  currentPosition: number;
+  paused: boolean;
+  repeatMode: RepeatMode;
+}
+
+
+type TracksState = {
+  tracks: Track[];
+  loading: boolean;
+  error: string | null;
+}
 
 const initialState: TracksState = {
   tracks: [],

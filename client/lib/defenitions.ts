@@ -18,6 +18,7 @@ export type Track = {
 export type Artist = {
   _id: string;
   name: string;
+  artistImage: string;
   aboutInfo: string;
   createdAt: Date;
   updatedAt: Date;
@@ -27,6 +28,7 @@ export type Album = {
   _id: string;
   title: string;
   description: string;
+  coverImage: string;
   owner: User;
   createdAt: Date;
   updatedAt: Date;
@@ -51,24 +53,6 @@ export type Comment = {
 }
 
 export type RepeatMode = "none" | "all" | "one";
-
-export type PlayerState = {
-  currentTrack: Track | null;
-  queue: Track[] | null;
-  qIndex: number;
-  shuffle: boolean;
-  volume: number;
-  totalDuration: number;
-  currentPosition: number;
-  paused: boolean;
-  repeatMode: RepeatMode;
-}
-
-export type TracksState = {
-  tracks: Track[];
-  loading: boolean;
-  error: string | null;
-}
 
 export type DecodedToken = {
   role: string;
