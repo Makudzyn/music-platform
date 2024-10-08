@@ -11,7 +11,7 @@ export default function AlbumCard({album}: AlbumCardProps) {
 
   return (
     <Card className="relative aspect-square w-full overflow-hidden group">
-      <Link href={`/album/${album._id}`} className="block size-full">
+      <Link href={`/album/${album._id}`} className="absolute size-full">
         <Image
           src={`http://localhost:5000/${album.coverImage}`}
           alt={`${album.title} album cover`}

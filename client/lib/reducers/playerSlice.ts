@@ -14,7 +14,6 @@ type PlayerState = {
   repeatMode: RepeatMode;
 }
 
-
 const initialState: PlayerState = {
   currentTrack: null,
   queue: [],

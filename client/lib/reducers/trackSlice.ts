@@ -21,19 +21,6 @@ export const loadTrackById = createAsyncThunk<Track, string>(
   }
 );
 
-type PlayerState = {
-  currentTrack: Track | null;
-  queue: Track[] | null;
-  qIndex: number;
-  shuffle: boolean;
-  volume: number;
-  totalDuration: number;
-  currentPosition: number;
-  paused: boolean;
-  repeatMode: RepeatMode;
-}
-
-
 type TracksState = {
   tracks: Track[];
   loading: boolean;

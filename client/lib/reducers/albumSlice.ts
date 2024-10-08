@@ -39,7 +39,7 @@ const albumSlice = createSlice<AlbumsState, {}>({
         if (typeof action.error.message === 'string') {
           state.error = action.error.message;
         } else {
-          state.error = 'Failed to load tracks';
+          state.error = 'Failed to load albums';
         }
       }
     })
