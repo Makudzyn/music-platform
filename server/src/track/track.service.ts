@@ -70,60 +70,6 @@ export class TrackService {
     .exec();
   }
 
-  async updateTrack(
-    trackId: mongoose.Types.ObjectId,
-    updateTrackDto: UpdateTrackDto,
-    thumbnail: Express.Multer.File,
-    audio: Express.Multer.File
-  ): Promise<Track> {
-    const existingTrack = await this.trackModel.findById(trackId).exec();
-
-    if (!existingTrack) {
-      throw new NotFoundException(`Track with ID ${trackId} not found`);
-    }
-
-    const artist = await this.artistModel.findById(updateTrackDto.artist);
-    if (!artist) {
-      throw new NotFoundException(`Artist with ID ${updateTrackDto.artist} not found`);
-    }
-
-    const album = await this.playlistModel.findById(updateTrackDto.album).exec();
-    if (!album) {
-      throw new NotFoundException(`Playlist with ID ${updateTrackDto.album} not found`);
-    } else if (album.type !== 'album') {
-      throw new NotAcceptableException(`Playlist must be type of album, but it's not. Id: ${updateTrackDto.album}`);
-    }
-
-    const processedImage = await this.fileService.processImage(thumbnail, FileType.THUMBNAIL)
-    const processedAudio = await this.fileService.processAudio(audio);
-
-    const updatedTrackData = {
-      ...updateTrackDto,
-      thumbnail: processedImage.dynamicPath || existingTrack.thumbnail,
-      audio: processedAudio.dynamicPath || existingTrack.audio,
-      duration: processedAudio.metadata.duration || existingTrack.duration,
-      bitrate: processedAudio.metadata.bitrate || existingTrack.bitrate,
-      format: processedAudio.metadata.format || existingTrack.format
-    };
-
-    const updatedTrack = await this.trackModel
-    .findByIdAndUpdate(trackId, updatedTrackData, {new: true})
-    .populate('artist');
-
-    if (!updatedTrack) {
-      throw new NotFoundException(`Track with ID ${trackId} not found`);
-    }
-
-    if (thumbnail && existingTrack.thumbnail) {
-      this.fileService.deleteFile(existingTrack.thumbnail);
-    }
-    if (audio && existingTrack.audio) {
-      this.fileService.deleteFile(existingTrack.audio);
-    }
-
-    return updatedTrack;
-  }
-
   async patchTrack(
     trackId: mongoose.Types.ObjectId,
     patchTrackDto: PatchTrackDto,
@@ -204,11 +150,12 @@ export class TrackService {
     return this.trackModel.find({
       $or: [
         {title: {$regex: new RegExp(query, 'i')}},  // поиск по названию трека
-        {artist: {$regex: new RegExp(query, 'i')}}, // поиск по исполнителю
-        {album: {$regex: new RegExp(query, 'i')}}  // поиск по альбому
+        // {artist: {$regex: new RegExp(query, 'i')}}, // поиск по исполнителю
+        // {album: {$regex: new RegExp(query, 'i')}}  // поиск по альбому
       ]
     })
-    .populate('album', 'title') //TODO
+    // .populate('artist')
+    // .populate('album')
     .exec();
   }
 

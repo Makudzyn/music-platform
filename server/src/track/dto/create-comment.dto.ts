@@ -2,8 +2,8 @@ import mongoose from "mongoose";
 import { IsMongoId, IsString } from "class-validator";
 
 export class CreateCommentDto {
-  @IsString()
-  readonly username: string;
+  @IsMongoId()
+  readonly userId: mongoose.Types.ObjectId;
 
   @IsString()
   readonly text: string;

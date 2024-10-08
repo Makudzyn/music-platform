@@ -4,14 +4,16 @@ import { Playlist, PlaylistDocument } from "./playlist.schema";
 import mongoose, { Model } from "mongoose";
 import { CreatePlaylistDto } from "./dto/create-playlist.dto";
 import { FileService, FileType } from "../file/file.service";
-import { EditHeaderDto } from "./dto/edit-header.dto";
+import { EditInfoDto } from "./dto/edit-info.dto";
 import { Track, TrackDocument } from "../track/schemas/track.schema";
+import { Artist, ArtistDocument } from "../artist/artist.schema";
 
 @Injectable()
 export class PlaylistService {
   constructor(
     @InjectModel(Playlist.name) private playlistModel: Model<PlaylistDocument>,
     @InjectModel(Track.name) private trackModel: Model<TrackDocument>,
+    @InjectModel(Artist.name) private artistModel: Model<ArtistDocument>,
     private fileService: FileService
   ) {}
 
@@ -27,7 +29,8 @@ export class PlaylistService {
     return this.playlistModel
     .find()
     .limit(limit)
-    .populate('tracks', '_id artist title')
+    .populate('tracks', '_id title')
+    .populate('owner', '_id username')
     .exec();
   }
 
@@ -35,7 +38,8 @@ export class PlaylistService {
     return this.playlistModel
     .find({type: 'album'})
     .limit(limit)
-    .populate('tracks', '_id artist title')
+    .populate('tracks', '_id title')
+    .populate('artist', '_id name')
     .exec()
   }
 
@@ -51,16 +55,24 @@ export class PlaylistService {
     return existingPlaylist.tracks;
   }
 
+  async createPlaylist(createPlaylistDto: CreatePlaylistDto, userId: mongoose.Types.ObjectId) {
+    const artist = await this.artistModel.findById(createPlaylistDto.artist).exec();
+    if (!artist) {
+      throw new NotFoundException(`Artist with ID ${createPlaylistDto.artist} not found`);
+    }
 
-  async createPlaylist(playlistDto: CreatePlaylistDto, userId: mongoose.Types.ObjectId) {
     const playlistData = {
-      ...playlistDto,
+      ...createPlaylistDto,
       owner: userId
     }
-    return this.playlistModel.create(playlistData);
+    const album = await this.playlistModel.create(playlistData);
+
+    artist.albums.push(album._id);
+    await artist.save()
+    return album;
   }
 
-  async editPlaylistHeader(playlistId: mongoose.Types.ObjectId, editHeaderDto: EditHeaderDto, coverImage: Express.Multer.File): Promise<Playlist> {
+  async editPlaylistInfo(playlistId: mongoose.Types.ObjectId, editInfoDto: EditInfoDto, coverImage: Express.Multer.File): Promise<Playlist> {
     const existingPlaylist = await this.findPlaylistById(playlistId);
 
     let processedImage;
@@ -69,9 +81,12 @@ export class PlaylistService {
     }
 
     const patchedPlaylistData = {
-      title: editHeaderDto.title || existingPlaylist.title,
-      description: editHeaderDto.description || existingPlaylist.description,
-      coverImage: processedImage.dynamicPath || existingPlaylist.coverImage,
+      title: editInfoDto.title || existingPlaylist.title,
+      artist: editInfoDto.artist || editInfoDto.artist,
+      description: editInfoDto.description || existingPlaylist.description,
+      type: editInfoDto.type || existingPlaylist.type,
+      releaseDate: editInfoDto.releaseDate || existingPlaylist.releaseDate,
+      coverImage: processedImage ? processedImage.dynamicPath : existingPlaylist.coverImage,
     }
 
     if (coverImage && existingPlaylist.coverImage) {
@@ -131,7 +146,7 @@ export class PlaylistService {
 
   async deletePlaylist(playlistId: mongoose.Types.ObjectId): Promise<Playlist> {
     const existingPlaylist = await this.findPlaylistById(playlistId)
-
+    //TODO delete from artist
     if (existingPlaylist.coverImage) {
       this.fileService.deleteFile(existingPlaylist.coverImage);
     }

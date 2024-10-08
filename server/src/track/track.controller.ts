@@ -76,22 +76,6 @@ export class TrackController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles("ADMIN")
-  @Put(':trackId')
-  @UseInterceptors(FileFieldsInterceptor([
-    {name: 'thumbnail', maxCount: 1},
-    {name: 'audio', maxCount: 1}
-  ]))
-  updateTrack(
-    @Param('trackId') trackId: mongoose.Types.ObjectId,
-    @UploadedFiles() files,
-    @Body() updateTrackDto: UpdateTrackDto
-  ): Promise<Track> {
-    const {thumbnail, audio} = files;
-    return this.trackService.updateTrack(trackId, updateTrackDto, thumbnail[0], audio[0]);
-  }
-
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles("ADMIN")
   @Patch(':trackId')
   @UseInterceptors(FileFieldsInterceptor([
     {name: 'thumbnail', maxCount: 1},

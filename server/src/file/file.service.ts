@@ -14,7 +14,7 @@ export enum FileType {
   AUDIO = 'audio',
   THUMBNAIL = 'thumbnail',
   COVER_IMAGE = 'cover',
-  ARTIST_IMAGE = 'artist',
+  ARTIST_IMAGE = 'artist-image',
 }
 
 interface ProcessedFile {

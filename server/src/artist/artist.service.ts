@@ -25,8 +25,12 @@ export class ArtistService {
     return this.artistModel.create({...createArtistDto});
   }
 
-  async getAllArtists(): Promise<Artist[]> {
-    return this.artistModel.find().exec();
+  async getAllArtists(limit: number): Promise<Artist[]> {
+    return this.artistModel
+    .find()
+    .limit(limit)
+    .populate('albums', '_id title')
+    .exec();
   }
 
   async getArtistById(artistId: mongoose.Types.ObjectId) {
@@ -43,7 +47,8 @@ export class ArtistService {
     const patchedArtistData = {
       name: updateArtistDto.name || existingArtist.name,
       aboutInfo: updateArtistDto.aboutInfo || existingArtist.aboutInfo,
-      artistImage: processedImage.dynamicPath || existingArtist.artistImage
+      albums: updateArtistDto.albums || existingArtist.albums,
+      artistImage: processedImage ? processedImage.dynamicPath : existingArtist.artistImage
     }
 
     if (artistImage && existingArtist.artistImage) {

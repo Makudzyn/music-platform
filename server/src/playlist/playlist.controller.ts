@@ -8,7 +8,7 @@ import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import { RolesGuard } from "../auth/guards/roles.guard";
 import { Roles } from "../auth/roles.decorator";
 import { RemoveTracksDto } from "./dto/remove-tracks.dto";
-import { EditHeaderDto } from "./dto/edit-header.dto";
+import { EditInfoDto } from "./dto/edit-info.dto";
 import { PlaylistOwnerGuard } from "./owner.guard";
 import { AddTrackDto } from "./dto/add-track.dto";
 import { EditTracksDto } from "./dto/edit-tracks.dto";
@@ -57,12 +57,12 @@ export class PlaylistController {
   @Roles('ADMIN', 'USER')
   @Patch('/edit-header/:playlistId')
   @UseInterceptors(FileInterceptor('coverImage'))
-  editPlaylistHeader(
+  editPlaylistInfo(
     @Param('playlistId') playlistId: mongoose.Types.ObjectId,
     @UploadedFile() coverImage: Express.Multer.File,
-    @Body() editHeaderDto: EditHeaderDto,
+    @Body() editInfoDto: EditInfoDto,
   ) {
-    return this.playlistService.editPlaylistHeader(playlistId, editHeaderDto, coverImage);
+    return this.playlistService.editPlaylistInfo(playlistId, editInfoDto, coverImage);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard, PlaylistOwnerGuard)

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, UploadedFile, Query } from '@nestjs/common';
 import { ArtistService } from './artist.service';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
@@ -7,6 +7,7 @@ import { RolesGuard } from "../auth/guards/roles.guard";
 import { Roles } from "../auth/roles.decorator";
 import { FileInterceptor } from "@nestjs/platform-express";
 import mongoose from "mongoose";
+import { Artist } from "./artist.schema";
 
 @Controller('artist')
 export class ArtistController {
@@ -20,9 +21,11 @@ export class ArtistController {
     return this.artistService.createArtist(createArtistDto);
   }
 
-  @Get()
-  getAllArtist() {
-    return this.artistService.getAllArtists();
+  @Get('/')
+  getAllArtist(
+    @Query('limit') limit: number = 0,
+  ): Promise<Artist[]> {
+    return this.artistService.getAllArtists(limit);
   }
 
   @Get('/:artistId')

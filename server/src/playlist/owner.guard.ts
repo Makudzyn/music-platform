@@ -5,7 +5,6 @@ import {
   ForbiddenException, NotFoundException
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { PlaylistService } from './playlist.service';
 import { InjectModel } from "@nestjs/mongoose";
 import { Playlist, PlaylistDocument } from "./playlist.schema";
 import { Model } from "mongoose";
