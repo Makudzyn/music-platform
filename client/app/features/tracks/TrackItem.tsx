@@ -6,9 +6,8 @@ import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { nextTrack, pause, play, setCurrentTrack } from "@/lib/reducers/playerSlice";
 import { useAppSelector } from "@/lib/hooks";
-import { formatTime } from "@/lib/utils";
+import { formatDate, formatTime } from "@/lib/utils";
 import { Pause, Play } from "lucide-react";
-
 
 interface TrackItemProps {
   track: Track;
@@ -33,36 +32,37 @@ export default function TrackItem({track, index}: TrackItemProps) {
   }
 
   return (
-    <div className="flex justify-between w-full py-1.5 px-2.5">
-      <Link href={`tracks/${track._id}`} className="flex items-center w-4/5">
-        <div className="min-w-6 h-full flex items-center justify-center mx-1">{index+1}</div>
-        <div className={"min-w-80 flex items-center justify-start mx-1"}>
-          <Image
-            src={`http://localhost:5000/${track.thumbnail}`}
-            alt="Song thumbnail"
-            className="mr-2 rounded-sm"
-            width={48}
-            height={48}
-          />
-          {track.title}
-        </div>
-        <div className={"min-w-72 h-full flex items-center mx-1"}>
-          {track.artist}
-        </div>
-        <div className={"min-w-48 h-full flex items-center mx-1"}>
-          Apr 5, 2024
-        </div>
-      </Link>
-      <div className={"min-w-28 items-center mx-1"}>
-        <div
-          onClick={() => handleTrackChange(track)}
-          className={"mx-0.5 size-10"}
-        >
-          {isActive && !paused ? <Pause/> : <Play/>}
-        </div>
+    <div className="col-span-full grid items-center rounded-sm py-1 transition-all grid-cols-subgrid hover:bg-primary/30">
+      <div className="flex items-center justify-center size-12">
+        {isActive ? (
+          <button onClick={() => handleTrackChange(track)} >
+            {paused ? <Play className="size-6 fill-foreground"/> : <Pause className="size-6 fill-foreground"/>}
+          </button>
+        ) : (
+          <span className="text-base text-muted-foreground">{index + 1}</span>
+        )}
       </div>
-      <div className="flex items-center justify-center w-28 mx-1">
-        {isActive ? `${formatTime(currentPosition)} / ${formatTime(track.duration)}` : formatTime(track.duration)}
+      <Link href={`tracks/${track._id}`} className="flex items-center group">
+        <Image
+          src={`http://localhost:5000/${track.thumbnail}`}
+          alt={`${track.title} song thumbnail`}
+          className="mr-3 rounded-sm"
+          width={48}
+          height={48}
+        />
+        <span className="font-medium decoration-foreground group-hover:underline">{track.title}</span>
+      </Link>
+      <Link href={`artists/${track.artist._id}`} className="group">
+        <span className="decoration-foreground group-hover:underline">{track.artist.name}</span>
+      </Link>
+      <Link href={`albums/${track.album._id}`} className="group">
+        <span className="decoration-foreground group-hover:underline">{track.album.title}</span>
+      </Link>
+      <div className="text-muted-foreground">
+        {formatDate(track.createdAt)}
+      </div>
+      <div className="text-muted-foreground">
+        {isActive ? formatTime(currentPosition) : formatTime(track.duration)}
       </div>
     </div>
   );

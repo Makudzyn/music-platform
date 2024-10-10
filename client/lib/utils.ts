@@ -12,6 +12,17 @@ export const formatTime = (timeInSeconds: number) => {
   return `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 };
 
+export function formatDate(createdAt: Date): string {
+  const date = new Date(createdAt);
+
+  const day = date.getDate();
+  const month = new Intl.DateTimeFormat('en', { month: 'short' }).format(date);
+  const year = date.getFullYear();
+
+  return `${day} ${month}, ${year}`;
+}
+
+
 export function shuffleArray(array: Track[]): Track[] {
   let shuffled = array.slice();
   for (let i = shuffled.length - 1; i > 0; i--) {

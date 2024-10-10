@@ -11,7 +11,7 @@ export default function Home() {
       <ScrollArea.Viewport className="size-full rounded-md">
         <div className="container flex flex-col max-w-screen-2xl px-4">
           <div className="container mx-auto px-4 pb-2">
-            <Link href={"#"} className="flex flex-row items-center w-full pt-1.5 pb-1 px-4 mt-2 mb-1">
+            <Link href="/tracks" className="flex flex-row items-center w-full pt-1.5 pb-1 px-4 mt-2 mb-1">
               <h2 className="font-bold text-foreground leading-6">All uploaded songs</h2>
               <ChevronRight/>
             </Link>

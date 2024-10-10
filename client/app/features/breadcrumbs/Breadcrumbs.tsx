@@ -14,7 +14,7 @@ interface BreadcrumbsProps {
 
 export default function Breadcrumbs({items, className}: BreadcrumbsProps) {
   return (
-    <Breadcrumb aria-label="breadcrumb" className={cn("mb-2.5", className)}>
+    <Breadcrumb aria-label="breadcrumb" className={cn("mb-2", className)}>
       {items.map((item, index) => (
         <BreadcrumbItem key={index}>
           {item.href ? (
