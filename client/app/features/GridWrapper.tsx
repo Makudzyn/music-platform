@@ -16,7 +16,7 @@ export default function GridWrapper({children}: {children: ReactNode}) {
       <aside className="col-span-1 row-start-2 overflow-hidden">
         <SidePanel isExpanded={isExpanded}/>
       </aside>
-      <main className="col-start-2 col-end-6 row-start-2 overflow-x-hidden">
+      <main className="col-start-2 col-end-6 row-start-2 overflow-auto">
         {children}
       </main>
       <div className="col-span-6 row-start-3">

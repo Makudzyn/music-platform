@@ -32,15 +32,24 @@ export default function TrackItem({track, index}: TrackItemProps) {
   }
 
   return (
-    <div className="col-span-full grid items-center rounded-sm py-1 transition-all grid-cols-subgrid hover:bg-primary/30">
-      <div className="flex items-center justify-center size-12">
-        {isActive ? (
-          <button onClick={() => handleTrackChange(track)} >
-            {paused ? <Play className="size-6 fill-foreground"/> : <Pause className="size-6 fill-foreground"/>}
-          </button>
-        ) : (
-          <span className="text-base text-muted-foreground">{index + 1}</span>
-        )}
+    <div
+      className="col-span-full grid items-center rounded-sm py-1 transition-all grid-cols-subgrid hover:bg-primary/30 group/buttons">
+      <div className="flex items-center justify-center size-12 relative">
+        {!isActive && <span
+          className="text-base text-muted-foreground group-hover/buttons:opacity-0 transition-opacity">
+          {index + 1}
+        </span>
+        }
+        <button
+          onClick={() => handleTrackChange(track)}
+          className={`absolute opacity-0 group-hover/buttons:opacity-100 transition-opacity ${isActive && !paused ? 'opacity-100' : ''}`}
+        >
+          {isActive && !paused ? (
+            <Pause className="size-6 fill-foreground"/>
+          ) : (
+            <Play className="size-6 fill-foreground"/>
+          )}
+        </button>
       </div>
       <Link href={`tracks/${track._id}`} className="flex items-center group">
         <Image
