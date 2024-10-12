@@ -1,16 +1,16 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Album } from "@/lib/defenitions";
+import { Playlist } from "@/lib/defenitions";
 import { fetchAlbums } from "@/app/services/albumService";
 
-export const loadAlbums = createAsyncThunk<Album[], number>(
+export const loadAlbums = createAsyncThunk<Playlist[], number>(
   'albums/loadAlbums',
-  async(limit: number) => {
+  async(limit?: number) => {
     return fetchAlbums(limit);
   }
 );
 
 type AlbumsState = {
-  albums: Album[];
+  albums: Playlist[];
   loading: boolean;
   error: string | null;
 }
@@ -29,7 +29,7 @@ const albumSlice = createSlice<AlbumsState, {}>({
     builder.addCase(loadAlbums.pending, (state) => {
       state.loading = true;
     })
-    .addCase(loadAlbums.fulfilled, (state, action: PayloadAction<Album[]>) => {
+    .addCase(loadAlbums.fulfilled, (state, action: PayloadAction<Playlist[]>) => {
       state.albums = action.payload;
       state.loading = false;
     })

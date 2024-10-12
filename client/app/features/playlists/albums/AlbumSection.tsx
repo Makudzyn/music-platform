@@ -3,7 +3,7 @@
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { Fragment, useEffect } from "react";
 import { loadAlbums } from "@/lib/reducers/albumSlice";
-import AlbumCard from "@/app/features/albums/AlbumCard";
+import AlbumCard from "@/app/features/playlists/albums/AlbumCard";
 import CarouselSection from "@/app/features/carousel/CarouselSection";
 
 export default function AlbumSection() {
@@ -17,7 +17,7 @@ export default function AlbumSection() {
 
   const renderAlbum = (album) => (
     <Fragment key={album._id}>
-      <AlbumCard album={album}/>
+      <AlbumCard playlist={album}/>
     </Fragment>
   );
 

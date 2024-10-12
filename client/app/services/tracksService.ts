@@ -7,8 +7,12 @@ export const fetchTracks = async(limit?: number, offset?: number): Promise<Track
 };
 
 export const fetchTrackById = async(id: string): Promise<Track> => {
-  const response = await axiosClient.get(`/tracks/${id}`);
-  return response.data;
+  try {
+    const response = await axiosClient.get(`/tracks/${id}`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Error during fetching track');
+  }
 };
 
 export const updateTrackListens = async(id: string): Promise<void> => {

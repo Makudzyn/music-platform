@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RepeatMode, Track } from "@/lib/defenitions";
+import { Track } from "@/lib/defenitions";
 import { fetchTrackById, fetchTracks } from "@/app/services/tracksService";
+import { RootState } from "@/lib/store";
 
 interface FetchTracksParams {
   limit?: number;
@@ -14,9 +15,14 @@ export const loadTracks = createAsyncThunk<Track[], FetchTracksParams>(
   }
 );
 
-export const loadTrackById = createAsyncThunk<Track, string>(
+export const loadTrackById = createAsyncThunk<Track, string, {state: RootState}>(
   'tracks/loadTrackById',
-  async(id: string) => {
+  async(id: string, {getState}) => {
+    const state = getState();
+
+    const existingTrack = state.tracks.tracks.find(track => track._id === id);
+    if (existingTrack) return existingTrack;
+
     return await fetchTrackById(id);
   }
 );
@@ -60,7 +66,12 @@ const tracksSlice = createSlice<TracksState, {}>({
       state.loading = true;
     })
     .addCase(loadTrackById.fulfilled, (state, action: PayloadAction<Track>) => {
-      state.tracks = [action.payload];
+      const index = state.tracks.findIndex(track => track._id === action.payload._id);
+      if (index !== -1) {
+        state.tracks[index] = action.payload;
+      } else {
+        state.tracks.push(action.payload);
+      }
       state.loading = false;
     })
     .addCase(loadTrackById.rejected, (state, action) => {

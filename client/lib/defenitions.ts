@@ -1,7 +1,7 @@
 export type Track = {
   _id: string;
   artist: Artist;
-  album: Album;
+  album: Playlist;
   title: string;
   lyrics: string;
   listens: number;
@@ -24,11 +24,13 @@ export type Artist = {
   updatedAt: Date;
 }
 
-export type Album = {
+export type Playlist = {
   _id: string;
   title: string;
   description: string;
   coverImage: string;
+  artist: Artist;
+  type: PlaylistType;
   owner: User;
   createdAt: Date;
   updatedAt: Date;
@@ -53,6 +55,8 @@ export type Comment = {
 }
 
 export type RepeatMode = "none" | "all" | "one";
+
+export type PlaylistType = "album" | "playlist";
 
 export type DecodedToken = {
   role: string;
