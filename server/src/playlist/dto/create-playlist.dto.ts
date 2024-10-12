@@ -1,5 +1,6 @@
 import { IsMongoId, IsOptional, IsString } from 'class-validator';
 import mongoose from "mongoose";
+import { IsFormattedDate } from "../validators/is-formatted-date.validator";
 
 export class CreatePlaylistDto {
   @IsString()
@@ -14,6 +15,7 @@ export class CreatePlaylistDto {
 
   @IsOptional()
   @IsString()
+  @IsFormattedDate()
   readonly releaseDate?: string;
 
   @IsOptional()
