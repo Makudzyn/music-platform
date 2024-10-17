@@ -12,7 +12,7 @@ export default function ArtistCard({artist}: ArtistCardProps) {
   return (
     <Card className="border-none shadow-none transition-colors duration-300 group bg-background hover:shadow mb-1">
       <CardContent className="p-4">
-        <Link href={`/artist/${artist._id}`} className="block">
+        <Link href={`/artists/${artist._id}`} className="block">
             <div className="relative mb-4 aspect-square overflow-hidden rounded-full">
               <Image
                 src={`http://localhost:5000/${artist.artistImage}`}

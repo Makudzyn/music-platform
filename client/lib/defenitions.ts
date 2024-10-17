@@ -19,6 +19,7 @@ export type Artist = {
   _id: string;
   name: string;
   artistImage: string;
+  totalListens: number;
   aboutInfo: string;
   createdAt: Date;
   updatedAt: Date;

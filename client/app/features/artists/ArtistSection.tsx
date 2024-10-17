@@ -3,7 +3,7 @@
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { Fragment, useEffect } from "react";
 import { loadArtists } from "@/lib/reducers/artistSlice";
-import ArtistCard from "@/app/features/artist/ArtistCard";
+import ArtistCard from "@/app/features/artists/ArtistCard";
 import CarouselSection from "@/app/features/carousel/CarouselSection";
 
 export default function ArtistSection() {
