@@ -3,6 +3,7 @@
 import { Clock } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { RefObject, useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
 
 interface TrackListHeaderProps {
   scrollRef: RefObject<HTMLElement>;
@@ -33,9 +34,10 @@ export default function TrackListHeader({ scrollRef }: TrackListHeaderProps) {
   return (
     <>
       <div
-        className={`grid grid-cols-[3rem,2fr,1fr,1fr,10rem,3rem] gap-4 items-center mb-2 pt-2 text-base text-muted-foreground bg-background transition-all duration-300 ${
+        className={cn(
+          "grid grid-cols-[3rem,2fr,1fr,1fr,10rem,3rem] gap-4 items-center mb-2 pt-2 text-base text-muted-foreground bg-background transition-all duration-300",
           isFixed ? 'sticky top-0 left-0 right-0 z-10 py-2' : ''
-        }`}
+        )}
       >
         <div className="flex items-center justify-center">#</div>
         <div>Song</div>

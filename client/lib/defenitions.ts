@@ -29,7 +29,11 @@ export type Playlist = {
   title: string;
   description: string;
   coverImage: string;
+  releaseDate: string;
+  tracksAmount: number;
+  totalDuration: number;
   artist: Artist;
+  tracks: Track[];
   type: PlaylistType;
   owner: User;
   createdAt: Date;

@@ -1,5 +1,3 @@
-'use client';
-
 import Breadcrumbs from "@/app/features/breadcrumbs/Breadcrumbs";
 import ScrollWrapper from "@/app/features/scroll/ScrollWrapper";
 import AlbumGrid from "@/app/features/playlists/albums/AlbumGrid";
@@ -14,7 +12,7 @@ export default function Page() {
         <Breadcrumbs
           items={[
             {title: "Home", href: "/"},
-            {title: "Album list"}
+            {title: "Albums"}
           ]}
         />
         <AlbumGrid/>

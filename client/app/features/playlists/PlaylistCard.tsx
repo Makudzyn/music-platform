@@ -13,7 +13,7 @@ export default function PlaylistCard({playlist}: PlaylistCardProps) {
   return (
     <Card className="group transition-all duration-300">
       <CardContent className="pb-4 px-0">
-        <Link href={`/playlist/${playlist._id}`} className="group/title">
+        <Link href={`/${playlist.type}s/${playlist._id}`} className="group/title">
           <div className="aspect-square relative overflow-hidden rounded-t-md mb-4">
             <Image
               src={`http://localhost:5000/${playlist.coverImage}`}

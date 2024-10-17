@@ -1,3 +1,5 @@
+'use client';
+
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { Fragment, useEffect } from "react";
 import { loadAlbums } from "@/lib/reducers/albumSlice";

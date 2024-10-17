@@ -8,7 +8,7 @@ interface ScrollWrapperProps {
 
 export default function ScrollWrapper({children, scrollRef}: ScrollWrapperProps) {
   return (
-    <ScrollArea.Root className="h-full overflow-hidden px-2 shadow shadow-foreground">
+    <ScrollArea.Root className="size-full overflow-hidden px-2 shadow shadow-foreground">
       <ScrollArea.Viewport className="rounded-md size-full" ref={scrollRef}>
         {children}
       </ScrollArea.Viewport>

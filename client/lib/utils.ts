@@ -14,7 +14,6 @@ export const formatTime = (timeInSeconds: number) => {
 
 export function formatDate(createdAt: Date): string {
   const date = new Date(createdAt);
-
   const day = date.getDate();
   const month = new Intl.DateTimeFormat('en', { month: 'short' }).format(date);
   const year = date.getFullYear();
