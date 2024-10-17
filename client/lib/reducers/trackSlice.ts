@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Track } from "@/lib/defenitions";
-import { fetchTrackById, fetchTracks } from "@/app/services/tracksService";
+import { fetchTrackById, fetchTracks, fetchTracksByArtistId } from "@/app/services/tracksService";
 import { RootState } from "@/lib/store";
 
 interface FetchTracksParams {
@@ -26,6 +26,14 @@ export const loadTrackById = createAsyncThunk<Track, string, {state: RootState}>
     return await fetchTrackById(id);
   }
 );
+
+export const loadTracksByArtistId = createAsyncThunk<Track[], string>(
+  'tracks/loadTracksByArtistId',
+  async(artistId: string)=> {
+    return await fetchTracksByArtistId(artistId);
+  }
+)
+
 
 type TracksState = {
   tracks: Track[];
@@ -75,6 +83,34 @@ const tracksSlice = createSlice<TracksState, {}>({
       state.loading = false;
     })
     .addCase(loadTrackById.rejected, (state, action) => {
+      state.loading = false;
+      if ("error" in action) {
+        if (typeof action.error.message === 'string') {
+          state.error = action.error.message;
+        } else {
+          state.error = 'Failed to load track';
+        }
+      }
+    })
+    .addCase(loadTracksByArtistId.pending, (state) => {
+      state.loading = true;
+    })
+    .addCase(loadTracksByArtistId.fulfilled, (state, action: PayloadAction<Track[]>) => {
+      action.payload.forEach(newTrack => {
+        const existingTrackIndex = state.tracks.findIndex(track => track._id === newTrack._id);
+
+        if (existingTrackIndex !== -1) {
+          state.tracks[existingTrackIndex] = {
+            ...state.tracks[existingTrackIndex],
+            ...newTrack
+          };
+        } else {
+          state.tracks.push(newTrack);
+        }
+      });
+      state.loading = false;
+    })
+    .addCase(loadTracksByArtistId.rejected, (state, action) => {
       state.loading = false;
       if ("error" in action) {
         if (typeof action.error.message === 'string') {

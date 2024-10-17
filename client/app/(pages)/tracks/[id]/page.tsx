@@ -32,7 +32,7 @@ export default function Page({params}: {params: {id: string}}) {
       <Breadcrumbs
         items={[
           {title: "Home", href: "/"},
-          {title: "Track list", href: "/tracks"},
+          {title: "Tracks", href: "/tracks"},
           {title: "Current track"}
         ]}
       />

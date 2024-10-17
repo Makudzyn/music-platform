@@ -3,9 +3,8 @@
 import Image from "next/image";
 import { Track } from "@/lib/defenitions";
 import Link from "next/link";
-import { useDispatch } from "react-redux";
-import { nextTrack, pause, play, setCurrentTrack } from "@/lib/reducers/playerSlice";
-import { useAppSelector } from "@/lib/hooks";
+import { pause, play, setCurrentTrack } from "@/lib/reducers/playerSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { formatDate, formatTime } from "@/lib/utils";
 import { Pause, Play } from "lucide-react";
 
@@ -15,7 +14,7 @@ interface TrackItemProps {
 }
 
 export default function TrackItem({track, index}: TrackItemProps) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const {currentPosition, paused, currentTrack} = useAppSelector(state => state.player);
   const isActive = currentTrack && currentTrack._id === track._id;
 
@@ -42,12 +41,12 @@ export default function TrackItem({track, index}: TrackItemProps) {
         }
         <button
           onClick={() => handleTrackChange(track)}
-          className={`absolute opacity-0 group-hover/buttons:opacity-100 transition-opacity ${isActive && !paused ? 'opacity-100' : ''}`}
+          className={`absolute flex justify-center items-center opacity-0 group-hover/buttons:opacity-100 transition-opacity ${isActive && !paused ? 'opacity-100' : ''}`}
         >
           {isActive && !paused ? (
-            <Pause className="size-6 fill-foreground"/>
+            <Pause className="size-5 fill-foreground"/>
           ) : (
-            <Play className="size-6 fill-foreground"/>
+            <Play className="size-5 fill-foreground"/>
           )}
         </button>
       </div>
@@ -61,11 +60,11 @@ export default function TrackItem({track, index}: TrackItemProps) {
         />
         <span className="font-medium decoration-foreground group-hover:underline">{track.title}</span>
       </Link>
-      <Link href={`artists/${track.artist._id}`} className="group">
-        <span className="decoration-foreground group-hover:underline">{track.artist.name}</span>
+      <Link href={`artists/${track.artist?._id}`} className="group">
+        <span className="decoration-foreground group-hover:underline">{track.artist?.name}</span>
       </Link>
-      <Link href={`albums/${track.album._id}`} className="group">
-        <span className="decoration-foreground group-hover:underline">{track.album.title}</span>
+      <Link href={`albums/${track.album?._id}`} className="group">
+        <span className="decoration-foreground group-hover:underline">{track.album?.title}</span>
       </Link>
       <div className="text-muted-foreground">
         {formatDate(track.createdAt)}

@@ -15,6 +15,11 @@ export const fetchTrackById = async(id: string): Promise<Track> => {
   }
 };
 
+export const fetchTracksByArtistId = async(artistId: string): Promise<Track[]> => {
+  const response = await axiosClient.get(`/tracks/by-artist/${artistId}`);
+  return response.data;
+}
+
 export const updateTrackListens = async(id: string): Promise<void> => {
   try {
     await axiosClient.post(`/tracks/listen/${id}`);

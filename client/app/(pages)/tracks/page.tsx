@@ -18,7 +18,7 @@ export default function Page() {
         <Breadcrumbs
           items={[
             {title: "Home", href: "/"},
-            {title: "Track list"}
+            {title: "Tracks"}
           ]}
         />
         <TrackListHeader scrollRef={scrollRef} />
