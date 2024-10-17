@@ -5,13 +5,28 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Artist, ArtistDocument } from "./artist.schema";
 import mongoose, { Model } from "mongoose";
 import { FileService, FileType } from "../file/file.service";
+import { Track, TrackDocument } from "../track/schemas/track.schema";
 
 @Injectable()
 export class ArtistService {
   constructor(
     @InjectModel(Artist.name) private readonly artistModel: Model<ArtistDocument>,
-    private fileService: FileService
+    @InjectModel(Track.name) private readonly trackModel: Model<TrackDocument>,
+    private fileService: FileService,
   ) {}
+
+  private async calculateArtistListens(artistId: mongoose.Types.ObjectId): Promise<void> {
+    const artist = await this.artistModel.findById(artistId).exec();
+
+    const tracks = await this.trackModel
+    .find({artist: artistId})
+    .populate('artist', 'listens')
+    .exec();
+
+    artist.totalListens = tracks.reduce((sum, track: Track) => sum + (track.listens || 0), 0);
+
+    await artist.save();
+  }
 
   private async findArtistById(artistId: mongoose.Types.ObjectId): Promise<ArtistDocument> {
     const artist = await this.artistModel.findById(artistId).exec();
@@ -34,6 +49,7 @@ export class ArtistService {
   }
 
   async getArtistById(artistId: mongoose.Types.ObjectId) {
+    await this.calculateArtistListens(artistId);
     return this.findArtistById(artistId);
   }
 

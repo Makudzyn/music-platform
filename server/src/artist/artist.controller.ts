@@ -9,7 +9,7 @@ import { FileInterceptor } from "@nestjs/platform-express";
 import mongoose from "mongoose";
 import { Artist } from "./artist.schema";
 
-@Controller('artist')
+@Controller('artists')
 export class ArtistController {
   constructor(private readonly artistService: ArtistService) {}
 

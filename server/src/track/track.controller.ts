@@ -10,7 +10,6 @@ import { RolesGuard } from "../auth/guards/roles.guard";
 import { Roles } from "../auth/roles.decorator";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import { CreateTrackDto } from "./dto/create-track.dto";
-import { UpdateTrackDto } from "./dto/update-track.dto";
 
 @Controller('/tracks')
 export class TrackController {
@@ -41,6 +40,16 @@ export class TrackController {
     @Query('limit') limit: number = 10
   ) {
     return this.trackService.getAllTracks(offset, limit);
+  }
+
+  @Get('/by-artist/:artistId')
+  getAllTracksByArtist(@Param('artistId') artistId: mongoose.Types.ObjectId) {
+    return this.trackService.getAllTracksByArtist(artistId);
+  }
+
+  @Get('/by-album/:albumId')
+  getAllTrackByAlbum(@Param('albumId') albumId: mongoose.Types.ObjectId) {
+    return this.trackService.getAllTracksByAlbum(albumId);
   }
 
   @Get('/search')

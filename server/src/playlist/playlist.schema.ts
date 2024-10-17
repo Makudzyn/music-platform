@@ -13,6 +13,10 @@ export class Playlist {
   coverImage: string;
   @Prop()
   releaseDate: string;
+  @Prop({ default: 0 })
+  tracksAmount: number;
+  @Prop({ default: 0 })
+  totalDuration: number;
   @Prop({type: mongoose.Schema.Types.ObjectId, ref: 'User'})
   owner: mongoose.Types.ObjectId;
   @Prop({type: mongoose.Schema.Types.ObjectId, ref: 'Artist'})

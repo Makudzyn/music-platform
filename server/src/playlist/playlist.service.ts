@@ -17,12 +17,28 @@ export class PlaylistService {
     private fileService: FileService
   ) {}
 
+  private async calculatePlaylistStats(playlistId: mongoose.Types.ObjectId): Promise<void> {
+    const playlist = await this.playlistModel
+    .findById(playlistId)
+    .populate('tracks', 'duration')
+    .exec();
+
+    const tracks = playlist.tracks as unknown as Track[];
+
+    const totalDuration = tracks.reduce((sum, track: Track) => sum + (track.duration || 0), 0);
+
+    playlist.tracksAmount = tracks.length;
+    playlist.totalDuration = totalDuration;
+
+    await playlist.save();
+  }
+
   private async findPlaylistById(playlistId: mongoose.Types.ObjectId): Promise<PlaylistDocument> {
-    const playlist = await this.playlistModel.findById(playlistId).exec();
+    const playlist = await this.playlistModel.findById(playlistId);
     if (!playlist) {
       throw new NotFoundException(`Playlist with ID ${playlistId} not found`);
     }
-    return playlist;
+    return playlist
   }
 
   async getAllPlaylists(limit: number): Promise<Playlist[]> {
@@ -38,21 +54,30 @@ export class PlaylistService {
     return this.playlistModel
     .find({type: 'album'})
     .limit(limit)
-    .populate('tracks', '_id title')
     .populate('artist', '_id name')
     .exec()
   }
 
   async getPlaylistById(playlistId: mongoose.Types.ObjectId): Promise<Playlist> {
-    return this.findPlaylistById(playlistId);
+    await this.calculatePlaylistStats(playlistId);
+    return this.playlistModel
+    .findById(playlistId)
+    .populate('tracks', '_id title')
+    .populate('artist', '_id name')
+    .populate('owner', '_id username');
   }
 
-  async getAllTracksInPlaylist(playlistId: mongoose.Types.ObjectId): Promise<mongoose.Types.ObjectId[]> {
-    const existingPlaylist = await this.playlistModel.findById(playlistId).populate('tracks').exec();
-    if (!existingPlaylist) {
-      throw new NotFoundException(`Playlist with ID ${playlistId} not found`);
+  async getAllTracksInPlaylist(playlistId: mongoose.Types.ObjectId): Promise<Track[]> {
+    const tracks = await this.trackModel
+    .find({album: playlistId})
+    .populate('artist', '_id name')
+    .populate('album', '_id title')
+
+    if (!tracks) {
+      throw new NotFoundException(`Tracks for playlist with ID ${playlistId} not found`);
     }
-    return existingPlaylist.tracks;
+
+    return tracks
   }
 
   async createPlaylist(createPlaylistDto: CreatePlaylistDto, userId: mongoose.Types.ObjectId) {
@@ -104,8 +129,9 @@ export class PlaylistService {
     if (trackIds && trackIds.length > 0) {
       existingPlaylist.tracks = trackIds;
     }
-
-    return existingPlaylist.save();
+    await existingPlaylist.save();
+    await this.calculatePlaylistStats(playlistId);
+    return existingPlaylist;
   }
 
   async addTrackToPlaylist(playlistId: mongoose.Types.ObjectId, trackId: mongoose.Types.ObjectId): Promise<Playlist> {
@@ -117,7 +143,9 @@ export class PlaylistService {
       existingPlaylist.tracks.push(trackId);
     }
 
-    return existingPlaylist.save();
+    await existingPlaylist.save();
+    await this.calculatePlaylistStats(playlistId);
+    return existingPlaylist;
   }
 
   async addTrackToAlbum(playlistId: mongoose.Types.ObjectId, trackId: mongoose.Types.ObjectId): Promise<Playlist> {
@@ -130,7 +158,10 @@ export class PlaylistService {
     await track.save();
 
     existingPlaylist.tracks.push(trackId);
-    return existingPlaylist.save();
+    await existingPlaylist.save();
+    await this.calculatePlaylistStats(playlistId);
+
+    return existingPlaylist
   }
 
 
@@ -141,7 +172,9 @@ export class PlaylistService {
       !trackIds.includes(trackId)
     );
 
-    return existingPlaylist.save();
+    await existingPlaylist.save();
+    await this.calculatePlaylistStats(playlistId);
+    return existingPlaylist;
   }
 
   async deletePlaylist(playlistId: mongoose.Types.ObjectId): Promise<Playlist> {

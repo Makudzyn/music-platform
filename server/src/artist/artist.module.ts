@@ -5,11 +5,13 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { AuthModule } from "../auth/auth.module";
 import { Artist, ArtistSchema } from "./artist.schema";
 import { FileService } from "../file/file.service";
+import { Track, TrackSchema } from "../track/schemas/track.schema";
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       {name: Artist.name, schema: ArtistSchema},
+      {name: Track.name, schema: TrackSchema},
     ]),
     AuthModule
   ],

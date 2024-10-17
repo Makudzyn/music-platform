@@ -9,6 +9,8 @@ export class Artist {
   name: string;
   @Prop()
   artistImage: string;
+  @Prop({default: 0})
+  totalListens: number;
   @Prop({type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Playlist'}]})
   albums: mongoose.Types.ObjectId[];
   @Prop()

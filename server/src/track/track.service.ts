@@ -64,6 +64,30 @@ export class TrackService {
     .exec();
   }
 
+  async getAllTracksByArtist(artistId: mongoose.Types.ObjectId) {
+    const artist = await this.artistModel.findById(artistId)
+    if (!artist) {
+      throw new NotFoundException(`Artist with ID ${artistId} not found`);
+    }
+    return this.trackModel
+    .find({artist: artistId})
+    .populate('artist', '_id name')
+    .populate('album', '_id title')
+    .exec()
+  }
+
+  async getAllTracksByAlbum(albumId: mongoose.Types.ObjectId) {
+    const album = await this.playlistModel.findById(albumId);
+    if (!album) {
+      throw new NotFoundException(`Album with ID ${albumId} not found`);
+    }
+    return this.trackModel
+    .find({album: albumId})
+    .populate('album', '_id name')
+    .populate('artist', '_id title')
+    .exec()
+  }
+
   async getOneTrack(trackId: mongoose.Types.ObjectId): Promise<Track> {
     return this.trackModel.findById(trackId)
     .populate(['comments', 'artist'])
@@ -193,5 +217,6 @@ export class TrackService {
 
     await this.trackModel.deleteMany({}).exec();
   }
+
 
 }

@@ -12,6 +12,7 @@ import { EditInfoDto } from "./dto/edit-info.dto";
 import { PlaylistOwnerGuard } from "./owner.guard";
 import { AddTrackDto } from "./dto/add-track.dto";
 import { EditTracksDto } from "./dto/edit-tracks.dto";
+import { Track } from "../track/schemas/track.schema";
 
 @Controller('/playlists')
 export class PlaylistController {
@@ -37,7 +38,7 @@ export class PlaylistController {
   }
 
   @Get('/tracks/:playlistId/')
-  getAllTracksInPlaylist(@Param('playlistId') playlistId: mongoose.Types.ObjectId): Promise<mongoose.Types.ObjectId[]> {
+  getAllTracksInPlaylist(@Param('playlistId') playlistId: mongoose.Types.ObjectId): Promise<Track[]> {
     return this.playlistService.getAllTracksInPlaylist(playlistId);
   }
 
