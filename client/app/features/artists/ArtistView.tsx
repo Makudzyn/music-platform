@@ -1,11 +1,10 @@
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { MutableRefObject, useCallback, useEffect, useMemo } from "react";
+import { useAppSelector, useEntityLoader, useUpdateQueue } from "@/lib/hooks";
+import { MutableRefObject, useMemo } from "react";
 import { loadArtistById, makeSelectArtistViewData } from "@/lib/reducers/artistSlice";
 import ArtistHeader from "@/app/features/artists/ArtistHeader";
 import TrackListHeader from "@/app/features/tracks/TrackListHeader";
 import TrackListGeneric from "@/app/features/tracks/TrackListGeneric";
 import { loadTracksByArtistId } from "@/lib/reducers/trackSlice";
-import { setQueue } from "@/lib/reducers/playerSlice";
 
 interface ArtistViewProps {
   artistId: string;
@@ -13,8 +12,6 @@ interface ArtistViewProps {
 }
 
 export default function ArtistView({artistId, scrollRef}: ArtistViewProps) {
-  const dispatch = useAppDispatch();
-
   const selectArtistViewData = useMemo(
     () => makeSelectArtistViewData(artistId),
     [artistId]
@@ -22,24 +19,13 @@ export default function ArtistView({artistId, scrollRef}: ArtistViewProps) {
 
   const { tracks, artist, loading, error } = useAppSelector(selectArtistViewData);
 
-  const loadData = useCallback(() => {
-    dispatch(loadArtistById(artistId));
-    dispatch(loadTracksByArtistId(artistId));
-  }, [dispatch, artistId]);
+  const actions = useMemo(
+    () => [loadArtistById, loadTracksByArtistId],
+    []
+  );
 
-  const updateQueue = useCallback(() => {
-    if (tracks.length > 0) {
-      dispatch(setQueue(tracks));
-    }
-  }, [dispatch, tracks]);
-
-  useEffect(() => {
-    loadData();
-  }, [loadData]);
-
-  useEffect(() => {
-    updateQueue();
-  }, [updateQueue]);
+  useEntityLoader(artistId, actions);
+  useUpdateQueue(tracks);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error</div>;

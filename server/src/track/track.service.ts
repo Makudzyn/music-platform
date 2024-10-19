@@ -55,9 +55,8 @@ export class TrackService {
     return track;
   }
 
-  async getAllTracks(offset: number, limit: number): Promise<Track[]> {
+  async getAllTracks(limit: number): Promise<Track[]> {
     return this.trackModel.find()
-    .skip(offset)
     .limit(limit)
     .populate('artist', '_id name')
     .populate('album', '_id title owner')

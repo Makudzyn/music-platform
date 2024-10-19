@@ -1,7 +1,7 @@
-import { Artist, Track } from "@/lib/defenitions";
+import { Artist } from "@/lib/defenitions";
 import axiosClient from "@/lib/axiosClient";
 
-export const fetchArtists = async(limit: number): Promise<Artist[]> => {
+export const fetchArtists = async(limit: string): Promise<Artist[]> => {
   const response = await axiosClient.get(`/artists/?limit=${limit}`);
   return response.data;
 };

@@ -38,7 +38,7 @@ const playerSlice = createSlice({
     },
     nextTrack(state) {
       if (state.repeatMode === "one") { // Repeat the current track
-        state.currentTrack = state.queue[state.queueIndex];
+        state.currentPosition = 0;
       } else if (state.repeatMode === "all") { // Move to the next track, or loop to the start if at the end of the queue
         state.queueIndex = (state.queueIndex + 1) % state.queue.length;
         state.currentTrack = state.queue[state.queueIndex];
@@ -72,9 +72,19 @@ const playerSlice = createSlice({
       state.queueIndex = 0;
     },
     setCurrentTrack(state, action: PayloadAction<Track | null>) {
-      state.currentTrack = action.payload;
+      const selectedTrack = action.payload;
+      state.currentTrack = selectedTrack;
+      if (selectedTrack && state.queue) {
+        // Находим индекс выбранного трека в очереди
+        const trackIndex = state.queue.findIndex(track => track._id === selectedTrack._id);
+
+        // Если найден, обновляем индекс очереди
+        if (trackIndex !== -1) {
+          state.queueIndex = trackIndex;
+        }
+      }
       state.currentPosition = 0;
-      state.paused = !action.payload;
+      state.paused = !selectedTrack;
     },
     setTotalDuration(state, action: PayloadAction<number>) {
       state.totalDuration = action.payload;

@@ -3,9 +3,9 @@ import { Playlist } from "@/lib/defenitions";
 import { fetchAlbumById, fetchAlbums, fetchAlbumTracks } from "@/app/services/albumService";
 import { RootState } from "@/lib/store";
 
-export const loadAlbums = createAsyncThunk<Playlist[], number>(
+export const loadAlbums = createAsyncThunk<Playlist[], string>(
   'albums/loadAlbums',
-  async(limit?: number) => {
+  async(limit?: string) => {
     return fetchAlbums(limit);
   }
 );

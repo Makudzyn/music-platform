@@ -20,7 +20,7 @@ export default function SongInfo({currentTrack}: SongInfoProps) {
           </div>
           <div className="flex flex-col text-foreground leading-normal font-semibold text-sm">
             <div>{currentTrack.title}</div>
-            <div className="text-secondary text-xs">{currentTrack.artist}</div>
+            <div className="text-secondary text-xs">{currentTrack.artist.name}</div>
           </div>
         </div>
       }

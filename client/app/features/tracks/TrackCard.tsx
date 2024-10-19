@@ -7,6 +7,7 @@ import { useAppSelector } from "@/lib/hooks";
 import { pause, play, setCurrentTrack } from "@/lib/reducers/playerSlice";
 import Image from "next/image";
 import { Pause, Play } from "lucide-react";
+import Link from "next/link";
 
 interface TrackCardProps {
   track: Track;
@@ -38,7 +39,7 @@ export default function TrackCard({track}: TrackCardProps) {
           <div
             className="absolute inset-0 z-10 flex items-center justify-center text-background opacity-0 transition-opacity duration-300 size-14 group-hover:opacity-100"
           >
-            {isActive && !paused ? <Pause className="fill-background" /> : <Play className="fill-background" />}
+            {isActive && !paused ? <Pause className="fill-background"/> : <Play className="fill-background"/>}
           </div>
           <Image
             src={`http://localhost:5000/${track.thumbnail}`}
@@ -49,8 +50,18 @@ export default function TrackCard({track}: TrackCardProps) {
           />
         </div>
         <div className="flex flex-col text-sm font-semibold leading-normal text-foreground pl-3 overflow-hidden">
-          <div className="truncate">{track.title}</div>
-          <div className="text-xs text-secondary truncate">{track.artist.name}</div>
+          <Link
+            className="truncate decoration-foreground hover:underline"
+            href={`/tracks/${track._id}`}
+          >
+            {track.title}
+          </Link>
+          <Link
+            className="text-xs text-secondary truncate decoration-foreground hover:underline"
+            href={`/artist/${track.artist._id}`}
+          >
+            {track.artist.name}
+          </Link>
         </div>
       </CardContent>
     </Card>

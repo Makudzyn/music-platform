@@ -35,11 +35,8 @@ export class TrackController {
   }
 
   @Get()
-  getAllTracks(
-    @Query('offset') offset: number = 0,
-    @Query('limit') limit: number = 10
-  ) {
-    return this.trackService.getAllTracks(offset, limit);
+  getAllTracks(@Query('limit') limit: number = 0) {
+    return this.trackService.getAllTracks(limit);
   }
 
   @Get('/by-artist/:artistId')

@@ -12,7 +12,7 @@ export default function TrackListGeneric({tracks}: TrackListGenericProps) {
   }
   return (
       <div
-        className="grid grid-cols-[3rem,2fr,1fr,1fr,10rem,3rem] gap-x-4 gap-y-2 items-center pb-2 rounded-md transition-all">
+        className="grid grid-cols-[3rem,1.5fr,1fr,1fr,8rem,3.75rem] gap-x-4 gap-y-2 items-center pb-2 rounded-md transition-all">
         {tracks.map((track, index) =>
           <Fragment key={track._id}>
             <TrackItem track={track} index={index}/>

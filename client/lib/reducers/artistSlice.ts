@@ -3,9 +3,9 @@ import { Artist } from "@/lib/defenitions";
 import { fetchArtistById, fetchArtists } from "@/app/services/artistService";
 import { RootState } from "@/lib/store";
 
-export const loadArtists = createAsyncThunk<Artist[], number>(
+export const loadArtists = createAsyncThunk<Artist[], string>(
   'artists/loadArtists',
-  async(limit: number) => {
+  async(limit: string) => {
     return fetchArtists(limit);
   }
 );

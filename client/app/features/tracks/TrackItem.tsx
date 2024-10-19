@@ -5,8 +5,9 @@ import { Track } from "@/lib/defenitions";
 import Link from "next/link";
 import { pause, play, setCurrentTrack } from "@/lib/reducers/playerSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { formatDate, formatTime } from "@/lib/utils";
+import { cn, formatDate, formatTime } from "@/lib/utils";
 import { Pause, Play } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface TrackItemProps {
   track: Track;
@@ -31,22 +32,30 @@ export default function TrackItem({track, index}: TrackItemProps) {
   }
 
   return (
-    <div
-      className="col-span-full grid items-center rounded-sm py-1 transition-all grid-cols-subgrid hover:bg-primary/30 group/buttons">
+    <div className="col-span-full grid items-center rounded-sm py-1 transition-all grid-cols-subgrid hover:bg-primary/30 group/buttons">
       <div className="flex items-center justify-center size-12 relative">
-        {!isActive && <span
-          className="text-base text-muted-foreground group-hover/buttons:opacity-0 transition-opacity">
-          {index + 1}
-        </span>
+        {!isActive &&
+          <span className="text-base text-muted-foreground group-hover/buttons:opacity-0 transition-opacity">
+            {index + 1}
+          </span>
         }
         <button
           onClick={() => handleTrackChange(track)}
-          className={`absolute flex justify-center items-center opacity-0 group-hover/buttons:opacity-100 transition-opacity ${isActive && !paused ? 'opacity-100' : ''}`}
+          className={cn(
+            "absolute flex justify-center items-center transition-opacity",
+            isActive ? "opacity-100" : "opacity-0 group-hover/buttons:opacity-100"
+          )}
         >
-          {isActive && !paused ? (
-            <Pause className="size-5 fill-foreground"/>
+          {!isActive ? (
+            // Показываем Play при наведении на неактивный трек
+            <Play className="size-5 fill-foreground" />
           ) : (
-            <Play className="size-5 fill-foreground"/>
+            // Для активного трека показываем Play/Pause в зависимости от состояния
+            paused ? (
+              <Play className="size-5 fill-foreground" />
+            ) : (
+              <Pause className="size-5 fill-foreground" />
+            )
           )}
         </button>
       </div>
@@ -69,7 +78,7 @@ export default function TrackItem({track, index}: TrackItemProps) {
       <div className="text-muted-foreground">
         {formatDate(track.createdAt)}
       </div>
-      <div className="text-muted-foreground">
+      <div className="text-muted-foreground flex justify-center items-center">
         {isActive ? formatTime(currentPosition) : formatTime(track.duration)}
       </div>
     </div>

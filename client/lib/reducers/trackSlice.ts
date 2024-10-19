@@ -3,15 +3,11 @@ import { Track } from "@/lib/defenitions";
 import { fetchTrackById, fetchTracks, fetchTracksByArtistId } from "@/app/services/tracksService";
 import { RootState } from "@/lib/store";
 
-interface FetchTracksParams {
-  limit?: number;
-  offset?: number;
-}
 
-export const loadTracks = createAsyncThunk<Track[], FetchTracksParams>(
+export const loadTracks = createAsyncThunk<Track[], string>(
   'tracks/loadTracks',
-  async({limit, offset}: FetchTracksParams) => {
-    return fetchTracks(limit, offset);
+  async(limit: string) => {
+    return fetchTracks(limit);
   }
 );
 
@@ -33,7 +29,6 @@ export const loadTracksByArtistId = createAsyncThunk<Track[], string>(
     return await fetchTracksByArtistId(artistId);
   }
 )
-
 
 type TracksState = {
   tracks: Track[];

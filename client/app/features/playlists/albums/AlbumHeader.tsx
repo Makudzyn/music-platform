@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Playlist } from "@/lib/defenitions";
+import { formatTotalDuration } from "@/lib/utils";
 
 interface AlbumHeaderProps {
   album: Playlist;
@@ -27,7 +28,7 @@ export default function AlbumHeader({album}: AlbumHeaderProps) {
           <span className="mx-1">•</span>
           <span className="">{album.releaseDate}</span>
           <span className="mx-1">•</span>
-          <span className="">{album.tracksAmount} songs, {album.totalDuration}</span>
+          <span className="">{album.tracksAmount} songs, {formatTotalDuration(album.totalDuration)}</span>
         </div>
       </div>
     </header>
