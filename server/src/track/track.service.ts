@@ -170,16 +170,37 @@ export class TrackService {
   }
 
   async search(query: string): Promise<Track[]> {
-    return this.trackModel.find({
-      $or: [
-        {title: {$regex: new RegExp(query, 'i')}},  // поиск по названию трека
-        // {artist: {$regex: new RegExp(query, 'i')}}, // поиск по исполнителю
-        // {album: {$regex: new RegExp(query, 'i')}}  // поиск по альбому
-      ]
-    })
-    // .populate('artist')
-    // .populate('album')
-    .exec();
+    const sanitizedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const searchRegex = new RegExp(sanitizedQuery, 'i');
+
+    try {
+      // Сначала находим артистов, соответствующих запросу
+      const artists = await this.artistModel.find({
+        name: { $regex: searchRegex }
+      }).select('_id');
+
+      // Находим альбомы, соответствующие запросу
+      const albums = await this.playlistModel.find({
+        title: { $regex: searchRegex }
+      }).select('_id');
+
+      // Теперь ищем треки, используя найденные ID артистов и альбомов
+      return await this.trackModel.find({
+        $or: [
+          { title: { $regex: searchRegex } },
+          { artist: { $in: artists.map(a => a._id) } },
+          { album: { $in: albums.map(a => a._id) } }
+        ]
+      })
+      .populate('artist')
+      .populate('album')
+      .limit(10)
+      .sort({ listens: -1 })
+      .exec();
+    } catch (error) {
+      console.error('Search error:', error);
+      throw error;
+    }
   }
 
   async deleteTrack(trackId: mongoose.Types.ObjectId): Promise<Track> {

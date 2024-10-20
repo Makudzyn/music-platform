@@ -36,6 +36,19 @@ export const makeSelectAlbumViewData = (albumId: string) =>
     }
   );
 
+export const makeSelectAlbumsByArtistId = (artistId: string) =>
+  createSelector(
+    [
+      (state: RootState) => state.albums.albums,
+      (state: RootState) => state.albums.loading,
+      (state: RootState) => state.albums.error
+    ],
+    (albums, loading, error) => ({
+      albums: albums.filter(album => album.artist._id === artistId),
+      loading,
+      error
+    })
+  );
 
 type AlbumsState = {
   albums: Playlist[];
