@@ -8,7 +8,6 @@ import { CreateCommentDto } from "./dto/create-comment.dto";
 import { FileService, FileType } from "../file/file.service";
 import { Artist, ArtistDocument } from "../artist/artist.schema";
 import { CreateTrackDto } from "./dto/create-track.dto";
-import { UpdateTrackDto } from "./dto/update-track.dto";
 import { Playlist, PlaylistDocument } from "../playlist/playlist.schema";
 
 @Injectable()
@@ -169,34 +168,49 @@ export class TrackService {
     await track.save();
   }
 
-  async search(query: string): Promise<Track[]> {
+  async search(query: string): Promise<{tracks: Track[], playlists: Playlist[], artists: Artist[]}> {
     const sanitizedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const searchRegex = new RegExp(sanitizedQuery, 'i');
 
     try {
-      // Сначала находим артистов, соответствующих запросу
-      const artists = await this.artistModel.find({
+      const trackArtists = await this.artistModel.find({
         name: { $regex: searchRegex }
-      }).select('_id');
+      }).select('_id').exec();
 
-      // Находим альбомы, соответствующие запросу
       const albums = await this.playlistModel.find({
         title: { $regex: searchRegex }
-      }).select('_id');
+      }).select('_id').exec();
 
       // Теперь ищем треки, используя найденные ID артистов и альбомов
-      return await this.trackModel.find({
+      const tracks = await this.trackModel.find({
         $or: [
           { title: { $regex: searchRegex } },
-          { artist: { $in: artists.map(a => a._id) } },
+          { artist: { $in: trackArtists.map(a => a._id) } },
           { album: { $in: albums.map(a => a._id) } }
         ]
       })
       .populate('artist')
       .populate('album')
-      .limit(10)
+      .limit(5)
       .sort({ listens: -1 })
       .exec();
+
+      // Поиск плейлистов/альбомов
+      const playlists = await this.playlistModel.find({
+        title: { $regex: searchRegex }
+      })
+      .populate('artist')
+      .limit(3)
+      .exec()
+
+      // Поиск артистов
+      const artists = await this.artistModel.find({
+        name: { $regex: searchRegex }
+      })
+      .limit(3)
+      .exec()
+
+      return { tracks, playlists, artists };
     } catch (error) {
       console.error('Search error:', error);
       throw error;

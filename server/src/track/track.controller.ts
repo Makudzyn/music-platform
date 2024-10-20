@@ -10,6 +10,8 @@ import { RolesGuard } from "../auth/guards/roles.guard";
 import { Roles } from "../auth/roles.decorator";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import { CreateTrackDto } from "./dto/create-track.dto";
+import { Artist } from "../artist/artist.schema";
+import { Playlist } from "../playlist/playlist.schema";
 
 @Controller('/tracks')
 export class TrackController {
@@ -50,7 +52,7 @@ export class TrackController {
   }
 
   @Get('/search')
-  search(@Query('query') query: string): Promise<Track[]> {
+  search(@Query('query') query: string): Promise<{tracks: Track[], playlists: Playlist[], artists: Artist[]}> {
     return this.trackService.search(query);
   }
 
