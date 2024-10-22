@@ -21,6 +21,37 @@ export function formatDate(createdAt: Date): string {
   return `${day} ${month}, ${year}`;
 }
 
+export function convertToKbps(bitrate: string | number): number | null {
+  // Если передано число, считаем что это bps
+  if (typeof bitrate === 'number') {
+    return Math.round(bitrate / 1000);
+  }
+
+  // Очищаем строку от пробелов и приводим к нижнему регистру
+  const cleanBitrate = bitrate.toLowerCase().replace(/\s+/g, '');
+
+  // Извлекаем число и единицу измерения
+  const match = cleanBitrate.match(/^(\d+\.?\d*)(kbps|mbps|bps)?$/);
+  if (!match) return null;
+
+  const [, value, unit = 'bps'] = match;
+  const numValue = parseFloat(value);
+
+  if (isNaN(numValue)) return null;
+
+  // Конвертируем в kbps в зависимости от единицы измерения
+  switch (unit) {
+    case 'kbps':
+      return Math.round(numValue);
+    case 'mbps':
+      return Math.round(numValue * 1000);
+    case 'bps':
+      return Math.round(numValue / 1000);
+    default:
+      return null;
+  }
+}
+
 
 export function shuffleArray(array: Track[]): Track[] {
   let shuffled = array.slice();

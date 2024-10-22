@@ -9,14 +9,14 @@ interface AlbumHeaderProps {
 
 export default function AlbumHeader({album}: AlbumHeaderProps) {
   return (
-    <header className="mb-8 flex flex-col items-end gap-6 md:flex-row md:items-center">
-      <div className="relative size-48 rounded-sm flex-shrink-0 shadow-lg md:size-60">
+    <div className="mb-8 flex flex-col items-end gap-6 md:flex-row md:items-center">
+      <div className="relative flex-shrink-0 rounded-sm shadow-lg size-48 md:size-64">
         <Image
           src={`http://localhost:5000/${album.coverImage}`}
           alt={`${album.title} cover`}
           fill
           className="object-cover"
-          sizes="(max-width: 768px) 192px, 240px"
+          sizes="(max-width: 768px) 192px, 256px"
         />
       </div>
       <div className="flex flex-col items-start">
@@ -31,6 +31,6 @@ export default function AlbumHeader({album}: AlbumHeaderProps) {
           <span className="">{album.tracksAmount} songs, {formatTotalDuration(album.totalDuration)}</span>
         </div>
       </div>
-    </header>
+    </div>
   );
 };

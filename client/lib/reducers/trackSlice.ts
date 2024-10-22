@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Track } from "@/lib/defenitions";
 import { fetchTrackById, fetchTracks, fetchTracksByArtistId } from "@/app/services/tracksService";
 import { RootState } from "@/lib/store";
@@ -29,6 +29,18 @@ export const loadTracksByArtistId = createAsyncThunk<Track[], string>(
     return await fetchTracksByArtistId(artistId);
   }
 )
+
+export const makeSelectTrackViewData = (trackId: string) =>
+  createSelector([
+      (state: RootState) => state.tracks.tracks,
+      (state: RootState) => state.tracks.loading,
+      (state: RootState) => state.tracks.error,
+    ],
+    (tracks, loading, error) => {
+      const track = tracks.find(track => track._id === trackId)
+      return { track, loading, error };
+    }
+  );
 
 type TracksState = {
   tracks: Track[];

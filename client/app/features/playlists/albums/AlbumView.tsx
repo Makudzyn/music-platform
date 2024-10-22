@@ -7,12 +7,12 @@ import AlbumHeader from "@/app/features/playlists/albums/AlbumHeader";
 import TrackListGeneric from "@/app/features/tracks/TrackListGeneric";
 import TrackListHeader from "@/app/features/tracks/TrackListHeader";
 
-interface AlbumHeaderProps {
+interface AlbumViewProps {
   albumId: string;
   scrollRef: MutableRefObject<null>;
 }
 
-export default function AlbumView({albumId, scrollRef}: AlbumHeaderProps) {
+export default function AlbumView({albumId, scrollRef}: AlbumViewProps) {
   const selectAlbumViewData = useMemo(
     () => makeSelectAlbumViewData(albumId),
     [albumId]
@@ -20,10 +20,7 @@ export default function AlbumView({albumId, scrollRef}: AlbumHeaderProps) {
 
   const {album, tracks, loading, error} = useAppSelector(selectAlbumViewData);
 
-  const actions = useMemo(
-    () => [loadAlbumById],
-    []
-  );
+  const actions = useMemo(() => [loadAlbumById], []);
 
   useEntityLoader(albumId, actions);
   useUpdateQueue(tracks);

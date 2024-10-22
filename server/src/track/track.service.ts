@@ -88,7 +88,9 @@ export class TrackService {
 
   async getOneTrack(trackId: mongoose.Types.ObjectId): Promise<Track> {
     return this.trackModel.findById(trackId)
-    .populate(['comments', 'artist'])
+    .populate('album', '_id title')
+    .populate('artist', '_id name')
+    .populate('comments')
     .exec();
   }
 

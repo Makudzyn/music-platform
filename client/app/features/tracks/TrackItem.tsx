@@ -59,7 +59,7 @@ export default function TrackItem({track, index}: TrackItemProps) {
           )}
         </button>
       </div>
-      <Link href={`tracks/${track._id}`} className="flex items-center group">
+      <Link href={`/tracks/${track._id}`} className="flex items-center group">
         <Image
           src={`http://localhost:5000/${track.thumbnail}`}
           alt={`${track.title} song thumbnail`}
