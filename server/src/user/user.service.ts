@@ -2,12 +2,17 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
 import { User, UserDocument } from './user.schema';
-import { CreateUserDto } from "./create-user.dto";
+import { CreateUserDto } from "./dto/create-user.dto";
 import { v4 as uuidv4 } from "uuid";
+import { Multer } from "multer";
+import { FileService, FileType } from "../file/file.service";
+import { PatchUserDto } from "./dto/patch-user.dto";
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<UserDocument>,
+    private fileService: FileService) {}
 
   // Создание пользователя
   async createUser(createUserDto: CreateUserDto, passwordHash: string): Promise<User> {
@@ -50,17 +55,41 @@ export class UserService {
   }
 
   // Получение пользователя по id
-  async findById(id: mongoose.Types.ObjectId): Promise<User | undefined> {
-    return this.userModel.findById(id).exec();
+  async findById(userId: mongoose.Types.ObjectId): Promise<User | undefined> {
+    return this.userModel.findById(userId).exec();
   }
 
   // Обновление данных пользователя
-  async updateUser(id: mongoose.Types.ObjectId, updateData: Partial<User>): Promise<User> {
-    return this.userModel.findByIdAndUpdate(id, updateData, { new: true }).exec();
+  async updateUser(userId: mongoose.Types.ObjectId, patchUserDto: PatchUserDto, avatar: Express.Multer.File): Promise<User> {
+    const existingUser = await this.userModel.findById(userId).exec();
+
+
+    if (!existingUser) {
+      throw new NotFoundException(`User with ID ${userId} not found`);
+    }
+
+    let processedAvatar;
+    if (avatar) {
+      processedAvatar = await this.fileService.processImage(avatar, FileType.AVATAR, {width: 200, height: 200});
+    }
+
+    const patchedUserData = {
+      username: patchUserDto.username || existingUser.username,
+      email: patchUserDto.email || existingUser.email,
+      avatar: processedAvatar ? processedAvatar.dynamicPath : existingUser.avatar,
+    }
+
+    if (avatar && existingUser.avatar) {
+      if (existingUser.avatar !== processedAvatar.dynamicPath) {
+        await this.fileService.deleteFile(existingUser.avatar);
+      }
+    }
+
+    return this.userModel.findByIdAndUpdate(userId, {$set: patchedUserData}, { new: true });
   }
 
   // Удаление пользователя
-  async deleteUser(id: mongoose.Types.ObjectId): Promise<User> {
-    return this.userModel.findByIdAndDelete(id).exec();
+  async deleteUser(userId: mongoose.Types.ObjectId): Promise<User> {
+    return this.userModel.findByIdAndDelete(userId).exec();
   }
 }

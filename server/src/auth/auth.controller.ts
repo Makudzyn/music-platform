@@ -1,6 +1,6 @@
 import { Controller, Post, Body, UnauthorizedException, Get, Query, UseInterceptors } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { CreateUserDto } from "../user/create-user.dto";
+import { CreateUserDto } from "../user/dto/create-user.dto";
 import { LoginDto } from "./login.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
 

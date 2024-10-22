@@ -44,6 +44,7 @@ export type Playlist = {
 export type User = {
   _id: string;
   username: string;
+  avatar: string;
   email: string;
   role: string;
   isVerified: boolean;

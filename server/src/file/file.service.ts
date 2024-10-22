@@ -15,6 +15,7 @@ export enum FileType {
   THUMBNAIL = 'thumbnail',
   COVER_IMAGE = 'cover',
   ARTIST_IMAGE = 'artist-image',
+  AVATAR = 'avatar'
 }
 
 interface ProcessedFile {
@@ -70,7 +71,7 @@ export class FileService {
     }
   }
 
-  deleteFile(filePath: string): void {
+  async deleteFile(filePath: string): Promise<void> {
     try {
       const fullPath = path.resolve(__dirname, '..', 'static', filePath);
       if (fs.existsSync(fullPath)) {
@@ -83,7 +84,7 @@ export class FileService {
 
   async processImage(
     file: Express.Multer.File,
-    type: FileType.COVER_IMAGE | FileType.THUMBNAIL | FileType.ARTIST_IMAGE,
+    type: FileType,
     options: {
       width?: number,
       height?: number,

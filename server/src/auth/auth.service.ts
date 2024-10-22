@@ -3,7 +3,7 @@ import { UserService } from "../user/user.service";
 import * as bcrypt from 'bcrypt';
 import { JwtService } from "@nestjs/jwt";
 import { User } from "../user/user.schema";
-import { CreateUserDto } from "../user/create-user.dto";
+import { CreateUserDto } from "../user/dto/create-user.dto";
 import { MailService } from "./mail/mail.service";
 
 @Injectable()

@@ -107,7 +107,7 @@ export class PlaylistService {
 
     const patchedPlaylistData = {
       title: editInfoDto.title || existingPlaylist.title,
-      artist: editInfoDto.artist || editInfoDto.artist,
+      artist: editInfoDto.artist || existingPlaylist.artist,
       description: editInfoDto.description || existingPlaylist.description,
       type: editInfoDto.type || existingPlaylist.type,
       releaseDate: editInfoDto.releaseDate || existingPlaylist.releaseDate,
@@ -116,7 +116,7 @@ export class PlaylistService {
 
     if (coverImage && existingPlaylist.coverImage) {
       if (existingPlaylist.coverImage !== processedImage.dynamicPath) {
-        this.fileService.deleteFile(existingPlaylist.coverImage);
+        await this.fileService.deleteFile(existingPlaylist.coverImage);
       }
     }
 
@@ -181,7 +181,7 @@ export class PlaylistService {
     const existingPlaylist = await this.findPlaylistById(playlistId)
     //TODO delete from artist
     if (existingPlaylist.coverImage) {
-      this.fileService.deleteFile(existingPlaylist.coverImage);
+      await this.fileService.deleteFile(existingPlaylist.coverImage);
     }
 
     return this.playlistModel.findByIdAndDelete(playlistId);

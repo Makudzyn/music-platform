@@ -1,16 +1,17 @@
-import { Controller, Get, Body, Param, Patch, Delete, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, Body, Param, Patch, Delete, UseGuards, Req, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { UserService } from './user.service';
-import { User } from "./user.schema";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import { RolesGuard } from "../auth/guards/roles.guard";
 import { Roles } from "../auth/roles.decorator";
 import mongoose from "mongoose";
+import { FileInterceptor } from "@nestjs/platform-express";
+import { PatchUserDto } from "./dto/patch-user.dto";
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('ADMIN')  // Только для пользователей с ролью ADMIN
   @Get('admin')
   getAdminData() {
@@ -18,31 +19,33 @@ export class UserController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('me')
+  @Get('/me')
   async getMe(@Req() req: any) {
     return req.user; // Пользователь из JWT токена
   }
 
 
-  @Get(':id')
-  getUserById(@Param('id') id: mongoose.Types.ObjectId) {
-    return this.userService.findById(id);
+  @Get(':userId')
+  getUserById(@Param('userId') userId: mongoose.Types.ObjectId) {
+    return this.userService.findById(userId);
   }
 
-  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('ADMIN')
-  @Patch(':id')
+  @Patch(':userId')
+  @UseInterceptors(FileInterceptor('avatar'))
   updateUser(
-    @Param('id') id: mongoose.Types.ObjectId,
-    @Body() updateData: Partial<User>
+    @Param('userId') userId: mongoose.Types.ObjectId,
+    @Body() patchUserDto: PatchUserDto,
+    @UploadedFile() avatar: Express.Multer.File,
   ) {
-    return this.userService.updateUser(id, updateData);
+    return this.userService.updateUser(userId, patchUserDto, avatar);
   }
 
-  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('ADMIN')
-  @Delete(':id')
-  deleteUser(@Param('id') id: mongoose.Types.ObjectId) {
-    return this.userService.deleteUser(id);
+  @Delete(':userId')
+  deleteUser(@Param('userId') userId: mongoose.Types.ObjectId) {
+    return this.userService.deleteUser(userId);
   }
 }

@@ -143,10 +143,10 @@ export class TrackService {
     const patchedTrack = await this.trackModel.findByIdAndUpdate(trackId, {$set: patchedTrackData}, {new: true});
 
     if (thumbnail && existingTrack.thumbnail && existingTrack.thumbnail !== processedImage.dynamicPath) {
-      this.fileService.deleteFile(existingTrack.thumbnail);
+      await this.fileService.deleteFile(existingTrack.thumbnail);
     }
     if (audio && existingTrack.audio && existingTrack.audio !== processedAudio.dynamicPath) {
-      this.fileService.deleteFile(existingTrack.audio);
+      await this.fileService.deleteFile(existingTrack.audio);
     }
 
     return patchedTrack;
@@ -225,8 +225,8 @@ export class TrackService {
     if (!track) {
       throw new HttpException('Track not found', HttpStatus.NOT_FOUND);
     }
-    this.fileService.deleteFile(track.audio);
-    this.fileService.deleteFile(track.thumbnail);
+    await this.fileService.deleteFile(track.audio);
+    await this.fileService.deleteFile(track.thumbnail);
     return this.trackModel.findByIdAndDelete(trackId);
   }
 

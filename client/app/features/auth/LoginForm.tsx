@@ -4,9 +4,6 @@ import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { useAuthenticate } from "@/app/services/authService";
 import { AtSign, Key } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { FormInput } from "@/app/features/auth/FormInput";
 import FormError from "@/app/features/auth/FormError";
@@ -63,6 +60,5 @@ export default function LoginForm() {
 
       <FormButton>Login</FormButton>
     </form>
-
   );
 }

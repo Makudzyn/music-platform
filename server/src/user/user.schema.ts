@@ -12,13 +12,13 @@ export class User {
   email: string;
 
   @Prop()
+  avatar: string;
+
+  @Prop()
   role: string;
 
   @Prop()
   passwordHash: string;
-
-  @Prop()
-  profilePicture: string;
 
   @Prop()
   isVerified: boolean;

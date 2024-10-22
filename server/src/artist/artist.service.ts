@@ -69,7 +69,7 @@ export class ArtistService {
 
     if (artistImage && existingArtist.artistImage) {
       if (existingArtist.artistImage !== processedImage.dynamicPath) {
-        this.fileService.deleteFile(existingArtist.artistImage);
+        await this.fileService.deleteFile(existingArtist.artistImage);
       }
     }
     return this.artistModel.findByIdAndUpdate(artistId, {$set: patchedArtistData}, {new: true});
@@ -78,7 +78,7 @@ export class ArtistService {
   async deleteArtist(artistId: mongoose.Types.ObjectId) {
     const existingArtist = await this.findArtistById(artistId);
     if (existingArtist.artistImage) {
-      this.fileService.deleteFile(existingArtist.artistImage);
+      await this.fileService.deleteFile(existingArtist.artistImage);
     }
     return this.artistModel.findByIdAndDelete(artistId);
   }
