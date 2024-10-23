@@ -5,7 +5,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Artist, ArtistDocument } from "./artist.schema";
 import mongoose, { Model } from "mongoose";
 import { FileService, FileType } from "../file/file.service";
-import { Track, TrackDocument } from "../track/schemas/track.schema";
+import { Track, TrackDocument } from "../track/track.schema";
 
 @Injectable()
 export class ArtistService {

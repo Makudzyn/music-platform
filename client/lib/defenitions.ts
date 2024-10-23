@@ -54,7 +54,8 @@ export type User = {
 
 export type Comment = {
   _id: string;
-  username: string;
+  user: Partial<User>;
+  track: Partial<Track>;
   text: string;
   createdAt: Date;
   updatedAt: Date;

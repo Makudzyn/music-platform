@@ -5,7 +5,7 @@ import mongoose, { Model } from "mongoose";
 import { CreatePlaylistDto } from "./dto/create-playlist.dto";
 import { FileService, FileType } from "../file/file.service";
 import { EditInfoDto } from "./dto/edit-info.dto";
-import { Track, TrackDocument } from "../track/schemas/track.schema";
+import { Track, TrackDocument } from "../track/track.schema";
 import { Artist, ArtistDocument } from "../artist/artist.schema";
 
 @Injectable()

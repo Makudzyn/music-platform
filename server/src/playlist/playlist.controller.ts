@@ -12,7 +12,7 @@ import { EditInfoDto } from "./dto/edit-info.dto";
 import { PlaylistOwnerGuard } from "./owner.guard";
 import { AddTrackDto } from "./dto/add-track.dto";
 import { EditTracksDto } from "./dto/edit-tracks.dto";
-import { Track } from "../track/schemas/track.schema";
+import { Track } from "../track/track.schema";
 
 @Controller('/playlists')
 export class PlaylistController {

@@ -9,6 +9,7 @@ import { FileModule } from "./file/file.module";
 import { PlaylistModule } from "./playlist/playlist.module";
 import { TrackModule } from "./track/track.module";
 import { ArtistModule } from "./artist/artist.module";
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
@@ -20,7 +21,8 @@ import { ArtistModule } from "./artist/artist.module";
     UserModule,
     AuthModule,
     PlaylistModule,
-    ArtistModule
+    ArtistModule,
+    CommentModule
   ],
 })
 export class AppModule {}

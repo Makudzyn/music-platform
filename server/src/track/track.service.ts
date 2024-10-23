@@ -1,14 +1,14 @@
 import { HttpException, HttpStatus, Injectable, NotAcceptableException, NotFoundException } from "@nestjs/common";
-import { Track, TrackDocument } from "./schemas/track.schema";
-import { Comment, CommentDocument } from "./schemas/comment.schema";
+import { Track, TrackDocument } from "./track.schema";
+import { Comment, CommentDocument } from "../comment/comment.schema";
 import mongoose, { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 import { PatchTrackDto } from "./dto/patch-track.dto";
-import { CreateCommentDto } from "./dto/create-comment.dto";
 import { FileService, FileType } from "../file/file.service";
 import { Artist, ArtistDocument } from "../artist/artist.schema";
 import { CreateTrackDto } from "./dto/create-track.dto";
 import { Playlist, PlaylistDocument } from "../playlist/playlist.schema";
+import { User, UserDocument } from "../user/user.schema";
 
 @Injectable()
 export class TrackService {
@@ -17,6 +17,7 @@ export class TrackService {
     @InjectModel(Comment.name) private commentModel: Model<CommentDocument>,
     @InjectModel(Artist.name) private artistModel: Model<ArtistDocument>,
     @InjectModel(Playlist.name) private playlistModel: Model<PlaylistDocument>,
+    @InjectModel(User.name) private userModel: Model<UserDocument>,
     private fileService: FileService
   ) {}
 
@@ -59,6 +60,14 @@ export class TrackService {
     .limit(limit)
     .populate('artist', '_id name')
     .populate('album', '_id title owner')
+    .populate({
+      path: 'comments',
+      populate: {
+        path: 'user',
+        select: '_id username avatar',
+      },
+      select: 'text createdAt',
+    })
     .exec();
   }
 
@@ -90,7 +99,14 @@ export class TrackService {
     return this.trackModel.findById(trackId)
     .populate('album', '_id title')
     .populate('artist', '_id name')
-    .populate('comments')
+    .populate({
+      path: 'comments',
+      populate: {
+        path: 'user',
+        select: '_id username avatar',
+      },
+      select: 'text createdAt',
+    })
     .exec();
   }
 
@@ -150,16 +166,6 @@ export class TrackService {
     }
 
     return patchedTrack;
-  }
-
-  async createComment(dto: CreateCommentDto): Promise<Comment> {
-    const track = await this.trackModel.findById(dto.trackId).exec();
-
-    if (!track) {throw new Error('Track not found')}
-    const comment = await this.commentModel.create({...dto});
-    track.comments.push(comment._id);
-    await track.save();
-    return comment;
   }
 
   async listen(trackId: mongoose.Types.ObjectId): Promise<void> {

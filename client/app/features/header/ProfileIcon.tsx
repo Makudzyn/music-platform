@@ -26,7 +26,7 @@ export default function ProfileIcon() {
             src="https://github.com/makudzyn.png"
             alt="User"
           />
-          <AvatarFallback>CN</AvatarFallback>
+          <AvatarFallback>User</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>

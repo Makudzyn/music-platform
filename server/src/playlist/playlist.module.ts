@@ -5,7 +5,7 @@ import { PlaylistService } from "./playlist.service";
 import { Playlist, PlaylistSchema } from "./playlist.schema";
 import { AuthModule } from "../auth/auth.module";
 import { FileService } from "../file/file.service";
-import { Track, TrackSchema } from "../track/schemas/track.schema";
+import { Track, TrackSchema } from "../track/track.schema";
 import { Artist, ArtistSchema } from "../artist/artist.schema";
 
 @Module({

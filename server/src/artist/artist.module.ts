@@ -5,7 +5,7 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { AuthModule } from "../auth/auth.module";
 import { Artist, ArtistSchema } from "./artist.schema";
 import { FileService } from "../file/file.service";
-import { Track, TrackSchema } from "../track/schemas/track.schema";
+import { Track, TrackSchema } from "../track/track.schema";
 
 @Module({
   imports: [

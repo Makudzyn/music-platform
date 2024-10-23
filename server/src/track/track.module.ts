@@ -3,10 +3,11 @@ import { TrackController } from "./track.controller";
 import { TrackService } from "./track.service";
 import { MongooseModule } from "@nestjs/mongoose";
 import { FileService } from "../file/file.service";
-import { Track, TrackSchema } from "./schemas/track.schema";
-import { Comment, CommentSchema } from "./schemas/comment.schema";
+import { Track, TrackSchema } from "./track.schema";
+import { Comment, CommentSchema } from "../comment/comment.schema";
 import { Playlist, PlaylistSchema } from "../playlist/playlist.schema";
 import { Artist, ArtistSchema } from "../artist/artist.schema";
+import { User, UserSchema } from "../user/user.schema";
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { Artist, ArtistSchema } from "../artist/artist.schema";
       {name: Playlist.name, schema: PlaylistSchema},
       {name: Artist.name, schema: ArtistSchema},
       {name: Comment.name, schema: CommentSchema},
+      {name: User.name, schema: UserSchema},
     ]),
   ],
   controllers: [TrackController],

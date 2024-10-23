@@ -47,3 +47,12 @@ export const searchTracks = async(query: string) => {
     throw error;
   }
 };
+
+export const postComment = async (formData: Object) => {
+  try {
+    const response = await axiosClient.post(`/comment`, formData);
+    return response.data
+  } catch (e) {
+    console.error("Error posting comment:", e)
+  }
+}

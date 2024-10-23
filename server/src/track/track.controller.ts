@@ -1,11 +1,9 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query, UploadedFiles, UseGuards, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UploadedFiles, UseGuards, UseInterceptors } from "@nestjs/common";
 import { TrackService } from "./track.service";
-import { Track } from "./schemas/track.schema";
-import { Comment } from "./schemas/comment.schema";
+import { Track } from "./track.schema";
 import { PatchTrackDto } from "./dto/patch-track.dto";
 import mongoose from "mongoose";
-import { CreateCommentDto } from "./dto/create-comment.dto";
-import { FileFieldsInterceptor, FileInterceptor } from "@nestjs/platform-express";
+import { FileFieldsInterceptor } from "@nestjs/platform-express";
 import { RolesGuard } from "../auth/guards/roles.guard";
 import { Roles } from "../auth/roles.decorator";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
@@ -96,14 +94,6 @@ export class TrackController {
   ): Promise<Track> {
     const {thumbnail, audio} = files;
     return this.trackService.patchTrack(trackId, patchTrackDto, thumbnail ? thumbnail[0] : undefined, audio ? audio[0] : undefined);
-  }
-
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles("ADMIN", "USER")
-  @Post('/comment')
-  @UseInterceptors(FileInterceptor(''))
-  createComment(@Body() dto: CreateCommentDto): Promise<Comment> {
-    return this.trackService.createComment(dto);
   }
 
   @Post('/listen/:trackId')
