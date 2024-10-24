@@ -1,5 +1,4 @@
-import { Input } from "@/components/ui/input";
-import { Menu, Search, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import CookieLogo from "@/app/features/logo/CookieLogo";
 import CurrentIcon from "@/app/features/header/CurrentIcon";
@@ -7,12 +6,10 @@ import SearchField from "@/app/features/header/SearchField";
 
 interface HeaderProps {
   isExpanded: boolean;
-  toggleDrawer: () => void;
+  toggleNavPanel: () => void;
 }
 
-
-
-export default function Header({isExpanded, toggleDrawer}: HeaderProps) {
+export default function Header({isExpanded, toggleNavPanel}: HeaderProps) {
   return (
     <header
       className="z-50 box-border flex h-16 w-full items-center justify-between border-b border-border bg-background">
@@ -20,7 +17,7 @@ export default function Header({isExpanded, toggleDrawer}: HeaderProps) {
         <Button
           variant="ghost"
           size="icon"
-          onClick={toggleDrawer}
+          onClick={toggleNavPanel}
           className="box-border rounded-none border-b border-transparent size-full hover:border-border">
           {isExpanded ? <X/> : <Menu/>}
           <span className="sr-only"> {isExpanded ? "Collapse menu" : "Expand menu"}</span>
@@ -32,7 +29,6 @@ export default function Header({isExpanded, toggleDrawer}: HeaderProps) {
           <CookieLogo/>
           <SearchField/>
         </div>
-
         <CurrentIcon/>
       </div>
     </header>

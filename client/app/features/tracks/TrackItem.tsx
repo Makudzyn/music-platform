@@ -32,10 +32,10 @@ export default function TrackItem({track, index}: TrackItemProps) {
   }
 
   return (
-    <div className="col-span-full grid items-center rounded-sm py-1 transition-all grid-cols-subgrid hover:bg-primary/30 group/buttons">
-      <div className="flex items-center justify-center size-12 relative">
+    <div className="col-span-full grid items-center rounded-sm py-1 transition-all grid-cols-subgrid group/buttons hover:bg-primary/30">
+      <div className="relative flex items-center justify-center size-12">
         {!isActive &&
-          <span className="text-base text-muted-foreground group-hover/buttons:opacity-0 transition-opacity">
+          <span className="text-base group-hover/buttons:opacity-0 transition-opacity text-muted-foreground">
             {index + 1}
           </span>
         }
@@ -69,16 +69,16 @@ export default function TrackItem({track, index}: TrackItemProps) {
         />
         <span className="font-medium decoration-foreground group-hover:underline">{track.title}</span>
       </Link>
-      <Link href={`artists/${track.artist?._id}`} className="group">
-        <span className="decoration-foreground group-hover:underline">{track.artist?.name}</span>
+      <Link href={`/artists/${track.artist._id}`} className="group">
+        <span className="decoration-foreground group-hover:underline">{track.artist.name}</span>
       </Link>
-      <Link href={`albums/${track.album?._id}`} className="group">
+      <Link href={`/albums/${track.album?._id}`} className="group">
         <span className="decoration-foreground group-hover:underline">{track.album?.title}</span>
       </Link>
       <div className="text-muted-foreground">
         {formatDate(track.createdAt)}
       </div>
-      <div className="text-muted-foreground flex justify-center items-center">
+      <div className="flex items-center justify-center text-muted-foreground">
         {isActive ? formatTime(currentPosition) : formatTime(track.duration)}
       </div>
     </div>

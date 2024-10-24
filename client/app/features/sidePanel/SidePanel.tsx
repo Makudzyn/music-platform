@@ -19,7 +19,7 @@ export default function SidePanel({isExpanded}: SidePanelProps) {
     <div
       className={cn(
         "h-full bg-background box-border border-r border-border transition-all duration-300 flex flex-col z-40",
-        isExpanded ? "w-64" : "w-16"
+        isExpanded ? "w-[16.55rem]" : "w-16"
       )}
     >
       <nav className="flex-1 py-3 transition-all duration-300">

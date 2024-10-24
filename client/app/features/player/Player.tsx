@@ -8,8 +8,14 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { useEffect, useRef } from "react";
 import { nextTrack, pause, play, setCurrentPosition, setCurrentTrack, setTotalDuration } from "@/lib/reducers/playerSlice";
 import { updateTrackListens } from "@/app/services/tracksService";
+import { ListMusic } from "lucide-react";
+import PlayerButton from "@/app/features/player/PlayerButton";
 
-export default function Player() {
+interface PlayerProps {
+  toggleQueuePanel: () => void;
+}
+
+export default function Player({ toggleQueuePanel }: PlayerProps) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const hasListenedRef = useRef(false);
   const dispatch = useAppDispatch();
@@ -103,6 +109,10 @@ export default function Player() {
         <TimeSlider audioRef={audioRef} />
       </div>
       <div className="flex flex-row justify-end w-[30%] min-w-40 pe-2">
+        <PlayerButton
+          onClick={toggleQueuePanel}
+          icon={<ListMusic/>}
+        />
         <VolumeSlider />
       </div>
     </div>

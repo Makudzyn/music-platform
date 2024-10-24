@@ -13,11 +13,7 @@ export default function VolumeSlider() {
     dispatch(setVolume(Number(value)));
   }
   return (
-    <div className="flex w-full flex-row items-center justify-end gap-2">
-      <PlayerButton
-        onClick={() => undefined}
-        icon={<ListMusic/>}
-      />
+    <div className="flex w-[14.5rem] flex-row items-center justify-end gap-2">
       <PlayerButton
         onClick={() => undefined}
         icon={
