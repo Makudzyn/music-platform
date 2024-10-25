@@ -40,13 +40,13 @@ export class TrackController {
   }
 
   @Get('/by-artist/:artistId')
-  getAllTracksByArtist(@Param('artistId') artistId: mongoose.Types.ObjectId) {
-    return this.trackService.getAllTracksByArtist(artistId);
+  getAllTracksByArtistId(@Param('artistId') artistId: mongoose.Types.ObjectId) {
+    return this.trackService.getAllTracksByArtistId(artistId);
   }
 
   @Get('/by-album/:albumId')
-  getAllTrackByAlbum(@Param('albumId') albumId: mongoose.Types.ObjectId) {
-    return this.trackService.getAllTracksByAlbum(albumId);
+  getAllTrackByAlbumId(@Param('albumId') albumId: mongoose.Types.ObjectId) {
+    return this.trackService.getAllTracksByAlbumId(albumId);
   }
 
   @Get('/search')
@@ -55,8 +55,8 @@ export class TrackController {
   }
 
   @Get(':trackId')
-  getOneTrack(@Param("trackId") trackId: mongoose.Types.ObjectId): Promise<Track> {
-    return this.trackService.getOneTrack(trackId);
+  getTrackById(@Param("trackId") trackId: mongoose.Types.ObjectId): Promise<Track> {
+    return this.trackService.getTrackById(trackId);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)

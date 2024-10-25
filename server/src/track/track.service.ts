@@ -71,7 +71,7 @@ export class TrackService {
     .exec();
   }
 
-  async getAllTracksByArtist(artistId: mongoose.Types.ObjectId) {
+  async getAllTracksByArtistId(artistId: mongoose.Types.ObjectId) {
     const artist = await this.artistModel.findById(artistId)
     if (!artist) {
       throw new NotFoundException(`Artist with ID ${artistId} not found`);
@@ -83,19 +83,19 @@ export class TrackService {
     .exec()
   }
 
-  async getAllTracksByAlbum(albumId: mongoose.Types.ObjectId) {
+  async getAllTracksByAlbumId(albumId: mongoose.Types.ObjectId) {
     const album = await this.playlistModel.findById(albumId);
     if (!album) {
       throw new NotFoundException(`Album with ID ${albumId} not found`);
     }
     return this.trackModel
     .find({album: albumId})
-    .populate('album', '_id name')
-    .populate('artist', '_id title')
+    .populate('artist', '_id name')
+    .populate('album', '_id title')
     .exec()
   }
 
-  async getOneTrack(trackId: mongoose.Types.ObjectId): Promise<Track> {
+  async getTrackById(trackId: mongoose.Types.ObjectId): Promise<Track> {
     return this.trackModel.findById(trackId)
     .populate('album', '_id title')
     .populate('artist', '_id name')

@@ -1,12 +1,12 @@
 import { useAppSelector, useEntityLoader, useUpdateQueue } from "@/lib/hooks";
 import { Fragment, MutableRefObject, useMemo } from "react";
-import { loadArtistById, makeSelectArtistViewData } from "@/lib/reducers/artistSlice";
+import { loadArtistById, makeSelectAlbumsByArtistId, makeSelectArtistById, makeSelectTracksByArtistId } from "@/lib/reducers/artistSlice";
 import ArtistHeader from "@/app/features/artists/ArtistHeader";
 import TrackListHeader from "@/app/features/tracks/TrackListHeader";
 import TrackListGeneric from "@/app/features/tracks/TrackListGeneric";
 import { loadTracksByArtistId } from "@/lib/reducers/trackSlice";
 import CarouselSection from "@/app/features/carousel/CarouselSection";
-import { loadAlbums, makeSelectAlbumsByArtistId } from "@/lib/reducers/albumSlice";
+import { loadAlbumsByArtistId } from "@/lib/reducers/albumSlice";
 import AlbumCard from "@/app/features/playlists/albums/AlbumCard";
 
 interface ArtistViewProps {
@@ -16,7 +16,7 @@ interface ArtistViewProps {
 
 export default function ArtistView({artistId, scrollRef}: ArtistViewProps) {
   const selectArtistViewData = useMemo(
-    () => makeSelectArtistViewData(artistId),
+    () => makeSelectArtistById(artistId),
     [artistId]
   );
 
@@ -25,21 +25,22 @@ export default function ArtistView({artistId, scrollRef}: ArtistViewProps) {
     [artistId]
   );
 
-  const { tracks, artist, loading: artistLoading, error: artistError } = useAppSelector(selectArtistViewData);
+  const selectTracksByArtistId = useMemo(
+    () => makeSelectTracksByArtistId(artistId),
+    [artistId]
+  )
+
+  const { artist, loading: artistLoading, error: artistError } = useAppSelector(selectArtistViewData);
+  const { tracks, loading: tracksLoading, error: tracksError } = useAppSelector(selectTracksByArtistId);
   const { albums, loading: albumLoading, error: albumError } = useAppSelector(selectAlbumsByArtistId);
 
-  const artistActions = useMemo(
-    () => [loadArtistById, loadTracksByArtistId],
+
+  const actions = useMemo(
+    () => [loadArtistById, loadTracksByArtistId, loadAlbumsByArtistId],
     []
   );
 
-  const albumActions = useMemo(
-    () => [loadAlbums],
-    []
-  )
-
-  useEntityLoader(artistId, artistActions);
-  useEntityLoader("0", albumActions);
+  useEntityLoader(artistId, actions);
   useUpdateQueue(tracks);
 
   if (artistLoading || albumLoading) return <div>Loading...</div>;

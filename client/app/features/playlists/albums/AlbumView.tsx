@@ -2,10 +2,11 @@
 
 import { useAppSelector, useEntityLoader, useUpdateQueue } from "@/lib/hooks";
 import { MutableRefObject, useMemo } from "react";
-import { loadAlbumById, makeSelectAlbumViewData } from "@/lib/reducers/albumSlice";
+import { loadAlbumById, makeSelectAlbumViewData, makeSelectTracksByAlbumId } from "@/lib/reducers/albumSlice";
 import AlbumHeader from "@/app/features/playlists/albums/AlbumHeader";
 import TrackListGeneric from "@/app/features/tracks/TrackListGeneric";
 import TrackListHeader from "@/app/features/tracks/TrackListHeader";
+import { loadTracksByAlbumId } from "@/lib/reducers/trackSlice";
 
 interface AlbumViewProps {
   albumId: string;
@@ -18,16 +19,23 @@ export default function AlbumView({albumId, scrollRef}: AlbumViewProps) {
     [albumId]
   )
 
-  const {album, tracks, loading, error} = useAppSelector(selectAlbumViewData);
+  const selectTracksByAlbumId = useMemo(
+    () => makeSelectTracksByAlbumId(albumId),
+    [albumId]
+  );
 
-  const actions = useMemo(() => [loadAlbumById], []);
+  const {album, loading: albumLoading, error: albumError} = useAppSelector(selectAlbumViewData);
+  const {tracks, loading: tracksLoading, error: tracksError} = useAppSelector(selectTracksByAlbumId);
+
+  const actions = useMemo(() => [loadAlbumById, loadTracksByAlbumId], []);
 
   useEntityLoader(albumId, actions);
   useUpdateQueue(tracks);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error</div>
+  if (albumLoading || tracksLoading) return <div>Loading...</div>;
+  if (albumError || tracksError) return <div>Error</div>
   if (!album) return <div>Album not found</div>;
+  if (!tracks) return <div>Tracks not found</div>;
 
   return (
     <>

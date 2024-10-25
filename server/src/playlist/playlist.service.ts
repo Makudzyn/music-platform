@@ -58,6 +58,18 @@ export class PlaylistService {
     .exec()
   }
 
+  async getAllAlbumsByArtistId(artistId: mongoose.Types.ObjectId): Promise<Playlist[]> {
+    const artist = await this.artistModel.findById(artistId)
+
+    if (!artist) {
+      throw new NotFoundException(`Artist with ID ${artistId} not found`)
+    }
+
+    return this.playlistModel
+    .find({artist: artistId})
+    .populate('artist', '_id name')
+  }
+
   async getPlaylistById(playlistId: mongoose.Types.ObjectId): Promise<Playlist> {
     await this.calculatePlaylistStats(playlistId);
     return this.playlistModel
@@ -65,19 +77,6 @@ export class PlaylistService {
     .populate('tracks', '_id title')
     .populate('artist', '_id name')
     .populate('owner', '_id username');
-  }
-
-  async getAllTracksInPlaylist(playlistId: mongoose.Types.ObjectId): Promise<Track[]> {
-    const tracks = await this.trackModel
-    .find({album: playlistId})
-    .populate('artist', '_id name')
-    .populate('album', '_id title')
-
-    if (!tracks) {
-      throw new NotFoundException(`Tracks for playlist with ID ${playlistId} not found`);
-    }
-
-    return tracks
   }
 
   async createPlaylist(createPlaylistDto: CreatePlaylistDto, userId: mongoose.Types.ObjectId) {

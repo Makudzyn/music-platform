@@ -11,7 +11,7 @@ export const fetchAlbumById = async (albumId: string): Promise<Playlist> => {
   return response.data
 }
 
-export const fetchAlbumTracks = async(albumId: string): Promise<Track[]> => {
-  const response = await axiosClient.get(`/playlists/tracks/${albumId}`);
+export const fetchAlbumsByArtistId = async(artistId: string): Promise<Playlist[]> => {
+  const response = await axiosClient.get(`/playlists/albums/${artistId}`);
   return response.data;
 }

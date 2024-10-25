@@ -32,14 +32,16 @@ export class PlaylistController {
     return this.playlistService.getAllAlbums(limit);
   }
 
+  @Get('/albums/:artistId')
+  getAllAlbumsByArtistId(
+    @Param('artistId') artistId: mongoose.Types.ObjectId
+  ): Promise<Playlist[]> {
+    return this.playlistService.getAllAlbumsByArtistId(artistId);
+  }
+
   @Get('/:playlistId')
   getPlaylistById(@Param('playlistId') playlistId: mongoose.Types.ObjectId): Promise<Playlist> {
     return this.playlistService.getPlaylistById(playlistId);
-  }
-
-  @Get('/tracks/:playlistId/')
-  getAllTracksInPlaylist(@Param('playlistId') playlistId: mongoose.Types.ObjectId): Promise<Track[]> {
-    return this.playlistService.getAllTracksInPlaylist(playlistId);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)

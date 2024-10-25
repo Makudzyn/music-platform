@@ -23,21 +23,48 @@ export const loadArtistById = createAsyncThunk<Artist, string, {state: RootState
   }
 )
 
-export const makeSelectArtistViewData = (artistId: string) =>
+export const makeSelectArtistById = (artistId: string) =>
   createSelector(
     [
-      (state: RootState) => state.tracks.tracks,
       (state: RootState) => state.artists.artists,
       (state: RootState) => state.artists.loading,
       (state: RootState) => state.artists.error
     ],
-    (tracks, artists, loading, error) => ({
-      tracks: tracks.filter(track => track.artist._id === artistId),
+    (artists, loading, error) => ({
       artist: artists.find(artist => artist._id === artistId),
       loading,
       error
     })
   );
+
+export const makeSelectAlbumsByArtistId = (artistId: string) =>
+  createSelector(
+    [
+      (state: RootState) => state.albums.albums,
+      (state: RootState) => state.albums.loading,
+      (state: RootState) => state.albums.error
+    ],
+    (albums, loading, error) => ({
+      albums: albums.filter(album => album.artist._id === artistId),
+      loading,
+      error
+    })
+  );
+
+export const makeSelectTracksByArtistId = (artistId: string) =>
+  createSelector(
+    [
+      (state: RootState) => state.tracks.tracks,
+      (state: RootState) => state.tracks.loading,
+      (state: RootState) => state.tracks.error
+    ],
+    (tracks, loading, error) => ({
+      tracks: tracks.filter(track => track.artist._id === artistId),
+      loading,
+      error
+    })
+  );
+
 
 type ArtistsState = {
   artists: Artist[];
