@@ -2,9 +2,9 @@
 
 import { useAppSelector, useEntityLoader, useUpdateQueue } from "@/lib/hooks";
 import { Fragment, useMemo } from "react";
-import { loadTracks } from "@/lib/reducers/trackSlice";
 import TrackCard from "@/app/features/tracks/TrackCard";
 import CarouselSection from "@/app/features/carousel/CarouselSection";
+import { loadTracks } from "@/lib/redux/trackReducer/trackActions";
 
 export default function TrackSection() {
   const {tracks, loading, error} = useAppSelector(state => state.tracks);

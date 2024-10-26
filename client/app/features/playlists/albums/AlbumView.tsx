@@ -2,11 +2,13 @@
 
 import { useAppSelector, useEntityLoader, useUpdateQueue } from "@/lib/hooks";
 import { MutableRefObject, useMemo } from "react";
-import { loadAlbumById, makeSelectAlbumViewData, makeSelectTracksByAlbumId } from "@/lib/reducers/albumSlice";
 import AlbumHeader from "@/app/features/playlists/albums/AlbumHeader";
 import TrackListGeneric from "@/app/features/tracks/TrackListGeneric";
 import TrackListHeader from "@/app/features/tracks/TrackListHeader";
-import { loadTracksByAlbumId } from "@/lib/reducers/trackSlice";
+import { loadTracksByAlbumId } from "@/lib/redux/trackReducer/trackActions";
+import { makeSelectAlbumViewData } from "@/lib/redux/albumReducer/albumSelectors";
+import { loadAlbumById } from "@/lib/redux/albumReducer/albumActions";
+import { makeSelectTracksByAlbumId } from "@/lib/redux/trackReducer/trackSelectors";
 
 interface AlbumViewProps {
   albumId: string;

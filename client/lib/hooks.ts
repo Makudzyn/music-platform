@@ -2,7 +2,7 @@ import { useDispatch, useSelector, useStore } from 'react-redux'
 import type { AppDispatch, AppStore, RootState } from './store'
 import { Track } from "@/lib/defenitions";
 import { useCallback, useEffect, useRef } from "react";
-import { setQueue } from "@/lib/reducers/playerSlice";
+import { setQueue } from "@/lib/redux/playerSlice";
 import { AsyncThunk } from "@reduxjs/toolkit";
 
 export const useAppDispatch = useDispatch.withTypes<AppDispatch>()

@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { Track } from "@/lib/defenitions";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -86,4 +87,15 @@ export function formatTotalDuration(totalSeconds: number): string {
   }
 }
 
+//Redux functions
+export const createLoadThunk = <T extends string>(
+  type: string,
+  fetchFunction: (id: T) => Promise<Object[]>
+) =>
+  createAsyncThunk<Object[], T>(
+    type,
+    async (id: T) => {
+      return await fetchFunction(id);
+    }
+  );
 

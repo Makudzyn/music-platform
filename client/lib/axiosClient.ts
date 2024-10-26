@@ -3,7 +3,7 @@ import { getCookie, setCookie } from 'cookies-next';
 import { jwtDecode } from "jwt-decode";
 import { DecodedToken } from "@/lib/defenitions";
 import { useDispatch } from "react-redux";
-import { updateRole } from "@/lib/reducers/authSlice"; // cookies-next для работы с куки
+import { updateRole } from "@/lib/redux/authSlice"; // cookies-next для работы с куки
 
 // Создание экземпляра axios
 const axiosClient = axios.create({

@@ -1,4 +1,4 @@
-import { ReactNode, useEffect } from "react";
+import { ReactNode } from "react";
 
 const steps = ["Track info", "Upload thumbnail", "Upload audio"];
 

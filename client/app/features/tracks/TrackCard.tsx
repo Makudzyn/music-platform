@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Track } from "@/lib/defenitions";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "@/lib/hooks";
-import { pause, play, setCurrentTrack } from "@/lib/reducers/playerSlice";
+import { pause, play, setCurrentTrack } from "@/lib/redux/playerSlice";
 import Image from "next/image";
 import { Pause, Play } from "lucide-react";
 import Link from "next/link";

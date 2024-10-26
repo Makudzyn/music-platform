@@ -2,7 +2,7 @@ import axiosClient from "@/lib/axiosClient";
 import { setCookie } from "cookies-next";
 import { jwtDecode } from "jwt-decode";
 import { useDispatch } from "react-redux";
-import { loginSuccess } from "@/lib/reducers/authSlice";
+import { loginSuccess } from "@/lib/redux/authSlice";
 import { DecodedToken } from "@/lib/defenitions";
 
 interface LoginResponse {

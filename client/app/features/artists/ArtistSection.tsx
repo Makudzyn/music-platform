@@ -1,11 +1,10 @@
 'use client';
 
-import { useAppDispatch, useAppSelector, useEntityLoader, useUpdateQueue } from "@/lib/hooks";
-import { Fragment, useEffect, useMemo } from "react";
-import { loadArtistById, loadArtists } from "@/lib/reducers/artistSlice";
+import { useAppSelector, useEntityLoader } from "@/lib/hooks";
+import { Fragment, useMemo } from "react";
 import ArtistCard from "@/app/features/artists/ArtistCard";
 import CarouselSection from "@/app/features/carousel/CarouselSection";
-import { loadTracksByArtistId } from "@/lib/reducers/trackSlice";
+import { loadArtists } from "@/lib/redux/artistReducer/artistActions";
 
 export default function ArtistSection() {
   const {artists, loading, error} = useAppSelector(state => state.artists);

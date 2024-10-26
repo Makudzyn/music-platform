@@ -12,7 +12,7 @@ interface QueuePanelProps {
 
 export default function QueuePanel({isExpanded}: QueuePanelProps) {
   const {queue} = useAppSelector(state => state.player);
-  console.log("Tracks in Q:", queue)
+
   return (
     <ScrollArea
       className={cn(

@@ -2,8 +2,8 @@
 
 import { useAppSelector, useEntityLoader, useUpdateQueue } from "@/lib/hooks";
 import { useMemo } from "react";
-import { loadTracks } from "@/lib/reducers/trackSlice";
 import TrackListGeneric from "@/app/features/tracks/TrackListGeneric";
+import { loadTracks } from "@/lib/redux/trackReducer/trackActions";
 
 export default function TrackList() {
   const {tracks, loading, error} = useAppSelector(state => state.tracks);

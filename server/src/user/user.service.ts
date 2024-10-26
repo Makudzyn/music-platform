@@ -4,7 +4,6 @@ import mongoose, { Model } from 'mongoose';
 import { User, UserDocument } from './user.schema';
 import { CreateUserDto } from "./dto/create-user.dto";
 import { v4 as uuidv4 } from "uuid";
-import { Multer } from "multer";
 import { FileService, FileType } from "../file/file.service";
 import { PatchUserDto } from "./dto/patch-user.dto";
 

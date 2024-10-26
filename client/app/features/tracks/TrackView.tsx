@@ -1,11 +1,12 @@
 'use client';
 
-import { MutableRefObject, useMemo } from "react";
-import { loadTrackById, makeSelectTrackViewData } from "@/lib/reducers/trackSlice";
+import { useMemo } from "react";
 import { useAppSelector, useEntityLoader } from "@/lib/hooks";
 import TrackHeader from "@/app/features/tracks/TrackHeader";
 import TrackLyrics from "@/app/features/tracks/TrackLyrics";
 import TrackComments from "@/app/features/tracks/TrackComments";
+import { makeSelectTrackViewData } from "@/lib/redux/trackReducer/trackSelectors";
+import { loadTrackById } from "@/lib/redux/trackReducer/trackActions";
 
 interface TrackViewProps {
   trackId: string;

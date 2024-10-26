@@ -1,5 +1,4 @@
 import CookieLogo from "@/app/features/logo/CookieLogo";
-import LoginForm from "@/app/features/auth/LoginForm";
 import { ReactNode } from "react";
 import { Metadata } from "next";
 

@@ -6,7 +6,7 @@ import PlayerControls from "@/app/features/player/PlayerControls";
 import SongInfo from "@/app/features/player/SongInfo";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { useEffect, useRef } from "react";
-import { nextTrack, pause, play, setCurrentPosition, setCurrentTrack, setTotalDuration } from "@/lib/reducers/playerSlice";
+import { nextTrack, pause, play, setCurrentPosition, setCurrentTrack, setTotalDuration } from "@/lib/redux/playerSlice";
 import { updateTrackListens } from "@/app/services/tracksService";
 import { ListMusic } from "lucide-react";
 import PlayerButton from "@/app/features/player/PlayerButton";

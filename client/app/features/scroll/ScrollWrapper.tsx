@@ -1,5 +1,5 @@
 import * as ScrollArea from "@radix-ui/react-scroll-area";
-import { LegacyRef, ReactNode, RefObject } from "react";
+import { LegacyRef, ReactNode } from "react";
 
 interface ScrollWrapperProps {
   children: ReactNode;

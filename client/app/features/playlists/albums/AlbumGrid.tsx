@@ -2,8 +2,8 @@
 
 import { useAppSelector, useEntityLoader } from "@/lib/hooks";
 import { Fragment, useMemo } from "react";
-import { loadAlbums } from "@/lib/reducers/albumSlice";
 import PlaylistCard from "@/app/features/playlists/PlaylistCard";
+import { loadAlbums } from "@/lib/redux/albumReducer/albumActions";
 
 export default function AlbumGrid() {
   const {albums, loading, error} = useAppSelector(state => state.albums);

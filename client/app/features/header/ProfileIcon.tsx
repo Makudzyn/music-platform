@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LogOut } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { deleteCookie } from "cookies-next";
-import { logout } from "@/lib/reducers/authSlice";
+import { logout } from "@/lib/redux/authSlice";
 import { redirect } from "next/navigation";
 
 export default function ProfileIcon() {

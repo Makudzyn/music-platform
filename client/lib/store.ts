@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit'
-import playerReducer from "@/lib/reducers/playerSlice";
-import trackReducer from "@/lib/reducers/trackSlice";
-import authReducer from "@/lib/reducers/authSlice";
-import albumReducer from "@/lib/reducers/albumSlice";
-import artistReducer from "@/lib/reducers/artistSlice";
+import playerReducer from "@/lib/redux/playerSlice";
+import trackReducer from "@/lib/redux/trackReducer/trackSlice";
+import authReducer from "@/lib/redux/authSlice";
+import albumReducer from "@/lib/redux/albumReducer/albumSlice";
+import artistReducer from "@/lib/redux/artistReducer/artistSlice";
 
 export const makeStore = () => {
   return configureStore({
