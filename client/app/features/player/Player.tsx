@@ -4,7 +4,7 @@ import TimeSlider from "@/app/features/player/TimeSlider";
 import VolumeSlider from "@/app/features/player/VolumeSlider";
 import PlayerControls from "@/app/features/player/PlayerControls";
 import SongInfo from "@/app/features/player/SongInfo";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks/hooks";
 import { useEffect, useRef } from "react";
 import { nextTrack, pause, play, setCurrentPosition, setCurrentTrack, setTotalDuration } from "@/lib/redux/playerSlice";
 import { updateTrackListens } from "@/app/services/tracksService";

@@ -1,7 +1,7 @@
 'use client';
 
 import { Track } from "@/lib/defenitions";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks/hooks";
 import { pause, play, setCurrentTrack } from "@/lib/redux/playerSlice";
 import { cn } from "@/lib/utils";
 import { Pause, Play } from "lucide-react";

@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { Fragment } from "react";
-import { useAppSelector } from "@/lib/hooks";
+import { useAppSelector } from "@/lib/hooks/hooks";
 import QueueItem from "@/app/features/queue/QueueItem";
 import { ScrollArea } from "@/components/ui/scroll-area";
 

@@ -27,7 +27,6 @@ export class UserService {
     return newUser.save();
   }
 
-
   // Получение пользователя по email
   async findByEmail(email: string): Promise<User | undefined> {
     return this.userModel.findOne({ email });
@@ -54,14 +53,19 @@ export class UserService {
   }
 
   // Получение пользователя по id
-  async findById(userId: mongoose.Types.ObjectId): Promise<User | undefined> {
-    return this.userModel.findById(userId).exec();
+  async getUserById(userId: mongoose.Types.ObjectId): Promise<User> {
+    const existingUser = await this.userModel
+    .findById(userId)
+    .select("_id username avatar email createdAt role playlists bio");
+    if (!existingUser) {
+      throw new NotFoundException(`User with ID ${userId} not found`);
+    }
+    return existingUser
   }
 
   // Обновление данных пользователя
   async updateUser(userId: mongoose.Types.ObjectId, patchUserDto: PatchUserDto, avatar: Express.Multer.File): Promise<User> {
     const existingUser = await this.userModel.findById(userId).exec();
-
 
     if (!existingUser) {
       throw new NotFoundException(`User with ID ${userId} not found`);
@@ -75,6 +79,7 @@ export class UserService {
     const patchedUserData = {
       username: patchUserDto.username || existingUser.username,
       email: patchUserDto.email || existingUser.email,
+      bio: patchUserDto.bio || existingUser.bio,
       avatar: processedAvatar ? processedAvatar.dynamicPath : existingUser.avatar,
     }
 

@@ -2,7 +2,7 @@
 
 import { MutableRefObject } from "react";
 import { setCurrentPosition } from "@/lib/redux/playerSlice";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks/hooks";
 import { formatTime } from "@/lib/utils";
 import * as Slider from '@radix-ui/react-slider';
 

@@ -22,5 +22,9 @@ export function middleware(req: NextRequest) {
 
 // Применить middleware к определённым маршрутам
 export const config = {
-  matcher: ['/admin', '/profile', '/settings'],
+  matcher: [
+    '/admin',
+    '/profile',
+    '/settings',
+  ],
 };

@@ -5,17 +5,21 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LogOut } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { deleteCookie } from "cookies-next";
-import { logout } from "@/lib/redux/authSlice";
-import { redirect } from "next/navigation";
+import { logout } from "@/lib/redux/userReducer/userSlice";
+import { useRouter } from "next/navigation";
+import { useAppSelector } from "@/lib/hooks/hooks";
+import { selectCurrentUser } from "@/lib/redux/userReducer/userSelectors";
 
 export default function ProfileIcon() {
   const dispatch = useDispatch();
+  const router = useRouter();
+  const user = useAppSelector(selectCurrentUser);
 
   const handleLogout = () => {
     deleteCookie('accessToken');
     deleteCookie('refreshToken');
     dispatch(logout())
-    redirect("/auth/login");
+    router.push("/auth/login");
   };
 
   return (
@@ -23,17 +27,17 @@ export default function ProfileIcon() {
       <DropdownMenuTrigger asChild>
         <Avatar>
           <AvatarImage
-            src="https://github.com/makudzyn.png"
-            alt="User"
+            src={`http://localhost:5000/${user.avatar}`}
+            alt={`${user.username}'s avatar`}
           />
-          <AvatarFallback>User</AvatarFallback>
+          <AvatarFallback>${user.username}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem onSelect={() => console.log("Profile clicked")}>
+        <DropdownMenuItem onSelect={() => router.push("/user/profile")}>
           Profile
         </DropdownMenuItem>
-        <DropdownMenuItem onSelect={() => console.log("Settings clicked")}>
+        <DropdownMenuItem onSelect={() => router.push("/user/settings")}>
           Settings
         </DropdownMenuItem>
         <DropdownMenuItem onSelect={handleLogout}>

@@ -18,6 +18,9 @@ export class User {
   role: string;
 
   @Prop()
+  bio: string;
+
+  @Prop()
   passwordHash: string;
 
   @Prop()

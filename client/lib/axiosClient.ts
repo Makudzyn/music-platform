@@ -1,9 +1,6 @@
 import axios from 'axios';
-import { getCookie, setCookie } from 'cookies-next';
-import { jwtDecode } from "jwt-decode";
-import { DecodedToken } from "@/lib/defenitions";
-import { useDispatch } from "react-redux";
-import { updateRole } from "@/lib/redux/authSlice"; // cookies-next для работы с куки
+import { getCookie } from 'cookies-next';
+import { refreshAccessToken } from "@/app/services/authService";
 
 // Создание экземпляра axios
 const axiosClient = axios.create({
@@ -46,6 +43,8 @@ axiosClient.interceptors.response.use(
 
     // Если ошибка 401, пытаемся обновить токен
     if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
@@ -57,35 +56,16 @@ axiosClient.interceptors.response.use(
         });
       }
 
-      originalRequest._retry = true;
       isRefreshing = true;
 
-      const refreshToken = getCookie('refreshToken'); // Получение refresh-токена из куки
-
-      if (!refreshToken) {
-        // Если нет refresh-токена, редиректим на страницу логина
-        window.location.href = '/auth/login';
-        return Promise.reject(error);
-      }
 
       try {
         // Отправляем запрос на обновление токена
-        const response = await axios.post('http://localhost:5000/auth/refresh', { refreshToken });
+        const newAccessToken = await refreshAccessToken();
 
-        const { accessToken } = response.data;
-
-        // Обновляем куки с новым access-токеном
-        setCookie('accessToken', accessToken);
-
-        // Обновляем роль пользователя, если нужно
-        const dispatch = useDispatch();
-        const decoded: DecodedToken = jwtDecode(accessToken);
-        dispatch(updateRole(decoded.role));
-
+        processQueue(null, newAccessToken);
         // Повторяем исходный запрос с новым токеном
-        originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-
-        processQueue(null, accessToken);
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
 
         return axiosClient(originalRequest);
       } catch (refreshError) {

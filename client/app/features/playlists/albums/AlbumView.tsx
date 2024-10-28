@@ -1,6 +1,6 @@
 'use client';
 
-import { useAppSelector, useEntityLoader, useUpdateQueue } from "@/lib/hooks";
+import { useAppSelector, useEntityLoader, useUpdateQueue } from "@/lib/hooks/hooks";
 import { MutableRefObject, useMemo } from "react";
 import AlbumHeader from "@/app/features/playlists/albums/AlbumHeader";
 import TrackListGeneric from "@/app/features/tracks/TrackListGeneric";

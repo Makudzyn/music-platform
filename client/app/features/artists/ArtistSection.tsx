@@ -1,6 +1,6 @@
 'use client';
 
-import { useAppSelector, useEntityLoader } from "@/lib/hooks";
+import { useAppSelector, useEntityLoader } from "@/lib/hooks/hooks";
 import { Fragment, useMemo } from "react";
 import ArtistCard from "@/app/features/artists/ArtistCard";
 import CarouselSection from "@/app/features/carousel/CarouselSection";

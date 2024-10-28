@@ -1,6 +1,6 @@
 'use client';
 
-import { useAppSelector, useEntityLoader, useUpdateQueue } from "@/lib/hooks";
+import { useAppSelector, useEntityLoader, useUpdateQueue } from "@/lib/hooks/hooks";
 import { Fragment, useMemo } from "react";
 import TrackCard from "@/app/features/tracks/TrackCard";
 import CarouselSection from "@/app/features/carousel/CarouselSection";

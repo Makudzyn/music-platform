@@ -1,4 +1,4 @@
-import { useAppSelector, useEntityLoader, useUpdateQueue } from "@/lib/hooks";
+import { useAppSelector, useEntityLoader, useUpdateQueue } from "@/lib/hooks/hooks";
 import { Fragment, MutableRefObject, useMemo } from "react";
 import ArtistHeader from "@/app/features/artists/ArtistHeader";
 import TrackListHeader from "@/app/features/tracks/TrackListHeader";

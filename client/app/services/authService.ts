@@ -1,8 +1,8 @@
 import axiosClient from "@/lib/axiosClient";
-import { setCookie } from "cookies-next";
+import { getCookie, setCookie } from "cookies-next";
 import { jwtDecode } from "jwt-decode";
 import { useDispatch } from "react-redux";
-import { loginSuccess } from "@/lib/redux/authSlice";
+import { loginSuccess } from "@/lib/redux/userReducer/userSlice";
 import { DecodedToken } from "@/lib/defenitions";
 
 interface LoginResponse {
@@ -28,13 +28,18 @@ export const useAuthenticate = () => {
 
     if (data) {
       const decoded: DecodedToken = jwtDecode(data.accessToken);
+      const userData = {
+        "_id": decoded.sub,
+        "username": decoded.username,
+        "role": decoded.role
+      };
 
       // Установка access и refresh токенов в куки
       setCookie('accessToken', data.accessToken);
       setCookie('refreshToken', data.refreshToken);
 
       // Сохранение роли в глобальном состоянии
-      dispatch(loginSuccess({role: decoded.role}));
+      dispatch(loginSuccess(userData));
     }
   };
 
@@ -57,5 +62,21 @@ export const emailConfirmation = async (token: string) => {
   } catch (error) {
     console.error("Email confirmation error:", error.response?.data?.message || error.message);
     throw new Error(error.response?.data?.message || 'Error during email confirmation');
+  }
+}
+
+export const refreshAccessToken = async () => {
+  const refreshToken = getCookie('refreshToken');
+  if (!refreshToken) {
+    throw new Error("Refresh token is missing");
+  }
+  try {
+    const response = await axiosClient.post('/auth/refresh', { refreshToken });
+    const { accessToken } = response.data;
+    setCookie('accessToken', accessToken);
+    return accessToken;
+  } catch (error) {
+    console.error("Error refreshing token:", error.response?.data?.message || error.message);
+    throw new Error(error.response?.data?.message || 'Error during token refresh');
   }
 }

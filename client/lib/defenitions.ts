@@ -66,7 +66,9 @@ export type RepeatMode = "none" | "all" | "one";
 export type PlaylistType = "album" | "playlist";
 
 export type DecodedToken = {
+  _id: string;
   role: string;
+  username: string;
   sub: string;
   exp: number;
 }

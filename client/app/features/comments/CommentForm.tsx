@@ -6,11 +6,11 @@ import { useParams } from "next/navigation";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { MessageSquare } from "lucide-react";
-import { fetchMe } from "@/app/services/userService";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { postComment } from "@/app/services/tracksService";
+import { useAuthState } from "@/lib/hooks/hooks";
 
 // Define form validation schema
 const formSchema = z.object({
@@ -24,7 +24,7 @@ export default function CommentForm() {
   const [error, setError] = useState<string | null>(null);
   const params = useParams();
   const trackId = params.id;
-
+  const {user, isAuthenticated} = useAuthState();
   const {
     register,
     handleSubmit,
@@ -39,15 +39,13 @@ export default function CommentForm() {
       setIsLoading(true);
       setError(null);
 
-      const {userId} = await fetchMe();
-
-      if (!userId) {
+      if (!user) {
         throw new Error("User not found");
       }
 
       const commentData = {
         ...data,
-        user: userId,
+        user: user._id,
         track: trackId
       }
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks/hooks";
 import { nextTrack, pause, play, previousTrack, setRepeatMode, toggleShuffle } from "@/lib/redux/playerSlice";
 import { Pause, Play, Repeat, Repeat1, Shuffle, SkipBack, SkipForward } from "lucide-react";
 import PlayerButton from "@/app/features/player/PlayerButton";

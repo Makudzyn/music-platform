@@ -1,6 +1,6 @@
 'use client';
 
-import { useAppSelector, useEntityLoader } from "@/lib/hooks";
+import { useAppSelector, useEntityLoader } from "@/lib/hooks/hooks";
 import { Fragment, useMemo } from "react";
 import PlaylistCard from "@/app/features/playlists/PlaylistCard";
 import { loadAlbums } from "@/lib/redux/albumReducer/albumActions";

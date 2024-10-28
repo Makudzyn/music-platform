@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Track } from "@/lib/defenitions";
 import Link from "next/link";
 import { pause, play, setCurrentTrack } from "@/lib/redux/playerSlice";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks/hooks";
 import { cn, formatDate, formatTime } from "@/lib/utils";
 import { Pause, Play } from "lucide-react";
 

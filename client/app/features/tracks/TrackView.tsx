@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo } from "react";
-import { useAppSelector, useEntityLoader } from "@/lib/hooks";
+import { useAppSelector, useEntityLoader } from "@/lib/hooks/hooks";
 import TrackHeader from "@/app/features/tracks/TrackHeader";
 import TrackLyrics from "@/app/features/tracks/TrackLyrics";
 import TrackComments from "@/app/features/tracks/TrackComments";

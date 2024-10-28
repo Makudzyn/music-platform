@@ -27,7 +27,7 @@ export class UserController {
 
   @Get(':userId')
   getUserById(@Param('userId') userId: mongoose.Types.ObjectId) {
-    return this.userService.findById(userId);
+    return this.userService.getUserById(userId);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)

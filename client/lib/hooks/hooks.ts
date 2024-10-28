@@ -1,9 +1,10 @@
 import { useDispatch, useSelector, useStore } from 'react-redux'
-import type { AppDispatch, AppStore, RootState } from './store'
+import type { AppDispatch, AppStore, RootState } from '../store'
 import { Track } from "@/lib/defenitions";
 import { useCallback, useEffect, useRef } from "react";
 import { setQueue } from "@/lib/redux/playerSlice";
 import { AsyncThunk } from "@reduxjs/toolkit";
+import { selectCurrentUser, selectUserError, selectIsAuthenticated, selectUserLoading } from "@/lib/redux/userReducer/userSelectors";
 
 export const useAppDispatch = useDispatch.withTypes<AppDispatch>()
 export const useAppSelector = useSelector.withTypes<RootState>()
@@ -47,3 +48,17 @@ export function useEntityLoader(
     return () => {};
   }, [loadData]);
 }
+
+export const useAuthState = () => {
+  const currentUser = useSelector(selectCurrentUser);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const isLoading = useSelector(selectUserLoading);
+  const error = useSelector(selectUserError);
+
+  return {
+    user: currentUser,
+    isAuthenticated,
+    isLoading,
+    error
+  };
+};

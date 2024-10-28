@@ -4,6 +4,7 @@ import { ReactNode } from "react";
 import { Metadata } from "next";
 import StoreProvider from "@/app/StoreProvider";
 import GridWrapper from "@/app/features/GridWrapper";
+import { AuthProvider } from "@/app/AuthProvider";
 
 export const metadata: Metadata = {
   title: {
@@ -18,9 +19,11 @@ export default function RootLayout({children}: {children: ReactNode}) {
     <html lang="en">
     <body className={`${inter.className} antialiasing`}>
     <StoreProvider>
-      <GridWrapper>
-        {children}
-      </GridWrapper>
+      <AuthProvider>
+        <GridWrapper>
+          {children}
+        </GridWrapper>
+      </AuthProvider>
     </StoreProvider>
     </body>
     </html>

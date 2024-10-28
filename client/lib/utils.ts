@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import { Track } from "@/lib/defenitions";
+import { DecodedToken, Track } from "@/lib/defenitions";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export function cn(...inputs: ClassValue[]) {
@@ -86,6 +86,10 @@ export function formatTotalDuration(totalSeconds: number): string {
     return `about ${hours} hr ${remainingMinutes} min`;
   }
 }
+
+export const isTokenExpired = (decodedToken: DecodedToken) => {
+  return decodedToken.exp * 1000 < Date.now();
+};
 
 //Redux functions
 export const createLoadThunk = <T extends string>(
