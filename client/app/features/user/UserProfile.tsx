@@ -10,6 +10,7 @@ import { selectCurrentUser } from "@/lib/redux/userReducer/userSelectors";
 
 
 export default function UserProfile() {
+
   const user = useAppSelector(selectCurrentUser);
 
   return (
@@ -19,7 +20,7 @@ export default function UserProfile() {
           <div className="relative w-32 h-32">
             <Image
               src={`http://localhost:5000/${user.avatar}`}
-              alt={`${user.name}'s avatar`}
+              alt={`${user.username}'s avatar`}
               fill
               className="rounded-full object-cover"
               sizes="128px"

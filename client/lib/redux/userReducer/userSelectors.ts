@@ -1,8 +1,9 @@
 // Базовые селекторы
 import { RootState } from "@/lib/store";
 import { createSelector } from "@reduxjs/toolkit";
+import { User } from "@/lib/defenitions";
 
-export const selectCurrentUser = (state: RootState) => state.user.currentUser;
+export const selectCurrentUser = (state: RootState): User => state.user.currentUser;
 export const selectIsAuthenticated = (state: RootState) => state.user.isAuthenticated;
 const selectUsers = (state: RootState) => state.user.users;
 export const selectUserLoading = (state: RootState) => state.user.loading;

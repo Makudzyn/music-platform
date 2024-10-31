@@ -47,7 +47,7 @@ export default function PlayerControls() {
       <div className="flex items-center justify-center">
         <div
           onClick={handlePlayPause}
-          className="cursor-pointer rounded-full bg-white p-1 shadow-sm transition-all duration-300 shadow-foreground hover:scale-110 hover:shadow-accent hover:shadow"
+          className="cursor-pointer rounded-full bg-background p-1 shadow-sm transition-all duration-300 shadow-foreground hover:scale-110 hover:shadow-accent hover:shadow"
         >
           {paused ?
             <Play className={"size-6 pl-0.5 fill-foreground text-foreground"}/> :

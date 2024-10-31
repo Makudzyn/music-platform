@@ -17,7 +17,7 @@ export default function ArtistHeader({artist}: ArtistHeaderProps) {
   return (
     <div className="mb-4 h-full">
       <div className="relative">
-        <div className="absolute inset-0 z-10 bg-gradient-to-t to-transparent from-foreground"/>
+        <div className="absolute inset-0 z-10 bg-gradient-to-t to-transparent from-foreground dark:from-background"/>
         <div className={cn(
           "relative overflow-hidden transition-all duration-500",
           isExpanded ? "h-[32rem]" : "h-[28rem]"
@@ -31,16 +31,17 @@ export default function ArtistHeader({artist}: ArtistHeaderProps) {
             priority
           />
           <div
-            className="absolute inset-x-0 bottom-0 z-20 h-6 bg-gradient-to-t to-transparent from-background"/>
+            className="absolute inset-x-0 bottom-0 z-20 h-6 bg-gradient-to-t to-transparent from-background "/>
         </div>
         <div className="absolute bottom-0 left-0 z-20 max-w-2xl p-6">
-          <h1 className="mb-4 text-4xl font-bold drop-shadow-lg text-primary-foreground md:text-6xl">
+          <h1
+            className="mb-4 text-4xl font-bold drop-shadow-lg text-primary-foreground dark:text-foreground md:text-6xl">
             {artist.name}
           </h1>
           <div className="relative">
             <p
               className={cn(
-                "text-sm md:text-base text-primary-foreground/90 mb-2 transition-all duration-500 drop-shadow-md",
+                "text-sm md:text-base text-primary-foreground/90 dark:text-foreground/90 mb-2 transition-all duration-500 drop-shadow-md",
                 isExpanded ? 'max-h-[62.5rem]' : 'max-h-12 overflow-hidden opacity-90'
               )}>
               {artist.aboutInfo}
@@ -49,7 +50,7 @@ export default function ArtistHeader({artist}: ArtistHeaderProps) {
               <Button
                 variant="ghost"
                 size="sm"
-                className="mt-1 p-0 transition-all duration-500 text-primary-foreground/80 hover:text-primary-foreground"
+                className="mt-1 p-0 transition-all duration-500 text-primary-foreground/80 dark:text-foreground/80 hover:text-primary-foreground dark:hover:text-foreground"
                 onClick={() => setIsExpanded(!isExpanded)}
               >
                 {isExpanded ? (
@@ -64,7 +65,7 @@ export default function ArtistHeader({artist}: ArtistHeaderProps) {
               </Button>
             )}
           </div>
-          <p className="text-sm text-primary-foreground/80">
+          <p className="text-sm text-primary-foreground/80 dark:text-foreground/80">
             {artist.totalListens} all time listens
           </p>
         </div>

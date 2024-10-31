@@ -2,9 +2,10 @@ import "./globals.css";
 import { inter } from '@/app/features/fonts';
 import { ReactNode } from "react";
 import { Metadata } from "next";
-import StoreProvider from "@/app/StoreProvider";
+import StoreProvider from "@/app/providers/StoreProvider";
 import GridWrapper from "@/app/features/GridWrapper";
-import { AuthProvider } from "@/app/AuthProvider";
+import { AuthProvider } from "@/app/providers/AuthProvider";
+import { ThemeProvider } from "@/app/providers/ThemeProvider";
 
 export const metadata: Metadata = {
   title: {
@@ -16,16 +17,23 @@ export const metadata: Metadata = {
 
 export default function RootLayout({children}: {children: ReactNode}) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
     <body className={`${inter.className} antialiasing`}>
     <StoreProvider>
       <AuthProvider>
-        <GridWrapper>
-          {children}
-        </GridWrapper>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+        >
+          <GridWrapper>
+            {children}
+          </GridWrapper>
+        </ThemeProvider>
       </AuthProvider>
     </StoreProvider>
     </body>
     </html>
   );
 }
+

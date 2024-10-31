@@ -13,7 +13,7 @@ export default function VolumeSlider() {
     dispatch(setVolume(Number(value)));
   }
   return (
-    <div className="flex w-[14.5rem] flex-row items-center justify-end gap-2">
+    <div className="flex flex-row items-center justify-end gap-2 w-[14.5rem]">
       <PlayerButton
         onClick={() => undefined}
         icon={
@@ -30,11 +30,11 @@ export default function VolumeSlider() {
         onValueChange={handleVolumeChange}
       >
         <Slider.Track
-          className="relative h-1 grow overflow-hidden rounded-sm bg-accent-foreground transition-all duration-500 ease-linear will-change-[width] group group-hover:shadow-md focus:outline-none">
-          <Slider.Range className="absolute h-full rounded-sm bg-secondary group-hover:bg-accent"/>
+          className="relative h-1 grow overflow-hidden rounded-sm transition-all duration-500 ease-linear bg-accent-foreground will-change-[width] group group-hover:shadow-md focus:outline-none dark:bg-accent-foreground">
+          <Slider.Range className="absolute h-full rounded-sm bg-secondary group-hover:bg-accent dark:bg-accent dark:group-hover:bg-secondary"/>
         </Slider.Track>
         <Slider.Thumb
-          className="block rounded-full bg-secondary transition-all duration-200 ease-linear size-0 will-change-[left] group-hover:size-3 group-hover:shadow-yellow-500 focus:outline-none"
+          className="block rounded-full transition-all duration-200 ease-linear bg-secondary size-0 will-change-[left] group-hover:size-3 group-hover:shadow-foreground focus:outline-none dark:bg-accent"
         />
       </Slider.Root>
     </div>

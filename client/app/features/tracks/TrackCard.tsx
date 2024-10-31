@@ -57,7 +57,7 @@ export default function TrackCard({track}: TrackCardProps) {
             {track.title}
           </Link>
           <Link
-            className="text-xs text-secondary truncate decoration-foreground hover:underline"
+            className="text-xs text-secondary truncate decoration-foreground hover:underline dark:text-accent"
             href={`/artist/${track.artist._id}`}
           >
             {track.artist.name}

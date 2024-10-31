@@ -9,3 +9,11 @@ export async function fetchUserById(userId: string): Promise<User> {
     console.log(e);
   }
 }
+
+export async function patchUserData(formData: Object, userId: string): Promise<void> {
+  try {
+    await axiosClient.patch(`/user/${userId}`, formData);
+  } catch (e) {
+    console.log(e);
+  }
+}

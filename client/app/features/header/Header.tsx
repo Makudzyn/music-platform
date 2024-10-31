@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import CookieLogo from "@/app/features/logo/CookieLogo";
 import CurrentIcon from "@/app/features/header/CurrentIcon";
 import SearchField from "@/app/features/header/SearchField";
+import ThemeToggleButton from "@/app/features/header/ThemeToggleButton";
 
 interface HeaderProps {
   isExpanded: boolean;
@@ -29,7 +30,10 @@ export default function Header({isExpanded, toggleNavPanel}: HeaderProps) {
           <CookieLogo/>
           <SearchField/>
         </div>
-        <CurrentIcon/>
+        <div className="flex items-center space-x-4">
+          <ThemeToggleButton/>
+          <CurrentIcon/>
+        </div>
       </div>
     </header>
   );

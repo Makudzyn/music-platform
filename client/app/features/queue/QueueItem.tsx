@@ -83,7 +83,7 @@ export default function QueueItem({track, index}: QueueItemProps) {
           href={`/artists/${track.artist._id}`}
           className="block group min-w-0"
         >
-          <span className="block truncate text-secondary text-xs decoration-foreground group-hover:underline">
+          <span className="block truncate text-secondary dark:text-accent text-xs decoration-foreground group-hover:underline">
             {track.artist.name}
           </span>
         </Link>

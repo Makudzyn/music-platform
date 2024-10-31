@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { DecodedToken, User } from "@/lib/defenitions";
+import { User } from "@/lib/defenitions";
 import { loadCurrentUser, loadUserById } from "@/lib/redux/userReducer/userActions";
 
 type UserState = {

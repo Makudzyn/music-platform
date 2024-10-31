@@ -89,7 +89,7 @@ export default function SearchField() {
           type="search"
           placeholder="Search songs, albums, artists"
           className={cn(
-            "w-full pl-8 transition-all",
+            "w-full pl-8 transition-all border-border",
             isDropdownOpen && "rounded-b-none"
           )}
           value={query}

@@ -45,6 +45,7 @@ export type User = {
   _id: string;
   username: string;
   avatar: string;
+  bio: string;
   email: string;
   role: string;
   isVerified: boolean;

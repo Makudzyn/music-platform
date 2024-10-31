@@ -9,7 +9,7 @@ interface CommentItemProps {
 export default function CommentItem({comment}: CommentItemProps) {
   return (
     <div key={comment._id}
-         className="flex items-start p-4 space-x-4 bg-white rounded-lg shadow hover:shadow-md transition-shadow">
+         className="flex items-start p-4 space-x-4 bg-background border border-border rounded-lg shadow hover:shadow-md transition-shadow">
       <Avatar>
         <AvatarImage
           src={`http://localhost:5000/${comment.user.avatar}`}

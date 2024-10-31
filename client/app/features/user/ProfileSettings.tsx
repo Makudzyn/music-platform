@@ -1,108 +1,212 @@
-import { ChangeEvent, FormEvent, useState } from 'react'
-import Image from 'next/image'
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { useToast } from "@/lib/hooks/use-toast"
+'use client';
 
-// Mock user data
-const initialUser = {
-  name: "Jane Doe",
-  email: "jane.doe@example.com",
-  avatarUrl: "/placeholder.svg?height=128&width=128",
-  bio: "Music enthusiast and aspiring DJ. I love creating and sharing playlists that bring people together through the power of sound."
-}
+import { useCallback, useState } from 'react';
+import Image from 'next/image';
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { useAppSelector } from "@/lib/hooks/hooks";
+import { selectCurrentUser, selectUserLoading } from "@/lib/redux/userReducer/userSelectors";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { cn } from "@/lib/utils";
+import { Toaster } from "@/app/features/toast/toast";
+import { patchUserData } from "@/app/services/userService";
+
+// Схема валидации с использованием Zod
+const profileSchema = z.object({
+  username: z.string().min(3, "Username must be at least 3 characters long"),
+  email: z.string().email("Please enter a valid email address"),
+  bio: z.string().max(300, "Bio must not exceed 300 characters").optional(),
+});
 
 export default function ProfileSettings() {
-  const {toast} = useToast();
+  const user = useAppSelector(selectCurrentUser);
+  const isLoading = useAppSelector(selectUserLoading);
 
-  const [user, setUser] = useState(initialUser)
-  const [avatarFile, setAvatarFile] = useState<File | null>(null)
+  const [avatar, setAvatar] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setUser(prevUser => ({ ...prevUser, [name]: value }))
-  }
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastContent, setToastContent] = useState({ title: '', description: '' });
 
-  const handleAvatarChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setAvatarFile(e.target.files[0])
+  // Инициализация useForm с react-hook-form и zod
+  const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm({
+    resolver: zodResolver(profileSchema),
+    defaultValues: {
+      username: user?.username || '',
+      email: user?.email || '',
+      bio: user?.bio || ''
     }
-  }
+  });
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault()
-    // Here you would typically send the updated user data to your backend
-    console.log('Updated user data:', user)
-    console.log('New avatar file:', avatarFile)
-    toast({
-      title: "Profile updated",
-      description: "Your profile has been successfully updated.",
-    })
+  const bio = watch("bio");
+
+  const onSubmit = async (data) => {
+    try {
+      await patchUserData(data, user._id)
+      setToastContent({
+        title: "Profile updated",
+        description: "Your profile has been successfully updated."
+      });
+      setToastOpen(true);
+    } catch (error) {
+      setToastContent({
+        title: "Error",
+        description: "Failed to update profile. Please try again.",
+        variant: "destructive"
+      });
+      setToastOpen(true);
+    }
+  };
+
+  const handleDrop = useCallback((e) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const file = e.dataTransfer?.files[0];
+    if (file && file.type.startsWith('image/')) {
+      setAvatar(file);
+    } else {
+      setToastContent({
+        title: "Invalid file type",
+        description: "Please upload an image file.",
+        variant: "destructive"
+      });
+      setToastOpen(true);
+    }
+  }, [setAvatar]);
+
+  const handleDragOver = useCallback((e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  }, []);
+
+  const handleDragLeave = useCallback((e) => {
+    e.preventDefault();
+    setIsDragging(false);
+  }, []);
+
+  const handleFileSelect = (e) => {
+    const file = e.target.files?.[0];
+    if (file && file.type.startsWith('image/')) {
+      setAvatar(file);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"/>
+      </div>
+    );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-4">
       <Card className="max-w-2xl mx-auto">
         <CardHeader>
           <CardTitle className="text-2xl font-bold">Profile Settings</CardTitle>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="avatar">Profile Picture</Label>
-              <div className="flex items-center space-x-4">
-                <div className="relative w-24 h-24">
+              <div
+                className={cn(
+                  "flex flex-col items-center justify-center border-2 border-dashed rounded-lg p-4 transition-colors",
+                  isDragging ? 'border-blue-500 bg-blue-50' : 'border-gray-300',
+                )}
+                onDrop={handleDrop}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+              >
+                <div className="relative size-32 mb-4">
                   <Image
-                    src={avatarFile ? URL.createObjectURL(avatarFile) : user.avatarUrl}
+                    src={avatar ? URL.createObjectURL(avatar) :
+                      user?.avatar ? `http://localhost:5000/${user.avatar}` :
+                        `/api/placeholder/400/400`
+                    }
                     alt="Profile picture"
                     fill
                     className="rounded-full object-cover"
                   />
                 </div>
+                <p className="text-sm text-gray-500 mb-2">
+                  Drag and drop your image here, or click to select
+                </p>
                 <Input
                   id="avatar"
                   type="file"
                   accept="image/*"
-                  onChange={handleAvatarChange}
+                  onChange={handleFileSelect}
+                  className="max-w-xs"
                 />
               </div>
             </div>
+
             <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="username">Username</Label>
               <Input
-                id="name"
-                name="name"
-                value={user.name}
-                onChange={handleInputChange}
+                id="username"
+                {...register("username")}
+                className={errors.username ? 'border-red-500' : ''}
               />
+              {errors.username && (
+                <Alert variant="destructive">
+                  <AlertDescription>{errors.username.message}</AlertDescription>
+                </Alert>
+              )}
             </div>
+
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
-                name="email"
                 type="email"
-                value={user.email}
-                onChange={handleInputChange}
+                {...register("email")}
+                className={errors.email ? 'border-red-500' : ''}
               />
+              {errors.email && (
+                <Alert variant="destructive">
+                  <AlertDescription>{errors.email.message}</AlertDescription>
+                </Alert>
+              )}
             </div>
+
             <div className="space-y-2">
               <Label htmlFor="bio">Bio</Label>
               <Textarea
                 id="bio"
-                name="bio"
-                value={user.bio}
-                onChange={handleInputChange}
-                rows={4}
+                {...register("bio")}
+                rows={3}
+                className={errors.bio ? 'border-red-500' : ''}
               />
+              <div className="text-sm text-gray-500">
+                {bio?.length || 0}/300 characters
+              </div>
+              {errors.bio && (
+                <Alert variant="destructive">
+                  <AlertDescription>{errors.bio.message}</AlertDescription>
+                </Alert>
+              )}
             </div>
-            <Button type="submit">Save Changes</Button>
+
+            <Button type="submit" className="w-full md:w-auto">
+              Save Changes
+            </Button>
           </form>
         </CardContent>
       </Card>
+      <Toaster
+        title={toastContent.title}
+        description={toastContent.description}
+        open={toastOpen}
+        onOpenChange={setToastOpen}
+      />
     </div>
-  )
+  );
 }

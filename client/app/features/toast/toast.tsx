@@ -10,20 +10,28 @@ interface ToastProps {
   description: string;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  duration: number; // Продолжительность в миллисекундах
+  duration?: number; // Optional duration in milliseconds
+  redirectMessage?: string; // Optional redirect message
 }
 
-export function Toaster({ title, description, open, onOpenChange, duration }: ToastProps) {
-  const [timeLeft, setTimeLeft] = useState(duration / 1000); // Время в секундах
+export function Toaster({
+  title,
+  description,
+  open,
+  onOpenChange,
+  duration = 5000, // Default duration of 5 seconds
+  redirectMessage = '',
+}: ToastProps) {
+  const [timeLeft, setTimeLeft] = useState(duration / 1000); // Time in seconds
 
   useEffect(() => {
     if (open) {
-      setTimeLeft(duration / 1000); // Сброс таймера при открытии тоста
+      setTimeLeft(duration / 1000);
       const intervalId = setInterval(() => {
         setTimeLeft((prev) => {
           if (prev <= 1) {
             clearInterval(intervalId);
-            onOpenChange(false); // Закрытие Toast, когда таймер истекает
+            onOpenChange(false); // Close Toast when timer ends
             return 0;
           }
           return prev - 1;
@@ -52,7 +60,7 @@ export function Toaster({ title, description, open, onOpenChange, duration }: To
             </Toast.Title>
             <Toast.Description className="mt-1 text-sm text-muted-foreground">
               {description} <br />
-              You will be redirected in {timeLeft} seconds.
+              {redirectMessage && `You will be redirected in ${timeLeft} seconds.`}
             </Toast.Description>
           </div>
           <Toast.Close asChild>
@@ -64,7 +72,7 @@ export function Toaster({ title, description, open, onOpenChange, duration }: To
             </button>
           </Toast.Close>
         </div>
-        {/* Полоса прогресса */}
+        {/* Progress Bar */}
         <div className="h-1 w-full bg-gray-200">
           <div
             className="h-full bg-accent transition-all"
