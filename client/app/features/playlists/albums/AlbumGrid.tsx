@@ -6,7 +6,7 @@ import PlaylistCard from "@/app/features/playlists/PlaylistCard";
 import { loadAlbums } from "@/lib/redux/albumReducer/albumActions";
 
 export default function AlbumGrid() {
-  const {albums, loading, error} = useAppSelector(state => state.albums);
+  const {albums} = useAppSelector(state => state.albums);
 
   const actions = useMemo(
     () => [loadAlbums],
@@ -15,8 +15,6 @@ export default function AlbumGrid() {
 
   useEntityLoader("0", actions)
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error</div>;
   if (!albums) return <div>Albums not found</div>;
 
   return (

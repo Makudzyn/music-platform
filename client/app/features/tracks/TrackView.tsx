@@ -18,14 +18,12 @@ export default function TrackView({ trackId }: TrackViewProps) {
     [trackId]
   )
 
-  const {track, loading, error} = useAppSelector(selectTrackViewData);
+  const {track} = useAppSelector(selectTrackViewData);
 
   const actions = useMemo(() => [loadTrackById], []);
 
   useEntityLoader(trackId, actions);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error</div>
   if (!track) return <div>Track not found</div>;
 
   return (

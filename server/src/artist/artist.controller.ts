@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, UploadedFile, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, UploadedFile, Query, DefaultValuePipe, ParseIntPipe } from '@nestjs/common';
 import { ArtistService } from './artist.service';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
@@ -22,8 +22,8 @@ export class ArtistController {
   }
 
   @Get('/')
-  getAllArtist(
-    @Query('limit') limit: number = 0,
+  getAllArtists(
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
   ): Promise<Artist[]> {
     return this.artistService.getAllArtists(limit);
   }

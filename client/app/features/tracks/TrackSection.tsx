@@ -7,7 +7,7 @@ import CarouselSection from "@/app/features/carousel/CarouselSection";
 import { loadTracks } from "@/lib/redux/trackReducer/trackActions";
 
 export default function TrackSection() {
-  const {tracks, loading, error} = useAppSelector(state => state.tracks);
+  const {tracks} = useAppSelector(state => state.tracks);
   const FETCHED_TRACKS = "24";
 
   const actions = useMemo(
@@ -18,8 +18,6 @@ export default function TrackSection() {
   useEntityLoader(FETCHED_TRACKS, actions)
   useUpdateQueue(tracks)
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error</div>;
   if (!tracks) return <div>Tracks not found</div>;
 
   const renderTrack = (track) => (

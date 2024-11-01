@@ -6,7 +6,7 @@ import ArtistCard from "@/app/features/artists/ArtistCard";
 import { loadArtists } from "@/lib/redux/artistReducer/artistActions";
 
 export default function ArtistGrid() {
-  const {artists, loading, error} = useAppSelector(state => state.artists);
+  const {artists} = useAppSelector(state => state.artists);
 
   const actions = useMemo(
     () => [loadArtists],
@@ -14,8 +14,6 @@ export default function ArtistGrid() {
   );
   useEntityLoader("0", actions);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error</div>;
   if (!artists) return <div>Artists not found</div>;
 
   return (

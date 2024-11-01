@@ -26,18 +26,15 @@ export default function AlbumView({albumId, scrollRef}: AlbumViewProps) {
     [albumId]
   );
 
-  const {album, loading: albumLoading, error: albumError} = useAppSelector(selectAlbumViewData);
-  const {tracks, loading: tracksLoading, error: tracksError} = useAppSelector(selectTracksByAlbumId);
+  const {album} = useAppSelector(selectAlbumViewData);
+  const {tracks} = useAppSelector(selectTracksByAlbumId);
 
   const actions = useMemo(() => [loadAlbumById, loadTracksByAlbumId], []);
 
   useEntityLoader(albumId, actions);
   useUpdateQueue(tracks);
 
-  if (albumLoading || tracksLoading) return <div>Loading...</div>;
-  if (albumError || tracksError) return <div>Error</div>
-  if (!album) return <div>Album not found</div>;
-  if (!tracks) return <div>Tracks not found</div>;
+  if (!album || !tracks) return null;
 
   return (
     <>

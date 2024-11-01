@@ -7,7 +7,7 @@ import CarouselSection from "@/app/features/carousel/CarouselSection";
 import { loadArtists } from "@/lib/redux/artistReducer/artistActions";
 
 export default function ArtistSection() {
-  const {artists, loading, error} = useAppSelector(state => state.artists);
+  const {artists} = useAppSelector(state => state.artists);
   const FETCHED_ARTISTS = "8";
 
   const actions = useMemo(
@@ -17,8 +17,6 @@ export default function ArtistSection() {
 
   useEntityLoader(FETCHED_ARTISTS, actions);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error</div>;
   if (!artists) return <div>Artists not found</div>;
 
   const renderArtist = (artist) => (

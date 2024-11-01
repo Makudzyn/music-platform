@@ -33,9 +33,9 @@ export default function ArtistView({artistId, scrollRef}: ArtistViewProps) {
     [artistId]
   )
 
-  const {artist, loading: artistLoading, error: artistError} = useAppSelector(selectArtistViewData);
-  const {tracks, loading: tracksLoading, error: tracksError} = useAppSelector(selectTracksByArtistId);
-  const {albums, loading: albumLoading, error: albumError} = useAppSelector(selectAlbumsByArtistId);
+  const {artist} = useAppSelector(selectArtistViewData);
+  const {tracks} = useAppSelector(selectTracksByArtistId);
+  const {albums} = useAppSelector(selectAlbumsByArtistId);
 
   const actions = useMemo(
     () => [
@@ -49,12 +49,6 @@ export default function ArtistView({artistId, scrollRef}: ArtistViewProps) {
   useEntityLoader(artistId, actions);
   useUpdateQueue(tracks);
 
-  if (artistLoading || albumLoading || tracksLoading) {
-    return <div>Loading...</div>;
-  }
-  if (artistError || albumError || tracksError) {
-    return <div>Error</div>;
-  }
   if (!artist) {
     return <div>Artist not found</div>;
   }

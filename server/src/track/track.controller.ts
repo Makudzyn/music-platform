@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UploadedFiles, UseGuards, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, DefaultValuePipe, Delete, Get, Param, ParseIntPipe, Patch, Post, Query, UploadedFiles, UseGuards, UseInterceptors } from "@nestjs/common";
 import { TrackService } from "./track.service";
 import { Track } from "./track.schema";
 import { PatchTrackDto } from "./dto/patch-track.dto";
@@ -35,7 +35,7 @@ export class TrackController {
   }
 
   @Get()
-  getAllTracks(@Query('limit') limit: number = 0) {
+  getAllTracks(@Query('limit', new DefaultValuePipe(0), ParseIntPipe) limit: number) {
     return this.trackService.getAllTracks(limit);
   }
 
