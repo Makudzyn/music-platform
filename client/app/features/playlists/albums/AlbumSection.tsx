@@ -5,9 +5,10 @@ import { Fragment, useMemo } from "react";
 import AlbumCard from "@/app/features/playlists/albums/AlbumCard";
 import CarouselSection from "@/app/features/carousel/CarouselSection";
 import { loadAlbums } from "@/lib/redux/albumReducer/albumActions";
+import AlbumCardSkeleton from "@/app/features/skeletons/AlbumCardSkeleton";
 
 export default function AlbumSection() {
-  const {albums} = useAppSelector(state => state.albums);
+  const {albums, loading} = useAppSelector(state => state.albums);
   const FETCHED_ALBUMS = "8";
 
   const actions = useMemo(
@@ -25,10 +26,12 @@ export default function AlbumSection() {
     </Fragment>
   );
 
+  const renderSkeleton = () => <AlbumCardSkeleton/>
+
   return (
     <CarouselSection
       items={albums}
-      renderItem={renderAlbum}
+      renderItem={loading ? renderSkeleton : renderAlbum}
     />
   );
 }

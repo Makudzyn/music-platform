@@ -7,30 +7,42 @@ import TrackLyrics from "@/app/features/tracks/TrackLyrics";
 import TrackComments from "@/app/features/tracks/TrackComments";
 import { makeSelectTrackViewData } from "@/lib/redux/trackReducer/trackSelectors";
 import { loadTrackById } from "@/lib/redux/trackReducer/trackActions";
+import TrackHeaderSkeleton from "@/app/features/skeletons/TrackHeaderSkeleton";
+import TrackLyricsSkeleton from "@/app/features/skeletons/TrackLyricsSkeleton";
+import TrackCommentsSkeleton from "@/app/features/skeletons/TrackCommentsSkeleton";
 
 interface TrackViewProps {
   trackId: string;
 }
 
-export default function TrackView({ trackId }: TrackViewProps) {
+export default function TrackView({trackId}: TrackViewProps) {
   const selectTrackViewData = useMemo(
     () => makeSelectTrackViewData(trackId),
     [trackId]
   )
 
-  const {track} = useAppSelector(selectTrackViewData);
+  const {track, loading} = useAppSelector(selectTrackViewData);
 
   const actions = useMemo(() => [loadTrackById], []);
 
   useEntityLoader(trackId, actions);
 
-  if (!track) return <div>Track not found</div>;
-
   return (
     <>
-      <TrackHeader track={track}/>
-      <TrackLyrics lyrics={track.lyrics}/>
-      <TrackComments comments={track.comments}/>
+      {loading ?
+        <>
+          <TrackHeaderSkeleton/>
+          <TrackLyricsSkeleton/>
+          <TrackCommentsSkeleton/>
+        </>
+        : track ?
+          <>
+            <TrackHeader track={track}/>
+            <TrackLyrics lyrics={track.lyrics}/>
+            <TrackComments comments={track.comments}/>
+          </>
+          : <div>Track not found</div>
+      }
     </>
   );
 };

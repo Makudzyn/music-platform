@@ -10,12 +10,12 @@ interface AlbumHeaderProps {
 export default function AlbumHeader({album}: AlbumHeaderProps) {
   return (
     <div className="mb-8 flex flex-col items-end gap-6 md:flex-row md:items-center">
-      <div className="relative flex-shrink-0 rounded-sm shadow-lg size-48 md:size-64">
+      <div className="relative flex-shrink-0 shadow-lg size-48 md:size-64">
         <Image
           src={`http://localhost:5000/${album.coverImage}`}
           alt={`${album.title} cover`}
           fill
-          className="object-cover"
+          className="object-cover rounded-sm"
           sizes="(max-width: 768px) 192px, 256px"
         />
       </div>

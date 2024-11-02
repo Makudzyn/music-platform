@@ -11,6 +11,9 @@ import { makeSelectArtistViewData } from "@/lib/redux/artistReducer/artistSelect
 import { makeSelectAlbumsByArtistId } from "@/lib/redux/albumReducer/albumSelectors";
 import { makeSelectTracksByArtistId } from "@/lib/redux/trackReducer/trackSelectors";
 import { loadArtistById } from "@/lib/redux/artistReducer/artistActions";
+import ArtistHeaderSkeleton from "@/app/features/skeletons/ArtistHeaderSkeleton";
+import TrackListGenericSkeleton from "@/app/features/skeletons/TrackListGenericSkeleton";
+import AlbumCardSkeleton from "@/app/features/skeletons/AlbumCardSkeleton";
 
 interface ArtistViewProps {
   artistId: string;
@@ -33,9 +36,9 @@ export default function ArtistView({artistId, scrollRef}: ArtistViewProps) {
     [artistId]
   )
 
-  const {artist} = useAppSelector(selectArtistViewData);
-  const {tracks} = useAppSelector(selectTracksByArtistId);
-  const {albums} = useAppSelector(selectAlbumsByArtistId);
+  const {artist, loading: artistLoading} = useAppSelector(selectArtistViewData);
+  const {tracks, loading: tracksLoading} = useAppSelector(selectTracksByArtistId);
+  const {albums, loading: albumsLoading} = useAppSelector(selectAlbumsByArtistId);
 
   const actions = useMemo(
     () => [
@@ -49,9 +52,6 @@ export default function ArtistView({artistId, scrollRef}: ArtistViewProps) {
   useEntityLoader(artistId, actions);
   useUpdateQueue(tracks);
 
-  if (!artist) {
-    return <div>Artist not found</div>;
-  }
   if (!albums) {
     return <div>Albums not found</div>;
   }
@@ -62,14 +62,17 @@ export default function ArtistView({artistId, scrollRef}: ArtistViewProps) {
     </Fragment>
   );
 
+  const renderSkeleton = () => <AlbumCardSkeleton/>
+
   return (
     <>
-      <ArtistHeader artist={artist}/>
+      {artistLoading ? <ArtistHeaderSkeleton/> : artist ? <ArtistHeader artist={artist}/> : <div>Artist not found</div>}
       <h2 className="font-bold text-lg leading-6 text-foreground mt-3 mb-1">Albums from this artist</h2>
-      <CarouselSection items={albums} renderItem={renderAlbum}/>
+      <CarouselSection items={albums} renderItem={albumsLoading ? renderSkeleton : renderAlbum}/>
       <h2 className="font-bold text-lg leading-6 text-foreground mt-3 mb-1">Featured songs</h2>
       <TrackListHeader scrollRef={scrollRef}/>
-      <TrackListGeneric tracks={tracks}/>
+      {tracksLoading ? <TrackListGenericSkeleton/> : tracks ? <TrackListGeneric tracks={tracks}/> :
+        <div>Tracks not found</div>}
     </>
   )
 }

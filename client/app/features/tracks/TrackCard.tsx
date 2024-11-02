@@ -29,6 +29,7 @@ export default function TrackCard({track}: TrackCardProps) {
       dispatch(setCurrentTrack(track));
     }
   }
+
   return (
     <Card className="w-full max-w-80">
       <CardContent className="flex flex-row items-center p-2">

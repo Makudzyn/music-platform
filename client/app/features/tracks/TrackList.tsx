@@ -4,9 +4,10 @@ import { useAppSelector, useEntityLoader, useUpdateQueue } from "@/lib/hooks/hoo
 import { useMemo } from "react";
 import TrackListGeneric from "@/app/features/tracks/TrackListGeneric";
 import { loadTracks } from "@/lib/redux/trackReducer/trackActions";
+import TrackListGenericSkeleton from "@/app/features/skeletons/TrackListGenericSkeleton";
 
 export default function TrackList() {
-  const {tracks} = useAppSelector(state => state.tracks);
+  const {tracks, loading} = useAppSelector(state => state.tracks);
 
   const actions = useMemo(
     () => [loadTracks],
@@ -16,7 +17,12 @@ export default function TrackList() {
   useEntityLoader("0", actions);
   useUpdateQueue(tracks);
 
-  if (!tracks) return <div>Tracks not found</div>;
-
-  return <TrackListGeneric tracks={tracks}/>
+  return (
+    <>
+      {loading ? <TrackListGenericSkeleton/>
+        : tracks ? <TrackListGeneric tracks={tracks}/>
+          : <div>Tracks not found</div>
+      }
+    </>
+  )
 }

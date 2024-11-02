@@ -5,9 +5,10 @@ import { Fragment, useMemo } from "react";
 import TrackCard from "@/app/features/tracks/TrackCard";
 import CarouselSection from "@/app/features/carousel/CarouselSection";
 import { loadTracks } from "@/lib/redux/trackReducer/trackActions";
+import TrackCardSkeleton from "@/app/features/skeletons/TrackCardSkeleton";
 
 export default function TrackSection() {
-  const {tracks} = useAppSelector(state => state.tracks);
+  const {tracks, loading} = useAppSelector(state => state.tracks);
   const FETCHED_TRACKS = "24";
 
   const actions = useMemo(
@@ -26,10 +27,12 @@ export default function TrackSection() {
     </Fragment>
   );
 
+  const renderSkeleton = () => <TrackCardSkeleton/>
+
   return (
     <CarouselSection
       items={tracks}
-      renderItem={renderTrack}
+      renderItem={loading ? renderSkeleton : renderTrack}
       itemsPerGroup={3}
     />
   );

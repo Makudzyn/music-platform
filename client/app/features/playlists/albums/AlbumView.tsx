@@ -9,6 +9,8 @@ import { loadTracksByAlbumId } from "@/lib/redux/trackReducer/trackActions";
 import { makeSelectAlbumViewData } from "@/lib/redux/albumReducer/albumSelectors";
 import { loadAlbumById } from "@/lib/redux/albumReducer/albumActions";
 import { makeSelectTracksByAlbumId } from "@/lib/redux/trackReducer/trackSelectors";
+import AlbumHeaderSkeleton from "@/app/features/skeletons/AlbumHeaderSkeleton";
+import TrackListGenericSkeleton from "@/app/features/skeletons/TrackListGenericSkeleton";
 
 interface AlbumViewProps {
   albumId: string;
@@ -26,21 +28,20 @@ export default function AlbumView({albumId, scrollRef}: AlbumViewProps) {
     [albumId]
   );
 
-  const {album} = useAppSelector(selectAlbumViewData);
-  const {tracks} = useAppSelector(selectTracksByAlbumId);
+  const {album, loading: albumLoading} = useAppSelector(selectAlbumViewData);
+  const {tracks, loading: tracksLoading} = useAppSelector(selectTracksByAlbumId);
+
 
   const actions = useMemo(() => [loadAlbumById, loadTracksByAlbumId], []);
 
   useEntityLoader(albumId, actions);
   useUpdateQueue(tracks);
 
-  if (!album || !tracks) return null;
-
   return (
     <>
-      <AlbumHeader album={album}/>
-      <TrackListHeader scrollRef={scrollRef}/>
-      <TrackListGeneric tracks={tracks}/>
+      {albumLoading ? <AlbumHeaderSkeleton /> : album ? <AlbumHeader album={album} /> : <div>Album not found</div>}
+      <TrackListHeader scrollRef={scrollRef} />
+      {tracksLoading ? <TrackListGenericSkeleton /> : tracks ? <TrackListGeneric tracks={tracks} /> : <div>Tracks not found</div>}
     </>
   );
 };
