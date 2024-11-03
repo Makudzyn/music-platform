@@ -1,11 +1,12 @@
 'use client';
 
-import { useAppSelector, useEntityLoader, useUpdateQueue } from "@/lib/hooks/hooks";
-import { Fragment, useMemo } from "react";
+import { useAppDispatch, useAppSelector, useEntityLoader, useUpdateQueue } from "@/lib/hooks/hooks";
+import { Fragment, useCallback, useEffect, useMemo } from "react";
 import TrackCard from "@/app/features/tracks/TrackCard";
 import CarouselSection from "@/app/features/carousel/CarouselSection";
 import { loadTracks } from "@/lib/redux/trackReducer/trackActions";
 import TrackCardSkeleton from "@/app/features/skeletons/TrackCardSkeleton";
+import { addToQueue, setQueue } from "@/lib/redux/playerSlice";
 
 export default function TrackSection() {
   const {tracks, loading} = useAppSelector(state => state.tracks);
@@ -17,7 +18,7 @@ export default function TrackSection() {
   );
 
   useEntityLoader(FETCHED_TRACKS, actions)
-  useUpdateQueue(tracks)
+  useUpdateQueue(tracks);
 
   if (!tracks) return <div>Tracks not found</div>;
 

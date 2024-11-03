@@ -53,6 +53,22 @@ export function convertToKbps(bitrate: string | number): number | null {
   }
 }
 
+export function areArraysEqualUnordered(tracks: Track[], queue: Track[]): boolean {
+  if (tracks.length !== queue.length) return false;
+
+  const tracksIds = tracks.map(track => track._id).sort();
+  const queueIds = queue.map(track => track._id).sort();
+
+  for (let i = 0; i < tracksIds.length; i++) {
+    if (tracksIds[i] !== queueIds[i]) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+
 
 export function shuffleArray(array: Track[]): Track[] {
   let shuffled = array.slice();

@@ -2,7 +2,7 @@ import { useDispatch, useSelector, useStore } from 'react-redux'
 import type { AppDispatch, AppStore, RootState } from '../store'
 import { Track } from "@/lib/defenitions";
 import { useCallback, useEffect, useRef } from "react";
-import { setQueue } from "@/lib/redux/playerSlice";
+import { addToQueue, setQueue } from "@/lib/redux/playerSlice";
 import { AsyncThunk } from "@reduxjs/toolkit";
 import { selectCurrentUser, selectUserError, selectIsAuthenticated, selectUserLoading } from "@/lib/redux/userReducer/userSelectors";
 
@@ -12,12 +12,17 @@ export const useAppStore = useStore.withTypes<AppStore>()
 
 export const useUpdateQueue = (tracks: Track[]) => {
   const dispatch = useAppDispatch();
+  const queue = useAppSelector(state => state.player.queue)
 
   const updateQueue = useCallback(() => {
     if (tracks.length > 0) {
-      dispatch(setQueue(tracks));
+      if (queue.length > 0) {
+        dispatch(addToQueue(tracks));
+      } else {
+        dispatch(setQueue(tracks));
+      }
     }
-  }, [dispatch, tracks]);
+  }, [dispatch, queue, tracks]);
 
   useEffect(() => {
     updateQueue();

@@ -5,6 +5,7 @@ import { Fragment } from "react";
 import { useAppSelector } from "@/lib/hooks/hooks";
 import QueueItem from "@/app/features/queue/QueueItem";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Play } from "lucide-react";
 
 interface QueuePanelProps {
   isExpanded: boolean;
@@ -21,11 +22,20 @@ export default function QueuePanel({isExpanded}: QueuePanelProps) {
       )}
     >
       <nav className="py-3 pl-1 pr-2 transition-all duration-300">
-        {queue.map((track, index) => (
-          <Fragment key={track._id}>
-            <QueueItem track={track} index={index}/>
-          </Fragment>
-        ))}
+        {queue.length > 0 ? (
+          queue.map((track, index) => (
+            <Fragment key={track._id}>
+              <QueueItem track={track} index={index}/>
+            </Fragment>
+          ))
+        ) : (
+          <div
+            className="flex flex-col items-center justify-center h-full text-center p-4 text-sm text-muted-foreground">
+            <Play className="w-12 h-12 mb-3 fill-muted"/>
+            <p className="mb-1 font-semibold">Here you will see music queue</p>
+            <p className="text-muted-foreground">Start playing an album or track to see the list here</p>
+          </div>
+        )}
       </nav>
     </ScrollArea>
   );

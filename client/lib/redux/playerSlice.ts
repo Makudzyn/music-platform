@@ -71,6 +71,21 @@ const playerSlice = createSlice({
       state.queue = action.payload;
       state.queueIndex = 0;
     },
+    addToQueue(state, action: PayloadAction<Track | Track[]>) {
+      // Если передан массив треков
+      if (Array.isArray(action.payload)) {
+        const newTracks = action.payload.filter(newTrack =>
+          !state.queue.some(existingTrack => existingTrack._id === newTrack._id)
+        );
+        state.queue.push(...newTracks);
+      } else {
+        // Если передан один трек
+        const track = action.payload;
+        if (!state.queue.some(existingTrack => existingTrack._id === track._id)) {
+          state.queue.push(track);
+        }
+      }
+    },
     setCurrentTrack(state, action: PayloadAction<Track | null>) {
       const selectedTrack = action.payload;
       state.currentTrack = selectedTrack;
@@ -103,7 +118,7 @@ const playerSlice = createSlice({
 
 export const {
   play, pause, setCurrentTrack,
-  setQueue,
+  setQueue, addToQueue,
   nextTrack, previousTrack,
   toggleShuffle, setRepeatMode,
   setVolume, setTotalDuration, setCurrentPosition

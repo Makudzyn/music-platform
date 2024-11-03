@@ -5,6 +5,7 @@ import Image from "next/image";
 import { cn, convertToKbps, formatDate, formatTotalDuration } from "@/lib/utils";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
+import TrackViewButtons from "@/app/features/tracks/TrackViewButtons";
 
 interface TrackHeaderProps {
   track: Track;
@@ -52,18 +53,7 @@ export default function TrackHeader({track}: TrackHeaderProps) {
         <div className="pr-4">
           <Separator className="text-muted-foreground mb-6 mt-2"/>
         </div>
-        <div className="flex gap-4 mb-6">
-          <Button size="lg" className="rounded-full">
-            <PlayCircle className="mr-2 h-6 w-6"/>
-            Play
-          </Button>
-          <Button size="icon" variant="outline" className="rounded-full">
-            <Heart className="h-6 w-6"/>
-          </Button>
-          <Button size="icon" variant="outline" className="rounded-full">
-            <Share2 className="h-6 w-6"/>
-          </Button>
-        </div>
+        <TrackViewButtons track={track}/>
         <div className="grid grid-cols-2 gap-4 text-sm text-muted-foreground">
           <div className="flex items-center">
             <Calendar className="mr-2 h-4 w-4"/>

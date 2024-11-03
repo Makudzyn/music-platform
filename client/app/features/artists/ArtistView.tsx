@@ -50,7 +50,6 @@ export default function ArtistView({artistId, scrollRef}: ArtistViewProps) {
   );
 
   useEntityLoader(artistId, actions);
-  useUpdateQueue(tracks);
 
   if (!albums) {
     return <div>Albums not found</div>;
@@ -66,7 +65,7 @@ export default function ArtistView({artistId, scrollRef}: ArtistViewProps) {
 
   return (
     <>
-      {artistLoading ? <ArtistHeaderSkeleton/> : artist ? <ArtistHeader artist={artist}/> : <div>Artist not found</div>}
+      {artistLoading ? <ArtistHeaderSkeleton/> : artist ? <ArtistHeader artist={artist} tracks={tracks}/> : <div>Artist not found</div>}
       <h2 className="font-bold text-lg leading-6 text-foreground mt-3 mb-1">Albums from this artist</h2>
       <CarouselSection items={albums} renderItem={albumsLoading ? renderSkeleton : renderAlbum}/>
       <h2 className="font-bold text-lg leading-6 text-foreground mt-3 mb-1">Featured songs</h2>

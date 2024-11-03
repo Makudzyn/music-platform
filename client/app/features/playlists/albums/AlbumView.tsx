@@ -35,11 +35,10 @@ export default function AlbumView({albumId, scrollRef}: AlbumViewProps) {
   const actions = useMemo(() => [loadAlbumById, loadTracksByAlbumId], []);
 
   useEntityLoader(albumId, actions);
-  useUpdateQueue(tracks);
 
   return (
     <>
-      {albumLoading ? <AlbumHeaderSkeleton /> : album ? <AlbumHeader album={album} /> : <div>Album not found</div>}
+      {albumLoading ? <AlbumHeaderSkeleton /> : album ? <AlbumHeader album={album} tracks={tracks} /> : <div>Album not found</div>}
       <TrackListHeader scrollRef={scrollRef} />
       {tracksLoading ? <TrackListGenericSkeleton /> : tracks ? <TrackListGeneric tracks={tracks} /> : <div>Tracks not found</div>}
     </>

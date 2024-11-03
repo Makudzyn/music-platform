@@ -1,16 +1,23 @@
 'use client';
 
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/hooks";
-import { nextTrack, pause, play, previousTrack, setRepeatMode, toggleShuffle } from "@/lib/redux/playerSlice";
+import { nextTrack, pause, play, previousTrack, setCurrentTrack, setQueue, setRepeatMode, toggleShuffle } from "@/lib/redux/playerSlice";
 import { Pause, Play, Repeat, Repeat1, Shuffle, SkipBack, SkipForward } from "lucide-react";
 import PlayerButton from "@/app/features/player/PlayerButton";
 
 export default function PlayerControls() {
   const dispatch = useAppDispatch();
-  const {paused, repeatMode, shuffle} = useAppSelector(state => state.player);
+  const {paused, repeatMode, shuffle, queue, currentTrack} = useAppSelector(state => state.player);
+  const tracks = useAppSelector(state => state.tracks.tracks);
 
   const handlePlayPause = () => {
     if (paused) {
+      if (queue && tracks.length > 0) {
+        dispatch(setQueue(tracks));
+      }
+      if (!currentTrack) {
+        dispatch(setCurrentTrack(queue[0]));
+      }
       dispatch(play())
     } else {
       dispatch(pause())
