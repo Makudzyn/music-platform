@@ -70,8 +70,7 @@ axiosClient.interceptors.response.use(
         return axiosClient(originalRequest);
       } catch (refreshError) {
         processQueue(refreshError, null);
-        // Если обновление токена не удалось, редиректим на страницу логина
-        window.location.href = '/auth/login';
+
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;
