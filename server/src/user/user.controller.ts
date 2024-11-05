@@ -31,7 +31,7 @@ export class UserController {
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN')
+  @Roles('USER', 'ADMIN')
   @Patch(':userId')
   @UseInterceptors(FileInterceptor('avatar'))
   updateUser(

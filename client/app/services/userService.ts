@@ -6,14 +6,14 @@ export async function fetchUserById(userId: string): Promise<User> {
     const response = await axiosClient.get(`/user/${userId}`);
     return response.data;
   } catch (e) {
-    console.log(e);
+    throw new Error(`Error fetching user data: ${e}`);
   }
 }
 
-export async function patchUserData(formData: Object, userId: string): Promise<void> {
+export async function patchUserData(formData: FormData, userId: string): Promise<void> {
   try {
     await axiosClient.patch(`/user/${userId}`, formData);
   } catch (e) {
-    console.log(e);
+    throw new Error(`Error updating user data: ${e}`);
   }
 }

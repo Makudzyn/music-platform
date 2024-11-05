@@ -47,7 +47,17 @@ export default function ProfileSettings() {
 
   const onSubmit = async (data) => {
     try {
-      await patchUserData(data, user._id)
+      const formData = new FormData();
+      formData.append("username", data.username);
+      formData.append("email", data.email);
+      formData.append("bio", data.bio || "");
+
+      // Добавляем файл аватара, если он выбран
+      if (avatar) {
+        formData.append("avatar", avatar);
+      }
+
+      await patchUserData(formData, user._id);
       setToastContent({
         title: "Profile updated",
         description: "Your profile has been successfully updated."
@@ -57,7 +67,6 @@ export default function ProfileSettings() {
       setToastContent({
         title: "Error",
         description: "Failed to update profile. Please try again.",
-        variant: "destructive"
       });
       setToastOpen(true);
     }
@@ -73,7 +82,6 @@ export default function ProfileSettings() {
       setToastContent({
         title: "Invalid file type",
         description: "Please upload an image file.",
-        variant: "destructive"
       });
       setToastOpen(true);
     }
@@ -193,6 +201,7 @@ export default function ProfileSettings() {
           </form>
         </CardContent>
       </Card>
+
       <Toaster
         title={toastContent.title}
         description={toastContent.description}
