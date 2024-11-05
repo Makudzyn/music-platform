@@ -11,7 +11,7 @@ interface FormInputProps {
   placeholder: string;
   icon: ReactNode;
   register: UseFormRegister<FieldValues>;
-  autocomplete?: string;
+  autoComplete?: string;
   error?: FieldError;
   validation?: object;
 }
@@ -23,7 +23,7 @@ export function FormInput({
   placeholder,
   icon,
   register,
-  autocomplete,
+  autoComplete,
   error,
   validation = {},
 }: FormInputProps) {
@@ -36,7 +36,7 @@ export function FormInput({
         <Input
           type={type}
           id={id}
-          autoComplete={autocomplete}
+          autoComplete={autoComplete}
           {...register(id, validation)}
           placeholder={placeholder}
           className="py-2 pr-3 pl-11 text-base transition-all duration-300 bg-background peer placeholder-muted-foreground focus-visible:ring-accent focus-visible:outline-none focus-visible:ring focus-visible:ring-offset-0"

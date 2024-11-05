@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
 import { AtSign, Key, User } from 'lucide-react'
@@ -9,18 +9,35 @@ import FormError from "@/app/features/auth/FormError";
 import FormButton from "@/app/features/auth/FormButton";
 import { Toaster } from "@/app/features/toast/toast";
 import { registration } from "@/app/services/authService";
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 
-interface RegistrationFormInputs {
-  username: string
-  email: string
-  password: string
-  confirmPassword: string
-}
+const registrationSchema = z.object({
+  username: z.string().min(1, "Username is required").max(20, "Username must be 20 characters or less"),
+  email: z.string().email("Invalid email format"),
+  password: z.string().min(6, "Password must be at least 6 characters long"),
+  confirmPassword: z.string().min(6, "Password confirmation is required")
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"]
+});
+
+type RegistrationFormInputs = z.infer<typeof registrationSchema>;
 
 export default function RegistrationForm() {
-  const {register, handleSubmit, formState: {errors}, watch} = useForm<RegistrationFormInputs>();
-  const [registrationError, setRegistrationError] = useState<string | null>(null);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<RegistrationFormInputs>({
+    resolver: zodResolver(registrationSchema)
+  });
+
   const [toastOpen, setToastOpen] = useState<boolean>(false);
+  const [toastInfo, setToastInfo] = useState<{title: string, description: string}>({
+    title: "",
+    description: ""
+  })
   const router = useRouter();
 
   const onSubmit = async(data: RegistrationFormInputs) => {
@@ -28,13 +45,25 @@ export default function RegistrationForm() {
       const {confirmPassword, ...registrationData} = data;
       await registration(registrationData);
       setToastOpen(true);
-      setTimeout(() => {
-        router.push('/auth/login');
-      }, 10000);
+      setToastInfo({
+        title: "Registration Successful",
+        description: "Please check your email to confirm your account.",
+      })
     } catch (error) {
-      setRegistrationError(error.message || 'Registration error');
+      setToastOpen(true);
+      setToastInfo({
+        title: "Registration error",
+        description: "Something went wrong during registration.",
+      })
     }
   }
+
+  useEffect(() => {
+    if (toastInfo.title === "Registration Successful") {
+      const redirectTimeout = setTimeout(() => router.push("/auth/login"), 10000);
+      return () => clearTimeout(redirectTimeout);
+    }
+  }, [toastInfo]);
 
   return (
     <>
@@ -47,8 +76,7 @@ export default function RegistrationForm() {
           icon={<User/>}
           register={register}
           error={errors.username}
-          validation={{required: "Username is required"}}
-          autocomplete="username"
+          autoComplete="username"
         />
 
         <FormInput
@@ -59,8 +87,7 @@ export default function RegistrationForm() {
           icon={<AtSign/>}
           register={register}
           error={errors.email}
-          validation={{required: "Email is required"}}
-          autocomplete="email"
+          autoComplete="email"
         />
 
         <FormInput
@@ -71,8 +98,7 @@ export default function RegistrationForm() {
           icon={<Key/>}
           register={register}
           error={errors.password}
-          validation={{required: "Password is required"}}
-          autocomplete="new-password"
+          autoComplete="new-password"
         />
 
         <FormInput
@@ -83,20 +109,19 @@ export default function RegistrationForm() {
           icon={<Key/>}
           register={register}
           error={errors.confirmPassword}
-          validation={{
-            required: 'Please confirm your password',
-            validate: (value) => value === watch('password') || 'Passwords do not match'
-          }}
-          autocomplete="new-password"
+          autoComplete="new-password"
         />
 
-        {registrationError && <FormError error={registrationError}/>}
+        {errors.root && <FormError error={errors.root.message}/>}
 
-        <FormButton>Register</FormButton>
+        <FormButton disabled={isSubmitting}>
+          {isSubmitting ? "Creating account..." : "Register"}
+        </FormButton>
       </form>
+
       <Toaster
-        title="Registration Successful!"
-        description="Please check your email to confirm your account."
+        title={toastInfo.title}
+        description={toastInfo.description}
         open={toastOpen}
         onOpenChange={setToastOpen}
         duration={10000}

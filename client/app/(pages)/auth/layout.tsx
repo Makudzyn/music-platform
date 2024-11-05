@@ -12,7 +12,7 @@ export default function Layout({children}: {children: ReactNode}) {
       <div className="mb-4 flex w-48 items-center justify-center md:w-56">
         <CookieLogo/>
       </div>
-      <div className="w-full max-w-md rounded-lg p-8 shadow-md bg-secondary">
+      <div className="w-full max-w-md rounded-lg p-8 shadow-md bg-accent-foreground">
         {children}
       </div>
     </div>

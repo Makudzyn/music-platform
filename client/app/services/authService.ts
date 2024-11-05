@@ -1,9 +1,10 @@
 import axiosClient from "@/lib/axiosClient";
 import { getCookie, setCookie } from "cookies-next";
-import { jwtDecode } from "jwt-decode";
-import { useDispatch } from "react-redux";
-import { loginSuccess } from "@/lib/redux/userReducer/userSlice";
+import { useAppDispatch } from "@/lib/hooks/hooks";
 import { DecodedToken } from "@/lib/defenitions";
+import { jwtDecode } from "jwt-decode";
+import { loginSuccess } from "@/lib/redux/userReducer/userSlice";
+import { loadCurrentUser } from "@/lib/redux/userReducer/userActions";
 
 interface LoginResponse {
   accessToken: string;
@@ -21,7 +22,7 @@ export const authenticate = async(formData: Object): Promise<LoginResponse> => {
 }
 
 export const useAuthenticate = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const login = async (formData: Object) => {
     const data = await authenticate(formData);
@@ -30,8 +31,7 @@ export const useAuthenticate = () => {
       const decoded: DecodedToken = jwtDecode(data.accessToken);
       const userData = {
         "_id": decoded.sub,
-        "username": decoded.username,
-        "role": decoded.role
+        ...decoded
       };
 
       // Установка access и refresh токенов в куки
@@ -40,13 +40,14 @@ export const useAuthenticate = () => {
 
       // Сохранение роли в глобальном состоянии
       dispatch(loginSuccess(userData));
+      dispatch(loadCurrentUser(userData._id));
     }
   };
 
   return { login };
 };
 
-export const registration = async (formData: Object) => {
+export const registration = async(formData: Object) => {
   try {
     const response = await axiosClient.post(`/auth/register`, formData);
     return response.data
@@ -56,7 +57,7 @@ export const registration = async (formData: Object) => {
   }
 }
 
-export const emailConfirmation = async (token: string) => {
+export const emailConfirmation = async(token: string) => {
   try {
     return await axiosClient.get(`/auth/confirm-email?token=${token}`)
   } catch (error) {
@@ -65,14 +66,14 @@ export const emailConfirmation = async (token: string) => {
   }
 }
 
-export const refreshAccessToken = async () => {
+export const refreshAccessToken = async() => {
   const refreshToken = getCookie('refreshToken');
   if (!refreshToken) {
     throw new Error("Refresh token is missing");
   }
   try {
-    const response = await axiosClient.post('/auth/refresh', { refreshToken });
-    const { accessToken } = response.data;
+    const response = await axiosClient.post('/auth/refresh', {refreshToken});
+    const {accessToken} = response.data;
     setCookie('accessToken', accessToken);
     return accessToken;
   } catch (error) {
