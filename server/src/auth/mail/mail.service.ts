@@ -1,17 +1,23 @@
 import { Injectable } from "@nestjs/common";
 import * as nodemailer from 'nodemailer';
+import { ConfigService } from "@nestjs/config";
 
 @Injectable()
 export class MailService {
-  private transporter = nodemailer.createTransport({
-    host: 'smtp.ethereal.email', // Почтовый сервер
-    port: 587,
-    secure: false,
-    auth: {
-      user: 'alfonzo.turcotte93@ethereal.email',
-      pass: 'dDzkUgHvxP6qyqHPdA'
-    }
-  });
+  private transporter: nodemailer.Transporter;
+
+  constructor(private configService: ConfigService) {
+    this.transporter = nodemailer.createTransport({
+      service: 'smtp',
+      host: this.configService.get<string>('HOSTNAME'),
+      port: this.configService.get<number>('MAIL_PORT'),
+      secure: false,
+      auth: {
+        user: this.configService.get<string>('MAIL_USERNAME'),
+        pass: this.configService.get<string>('MAIL_PASSWORD'),
+      },
+    } as nodemailer.TransportOptions);
+  }
 
   async sendEmailConfirmation(email: string, token: string) {
     const confirmationUrl = `http://localhost:3000/auth/email-confirmation/${token}`;
@@ -26,10 +32,6 @@ export class MailService {
       if (err) {
         console.log('Error occurred. ' + err.message);
       }
-
-      console.log('Message sent: ', info.messageId);
-      // Preview only available when sending through an Ethereal account
-      console.log('Preview URL: ', nodemailer.getTestMessageUrl(info));
     });
   }
 }
