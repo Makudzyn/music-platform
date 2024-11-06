@@ -1,12 +1,12 @@
-import { Button } from "@/components/ui/button";
-import { ReactNode } from "react";
+import { Button } from '@/components/ui/button';
+import { ReactNode } from 'react';
 
 interface FormButtonProps {
   children?: ReactNode;
   disabled?: boolean;
 }
 
-export default function FormButton({children, disabled}: FormButtonProps) {
+export default function FormButton({ children, disabled }: FormButtonProps) {
   return (
     <Button
       size="lg"
@@ -17,4 +17,4 @@ export default function FormButton({children, disabled}: FormButtonProps) {
       {children}
     </Button>
   );
-};
+}

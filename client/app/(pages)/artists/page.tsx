@@ -1,6 +1,6 @@
-import Breadcrumbs from "@/app/features/breadcrumbs/Breadcrumbs";
-import ScrollWrapper from "@/app/features/scroll/ScrollWrapper";
-import ArtistGrid from "@/app/features/artists/ArtistGrid";
+import Breadcrumbs from '@/app/features/breadcrumbs/Breadcrumbs';
+import ScrollWrapper from '@/app/features/scroll/ScrollWrapper';
+import ArtistGrid from '@/app/features/artists/ArtistGrid';
 
 export default function Page() {
   return (
@@ -10,13 +10,10 @@ export default function Page() {
           <h1 className="text-3xl font-bold">All featured artists</h1>
         </div>
         <Breadcrumbs
-          items={[
-            {title: "Home", href: "/"},
-            {title: "Artists"}
-          ]}
+          items={[{ title: 'Home', href: '/' }, { title: 'Artists' }]}
         />
-        <ArtistGrid/>
+        <ArtistGrid />
       </div>
     </ScrollWrapper>
   );
-};
+}

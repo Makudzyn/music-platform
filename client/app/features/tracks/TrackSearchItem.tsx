@@ -1,22 +1,24 @@
 'use client';
 
-import { useRouter } from "next/navigation";
-import { Track } from "@/lib/defenitions";
-import Image from "next/image";
-
+import { useRouter } from 'next/navigation';
+import { Track } from '@/lib/defenitions';
+import Image from 'next/image';
 
 interface TrackSearchItemProps {
   track: Track;
   onSelect: () => void;
 }
 
-export default function TrackSearchItem({ track, onSelect }: TrackSearchItemProps) {
+export default function TrackSearchItem({
+  track,
+  onSelect,
+}: TrackSearchItemProps) {
   const router = useRouter();
 
   const handleSelect = () => {
-    router.push(`/tracks/${track._id}`)
+    router.push(`/tracks/${track._id}`);
     onSelect();
-  }
+  };
 
   return (
     <li
@@ -42,4 +44,4 @@ export default function TrackSearchItem({ track, onSelect }: TrackSearchItemProp
       </div>
     </li>
   );
-};
+}

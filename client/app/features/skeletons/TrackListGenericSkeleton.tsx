@@ -1,5 +1,5 @@
-import TrackItemSkeleton from "@/app/features/skeletons/TrackItemSkeleton";
-import { Fragment } from "react";
+import TrackItemSkeleton from '@/app/features/skeletons/TrackItemSkeleton';
+import { Fragment } from 'react';
 
 export default function TrackListGenericSkeleton() {
   return (
@@ -10,5 +10,5 @@ export default function TrackListGenericSkeleton() {
         </Fragment>
       ))}
     </div>
-  )
+  );
 }

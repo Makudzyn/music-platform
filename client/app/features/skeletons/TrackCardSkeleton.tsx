@@ -1,5 +1,5 @@
-import { Card, CardContent } from "@/components/ui/card"
-import { Skeleton } from "@/components/ui/skeleton"
+import { Card, CardContent } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function TrackCardSkeleton() {
   return (
@@ -14,5 +14,5 @@ export default function TrackCardSkeleton() {
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }

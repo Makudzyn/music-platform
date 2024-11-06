@@ -1,4 +1,4 @@
-export type Track = {
+export interface Track {
   _id: string;
   artist: Artist;
   album: Playlist;
@@ -15,7 +15,7 @@ export type Track = {
   updatedAt: Date;
 }
 
-export type Artist = {
+export interface Artist {
   _id: string;
   name: string;
   artistImage: string;
@@ -25,7 +25,7 @@ export type Artist = {
   updatedAt: Date;
 }
 
-export type Playlist = {
+export interface Playlist {
   _id: string;
   title: string;
   description: string;
@@ -41,7 +41,7 @@ export type Playlist = {
   updatedAt: Date;
 }
 
-export type User = {
+export interface User {
   _id: string;
   username: string;
   avatar: string;
@@ -53,7 +53,7 @@ export type User = {
   updatedAt: Date;
 }
 
-export type Comment = {
+export interface Comment {
   _id: string;
   user: Partial<User>;
   track: Partial<Track>;
@@ -62,11 +62,11 @@ export type Comment = {
   updatedAt: Date;
 }
 
-export type RepeatMode = "none" | "all" | "one";
+export type RepeatMode = 'none' | 'all' | 'one';
 
-export type PlaylistType = "album" | "playlist";
+export type PlaylistType = 'album' | 'playlist';
 
-export type DecodedToken = {
+export interface DecodedToken {
   _id: string;
   role: string;
   username: string;

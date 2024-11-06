@@ -1,13 +1,13 @@
 'use client';
 
-import { LogIn } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import { LogIn } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
 
 export default function LoginIcon() {
   const router = useRouter();
   const handleLoginRedirect = () => {
-    router.push("/auth/login");
+    router.push('/auth/login');
   };
 
   return (
@@ -16,4 +16,4 @@ export default function LoginIcon() {
       <span className="sr-only">Log in</span>
     </Button>
   );
-};
+}

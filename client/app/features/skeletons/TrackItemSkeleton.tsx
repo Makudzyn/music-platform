@@ -1,4 +1,4 @@
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function TrackItemSkeleton() {
   return (
@@ -15,5 +15,5 @@ export default function TrackItemSkeleton() {
       <Skeleton className="h-4 w-24" />
       <Skeleton className="h-4 w-12" />
     </>
-  )
+  );
 }

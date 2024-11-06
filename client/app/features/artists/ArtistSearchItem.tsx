@@ -1,22 +1,24 @@
 'use client';
 
-import { Artist } from "@/lib/defenitions";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
-
+import { Artist } from '@/lib/defenitions';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 interface ArtistSearchItemProps {
   artist: Artist;
   onSelect: () => void;
 }
 
-export default function ArtistSearchItem({artist, onSelect}: ArtistSearchItemProps) {
+export default function ArtistSearchItem({
+  artist,
+  onSelect,
+}: ArtistSearchItemProps) {
   const router = useRouter();
 
   const handleSelect = () => {
     router.push(`/artists/${artist._id}`);
     onSelect();
-  }
+  };
 
   return (
     <li
@@ -24,8 +26,7 @@ export default function ArtistSearchItem({artist, onSelect}: ArtistSearchItemPro
       className="flex h-16 cursor-pointer px-4 py-2 transition-all duration-150 group hover:bg-accent"
       onClick={handleSelect}
     >
-      <div
-        className="relative mr-2 flex flex-shrink-0 aspect-square items-center justify-center overflow-hidden rounded-full shadow size-12">
+      <div className="relative mr-2 flex flex-shrink-0 aspect-square items-center justify-center overflow-hidden rounded-full shadow size-12">
         <Image
           src={`http://localhost:5000/${artist.artistImage}`}
           alt="Artist image"
@@ -41,4 +42,4 @@ export default function ArtistSearchItem({artist, onSelect}: ArtistSearchItemPro
       </div>
     </li>
   );
-};
+}

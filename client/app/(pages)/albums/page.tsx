@@ -1,6 +1,6 @@
-import Breadcrumbs from "@/app/features/breadcrumbs/Breadcrumbs";
-import ScrollWrapper from "@/app/features/scroll/ScrollWrapper";
-import AlbumGrid from "@/app/features/playlists/albums/AlbumGrid";
+import Breadcrumbs from '@/app/features/breadcrumbs/Breadcrumbs';
+import ScrollWrapper from '@/app/features/scroll/ScrollWrapper';
+import AlbumGrid from '@/app/features/playlists/albums/AlbumGrid';
 
 export default function Page() {
   return (
@@ -10,13 +10,10 @@ export default function Page() {
           <h1 className="text-3xl font-bold">All uploaded albums</h1>
         </div>
         <Breadcrumbs
-          items={[
-            {title: "Home", href: "/"},
-            {title: "Albums"}
-          ]}
+          items={[{ title: 'Home', href: '/' }, { title: 'Albums' }]}
         />
-        <AlbumGrid/>
+        <AlbumGrid />
       </div>
     </ScrollWrapper>
   );
-};
+}

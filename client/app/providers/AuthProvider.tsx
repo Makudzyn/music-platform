@@ -1,14 +1,14 @@
 'use client';
 
-import { ReactNode, useEffect } from "react";
-import { useAppDispatch, useAuthState } from "@/lib/hooks/hooks";
-import { getCookie } from "cookies-next";
-import { jwtDecode } from "jwt-decode";
-import { DecodedToken } from "@/lib/defenitions";
-import { loginSuccess, logout } from "@/lib/redux/userReducer/userSlice";
-import { loadCurrentUser } from "@/lib/redux/userReducer/userActions";
-import { isTokenExpired } from "@/lib/utils";
-import { refreshAccessToken } from "@/app/services/authService";
+import { ReactNode, useEffect } from 'react';
+import { useAppDispatch, useAuthState } from '@/lib/hooks/hooks';
+import { getCookie } from 'cookies-next';
+import { jwtDecode } from 'jwt-decode';
+import { DecodedToken } from '@/lib/defenitions';
+import { loginSuccess, logout } from '@/lib/redux/userReducer/userSlice';
+import { loadCurrentUser } from '@/lib/redux/userReducer/userActions';
+import { isTokenExpired } from '@/lib/utils';
+import { refreshAccessToken } from '@/app/services/authService';
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const dispatch = useAppDispatch();
@@ -20,34 +20,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       if (accessToken && !isAuthenticated && !user) {
         try {
-          // Декодируем токен для получения базовой информации
+          // Decode token to get basic information
           const decoded: DecodedToken = jwtDecode(accessToken);
 
           if (isTokenExpired(decoded)) {
-            // Если токен истек, инициируем запрос на его обновление
+            // If the token has expired, initiate a request to renew it
             await refreshAccessToken();
           } else {
             const userData = {
-              "_id": decoded.sub,
-              ...decoded
+              _id: decoded.sub,
+              ...decoded,
             };
 
-            // Устанавливаем базовую информацию из токена
+            // Set the basic information from the token
             dispatch(loginSuccess(userData));
 
-            // Загружаем полные данные пользователя
+            // Load full user data
             dispatch(loadCurrentUser(userData._id));
           }
         } catch (error) {
           console.error('Failed to initialize auth:', error);
-          dispatch(logout())
+          dispatch(logout());
         }
       }
     };
 
     initializeAuth();
   }, [dispatch, isAuthenticated, user]);
-
 
   return <>{children}</>;
 }

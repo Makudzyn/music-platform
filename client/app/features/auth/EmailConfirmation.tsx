@@ -1,20 +1,20 @@
 'use client';
 
-import { useEffect, useState } from "react";
-import { Check, X } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { emailConfirmation } from "@/app/services/authService";
+import { useEffect, useState } from 'react';
+import { Check, X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { emailConfirmation } from '@/app/services/authService';
 
 interface EmailConfirmationProps {
   token: string;
 }
 type Status = 'loading' | 'success' | 'error';
 
-export default function EmailConfirmation({token}: EmailConfirmationProps) {
+export default function EmailConfirmation({ token }: EmailConfirmationProps) {
   const router = useRouter();
   const [status, setStatus] = useState<Status>('loading');
 
-  useEffect( () => {
+  useEffect(() => {
     const confirmEmail = async () => {
       try {
         const response = await emailConfirmation(token);
@@ -24,43 +24,48 @@ export default function EmailConfirmation({token}: EmailConfirmationProps) {
           setStatus('error');
         }
       } catch (error) {
-        setStatus('error');
+        setStatus(error.message || 'error');
       }
 
       setTimeout(() => {
         router.push('/');
       }, 5000);
-    }
+    };
+    //If there is a token in the URL, call the confirmation function
     if (token) {
-      confirmEmail().then(() => console.log("confirmed"))
+      confirmEmail().then(() => console.log('confirmed'));
     }
-  }, [token]);
+  }, [token, router]);
 
   return (
     <div className="flex flex-col items-center justify-center h-full">
       {status === 'loading' && (
         <>
-            <div className="flex flex-row mb-4 gap-x-2">
-              <div className="size-3.5 rounded-full bg-accent animate-bounce [animation-delay:-0.75s]"></div>
-              <div className="size-3.5 rounded-full bg-accent animate-bounce [animation-delay:-0.5s]"></div>
-              <div className="size-3.5 rounded-full bg-accent animate-bounce [animation-delay:-0.25s]"></div>
-            </div>
+          <div className="flex flex-row mb-4 gap-x-2">
+            <div className="size-3.5 rounded-full bg-accent animate-bounce [animation-delay:-0.75s]"></div>
+            <div className="size-3.5 rounded-full bg-accent animate-bounce [animation-delay:-0.5s]"></div>
+            <div className="size-3.5 rounded-full bg-accent animate-bounce [animation-delay:-0.25s]"></div>
+          </div>
           <p>The confirmation request is being processed...</p>
         </>
       )}
       {status === 'success' && (
         <>
-          <Check className="text-green-500 size-12 mb-4"/>
+          <Check className="text-green-500 size-12 mb-4" />
           <p>Confirmation was successful!</p>
         </>
       )}
       {status === 'error' && (
         <>
-          <X className="text-destructive size-12 mb-4"/>
+          <X className="text-destructive size-12 mb-4" />
           <p>Confirmation failed.</p>
         </>
       )}
-      {status !== 'loading' && <p className="text-sm text-muted-foreground mt-2">Redirecting to the home page in 5 seconds...</p>}
+      {status !== 'loading' && (
+        <p className="text-sm text-muted-foreground mt-2">
+          Redirecting to the home page in 5 seconds...
+        </p>
+      )}
     </div>
   );
-};
+}

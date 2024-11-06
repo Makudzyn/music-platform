@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect, useState } from "react";
-import { useTheme } from "next-themes";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import { Moon, Sun } from "lucide-react";
+import { useEffect, useState } from 'react';
+import { useTheme } from 'next-themes';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
+import { Moon, Sun } from 'lucide-react';
 
 export default function ThemeToggleButton() {
   const [mounted, setMounted] = useState(false);
@@ -25,8 +25,8 @@ export default function ThemeToggleButton() {
       </div>
       <Switch
         id="theme-toggle"
-        checked={theme === "dark"}
-        onCheckedChange={() => setTheme(theme === "dark" ? "light" : "dark")}
+        checked={theme === 'dark'}
+        onCheckedChange={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
       />
       <Label htmlFor="theme-toggle" className="sr-only">
         Toggle theme

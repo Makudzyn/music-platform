@@ -1,21 +1,24 @@
 'use client';
 
-import { Playlist } from "@/lib/defenitions";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
+import { Playlist } from '@/lib/defenitions';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 interface PlaylistSearchItemProps {
   playlist: Playlist;
   onSelect: () => void;
 }
 
-export default function PlaylistSearchItem({ playlist, onSelect }: PlaylistSearchItemProps) {
+export default function PlaylistSearchItem({
+  playlist,
+  onSelect,
+}: PlaylistSearchItemProps) {
   const router = useRouter();
 
   const handleSelect = () => {
     router.push(`/${playlist.type}s/${playlist._id}`);
     onSelect();
-  }
+  };
 
   return (
     <li
@@ -37,7 +40,8 @@ export default function PlaylistSearchItem({ playlist, onSelect }: PlaylistSearc
           {playlist.title}
         </div>
         <div className="text-xs text-muted-foreground group-hover:text-foreground truncate">
-          {playlist.type === 'album' ? 'Album' : 'Playlist'} • {playlist.artist.name}
+          {playlist.type === 'album' ? 'Album' : 'Playlist'} •{' '}
+          {playlist.artist.name}
         </div>
         <div className="text-xs text-muted-foreground group-hover:text-foreground truncate">
           {playlist.tracksAmount} tracks
@@ -45,4 +49,4 @@ export default function PlaylistSearchItem({ playlist, onSelect }: PlaylistSearc
       </div>
     </li>
   );
-};
+}

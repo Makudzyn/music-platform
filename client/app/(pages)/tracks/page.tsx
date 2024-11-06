@@ -1,10 +1,10 @@
 'use client';
 
-import TrackList from "@/app/features/tracks/TrackList";
-import Breadcrumbs from "@/app/features/breadcrumbs/Breadcrumbs";
-import TrackListHeader from "@/app/features/tracks/TrackListHeader";
-import ScrollWrapper from "@/app/features/scroll/ScrollWrapper";
-import { useRef } from "react";
+import TrackList from '@/app/features/tracks/TrackList';
+import Breadcrumbs from '@/app/features/breadcrumbs/Breadcrumbs';
+import TrackListHeader from '@/app/features/tracks/TrackListHeader';
+import ScrollWrapper from '@/app/features/scroll/ScrollWrapper';
+import { useRef } from 'react';
 
 export default function Page() {
   const scrollRef = useRef(null);
@@ -16,14 +16,11 @@ export default function Page() {
           <h1 className="text-3xl font-bold">All uploaded songs</h1>
         </div>
         <Breadcrumbs
-          items={[
-            {title: "Home", href: "/"},
-            {title: "Tracks"}
-          ]}
+          items={[{ title: 'Home', href: '/' }, { title: 'Tracks' }]}
         />
         <TrackListHeader scrollRef={scrollRef} />
-        <TrackList/>
+        <TrackList />
       </div>
     </ScrollWrapper>
   );
-};
+}

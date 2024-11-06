@@ -3,7 +3,7 @@
 import * as Toast from '@radix-ui/react-toast';
 import { cn } from '@/lib/utils';
 import { X } from 'lucide-react';
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 interface ToastProps {
   title: string;
@@ -14,7 +14,7 @@ interface ToastProps {
   redirectMessage?: string; // Optional redirect message
 }
 
-export function Toaster({
+export default function Toaster({
   title,
   description,
   open,
@@ -47,7 +47,7 @@ export function Toaster({
         className={cn(
           'fixed bottom-20 right-4 z-50 w-full max-w-sm overflow-hidden rounded-lg border border-border bg-background shadow-lg',
           'data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-bottom-full data-[state=open]:sm:slide-in-from-bottom-full',
-          'transition-all duration-800 ease-in-out'
+          'transition-all duration-800 ease-in-out',
         )}
         open={open}
         onOpenChange={onOpenChange}
@@ -60,7 +60,8 @@ export function Toaster({
             </Toast.Title>
             <Toast.Description className="mt-1 text-sm text-muted-foreground">
               {description} <br />
-              {redirectMessage && `You will be redirected in ${timeLeft} seconds.`}
+              {redirectMessage &&
+                `You will be redirected in ${timeLeft} seconds.`}
             </Toast.Description>
           </div>
           <Toast.Close asChild>

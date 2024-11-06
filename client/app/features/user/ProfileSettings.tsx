@@ -2,26 +2,25 @@
 
 import { useCallback, useState } from 'react';
 import Image from 'next/image';
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { useAppSelector } from "@/lib/hooks/hooks";
-import { selectCurrentUser, selectUserLoading } from "@/lib/redux/userReducer/userSelectors";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { cn } from "@/lib/utils";
-import { Toaster } from "@/app/features/toast/toast";
-import { patchUserData } from "@/app/services/userService";
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { useAppSelector } from '@/lib/hooks/hooks';
+import { selectCurrentUser } from '@/lib/redux/userReducer/userSelectors';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { cn } from '@/lib/utils';
+import Toaster from '@/app/features/toast/Toaster';
+import { patchUserData } from '@/app/services/userService';
 
-// Схема валидации с использованием Zod
 const profileSchema = z.object({
-  username: z.string().min(3, "Username must be at least 3 characters long"),
-  email: z.string().email("Please enter a valid email address"),
-  bio: z.string().max(300, "Bio must not exceed 300 characters").optional(),
+  username: z.string().min(3, 'Username must be at least 3 characters long'),
+  email: z.string().email('Please enter a valid email address'),
+  bio: z.string().max(300, 'Bio must not exceed 300 characters').optional(),
 });
 
 export default function ProfileSettings() {
@@ -31,61 +30,71 @@ export default function ProfileSettings() {
   const [isDragging, setIsDragging] = useState(false);
 
   const [toastOpen, setToastOpen] = useState(false);
-  const [toastContent, setToastContent] = useState({ title: '', description: '' });
+  const [toastContent, setToastContent] = useState({
+    title: '',
+    description: '',
+  });
 
-  // Инициализация useForm с react-hook-form и zod
-  const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm({
     resolver: zodResolver(profileSchema),
     defaultValues: {
       username: user?.username || '',
       email: user?.email || '',
-      bio: user?.bio || ''
-    }
+      bio: user?.bio || '',
+    },
   });
 
-  const bio = watch("bio");
+  const bio = watch('bio');
 
   const onSubmit = async (data) => {
     try {
       const formData = new FormData();
-      formData.append("username", data.username);
-      formData.append("email", data.email);
-      formData.append("bio", data.bio || "");
+      formData.append('username', data.username);
+      formData.append('email', data.email);
+      formData.append('bio', data.bio || '');
 
-      // Добавляем файл аватара, если он выбран
+      // Add the avatar file if it has been uploaded
       if (avatar) {
-        formData.append("avatar", avatar);
+        formData.append('avatar', avatar);
       }
 
       await patchUserData(formData, user._id);
       setToastContent({
-        title: "Profile updated",
-        description: "Your profile has been successfully updated."
+        title: 'Profile updated',
+        description: 'Your profile has been successfully updated.',
       });
       setToastOpen(true);
     } catch (error) {
       setToastContent({
-        title: "Error",
-        description: "Failed to update profile. Please try again.",
+        title: 'Error',
+        description: 'Failed to update profile. Please try again.',
       });
       setToastOpen(true);
     }
   };
 
-  const handleDrop = useCallback((e) => {
-    e.preventDefault();
-    setIsDragging(false);
-    const file = e.dataTransfer?.files[0];
-    if (file && file.type.startsWith('image/')) {
-      setAvatar(file);
-    } else {
-      setToastContent({
-        title: "Invalid file type",
-        description: "Please upload an image file.",
-      });
-      setToastOpen(true);
-    }
-  }, [setAvatar]);
+  const handleDrop = useCallback(
+    (e) => {
+      e.preventDefault();
+      setIsDragging(false);
+      const file = e.dataTransfer?.files[0];
+      if (file?.type.startsWith('image/')) {
+        setAvatar(file);
+      } else {
+        setToastContent({
+          title: 'Invalid file type',
+          description: 'Please upload an image file.',
+        });
+        setToastOpen(true);
+      }
+    },
+    [setAvatar],
+  );
 
   const handleDragOver = useCallback((e) => {
     e.preventDefault();
@@ -99,11 +108,10 @@ export default function ProfileSettings() {
 
   const handleFileSelect = (e) => {
     const file = e.target.files?.[0];
-    if (file && file.type.startsWith('image/')) {
+    if (file?.type.startsWith('image/')) {
       setAvatar(file);
     }
   };
-
 
   return (
     <div className="container mx-auto px-4 py-4">
@@ -117,7 +125,7 @@ export default function ProfileSettings() {
               <Label htmlFor="avatar">Profile Picture</Label>
               <div
                 className={cn(
-                  "flex flex-col items-center justify-center border-2 border-dashed rounded-lg p-4 transition-colors",
+                  'flex flex-col items-center justify-center border-2 border-dashed rounded-lg p-4 transition-colors',
                   isDragging ? 'border-blue-500 bg-blue-50' : 'border-gray-300',
                 )}
                 onDrop={handleDrop}
@@ -126,9 +134,12 @@ export default function ProfileSettings() {
               >
                 <div className="relative size-32 mb-4">
                   <Image
-                    src={avatar ? URL.createObjectURL(avatar) :
-                      user?.avatar ? `http://localhost:5000/${user.avatar}` :
-                        `/api/placeholder/400/400`
+                    src={
+                      avatar
+                        ? URL.createObjectURL(avatar)
+                        : user?.avatar
+                          ? `http://localhost:5000/${user.avatar}`
+                          : `/api/placeholder/400/400`
                     }
                     alt="Profile picture"
                     fill
@@ -152,7 +163,7 @@ export default function ProfileSettings() {
               <Label htmlFor="username">Username</Label>
               <Input
                 id="username"
-                {...register("username")}
+                {...register('username')}
                 className={errors.username ? 'border-red-500' : ''}
               />
               {errors.username && (
@@ -167,7 +178,7 @@ export default function ProfileSettings() {
               <Input
                 id="email"
                 type="email"
-                {...register("email")}
+                {...register('email')}
                 className={errors.email ? 'border-red-500' : ''}
               />
               {errors.email && (
@@ -181,7 +192,7 @@ export default function ProfileSettings() {
               <Label htmlFor="bio">Bio</Label>
               <Textarea
                 id="bio"
-                {...register("bio")}
+                {...register('bio')}
                 rows={3}
                 className={errors.bio ? 'border-red-500' : ''}
               />

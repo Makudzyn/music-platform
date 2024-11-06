@@ -1,8 +1,8 @@
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
-import { FieldError, FieldValues, UseFormRegister } from "react-hook-form";
-import { ReactNode } from "react";
-import FormError from "@/app/features/auth/FormError";
+import { Input } from '@/components/ui/input';
+import { Separator } from '@/components/ui/separator';
+import { FieldError, FieldValues, UseFormRegister } from 'react-hook-form';
+import { ReactNode } from 'react';
+import FormError from '@/app/features/auth/FormError';
 
 interface FormInputProps {
   id: string;
@@ -49,7 +49,7 @@ export function FormInput({
           {icon}
         </div>
       </div>
-      {error && <FormError error={error.message}/>}
+      {error && <FormError error={error.message} />}
     </div>
   );
 }

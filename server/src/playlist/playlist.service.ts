@@ -178,7 +178,6 @@ export class PlaylistService {
 
   async deletePlaylist(playlistId: mongoose.Types.ObjectId): Promise<Playlist> {
     const existingPlaylist = await this.findPlaylistById(playlistId)
-    //TODO delete from artist
     if (existingPlaylist.coverImage) {
       await this.fileService.deleteFile(existingPlaylist.coverImage);
     }

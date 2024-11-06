@@ -1,7 +1,7 @@
 'use client';
 
-import { Fragment } from "react";
-import PlaylistCardSkeleton from "@/app/features/skeletons/PlaylistCardSkeleton";
+import { Fragment } from 'react';
+import PlaylistCardSkeleton from '@/app/features/skeletons/PlaylistCardSkeleton';
 
 export default function AlbumGridSkeleton() {
   return (
@@ -13,4 +13,4 @@ export default function AlbumGridSkeleton() {
       ))}
     </div>
   );
-};
+}

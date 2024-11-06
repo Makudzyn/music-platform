@@ -1,5 +1,5 @@
-import UserProfile from "@/app/features/user/UserProfile";
+import UserProfile from '@/app/features/user/UserProfile';
 
 export default function Page() {
-  return <UserProfile/>
-};
+  return <UserProfile />;
+}

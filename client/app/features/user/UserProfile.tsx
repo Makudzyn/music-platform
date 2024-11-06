@@ -1,16 +1,14 @@
 'use client';
 
-import Image from 'next/image'
-import { Badge } from "@/components/ui/badge"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { CalendarDays, Mail, User, Shield, Info } from "lucide-react"
-import { useAppSelector } from "@/lib/hooks/hooks";
-import { formatDate } from "@/lib/utils";
-import { selectCurrentUser } from "@/lib/redux/userReducer/userSelectors";
-
+import Image from 'next/image';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { CalendarDays, Mail, User, Shield, Info } from 'lucide-react';
+import { useAppSelector } from '@/lib/hooks/hooks';
+import { formatDate } from '@/lib/utils';
+import { selectCurrentUser } from '@/lib/redux/userReducer/userSelectors';
 
 export default function UserProfile() {
-
   const user = useAppSelector(selectCurrentUser);
 
   return (
@@ -37,8 +35,8 @@ export default function UserProfile() {
           <div className="flex items-center space-x-2">
             <User className="w-5 h-5 text-muted-foreground" />
             <span>Account Status:</span>
-            <Badge variant={user.isVerified ? "success" : "destructive"}>
-              {user.isVerified ? "Verified" : "Unverified"}
+            <Badge variant={user.isVerified ? 'success' : 'destructive'}>
+              {user.isVerified ? 'Verified' : 'Unverified'}
             </Badge>
           </div>
           <div className="flex items-center space-x-2">
@@ -60,5 +58,5 @@ export default function UserProfile() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

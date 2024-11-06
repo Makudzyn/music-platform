@@ -1,26 +1,36 @@
-import { ChangeEvent } from "react";
-import { MicVocal, Music4, Star } from "lucide-react";
-import { Textarea } from "@/components/ui/textarea";
-
+import { ChangeEvent } from 'react';
+import { MicVocal, Music4, Star } from 'lucide-react';
+import { Textarea } from '@/components/ui/textarea';
 
 interface TrackInfoFormProps {
   trackInfo: { artist: string; title: string; lyrics: string };
-  setTrackInfo: (info: { artist: string; title: string; lyrics: string }) => void;
+  setTrackInfo: (info: {
+    artist: string;
+    title: string;
+    lyrics: string;
+  }) => void;
 }
 
-export default function TrackInfoForm({ trackInfo, setTrackInfo }: TrackInfoFormProps) {
-  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+export default function TrackInfoForm({
+  trackInfo,
+  setTrackInfo,
+}: TrackInfoFormProps) {
+  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
     const { name, value } = e.target;
-    setTrackInfo(prev => ({ ...prev, [name]: value }));
+    setTrackInfo((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
-    <div className={"size-full flex justify-center items-center"}>
-      <div className={"h-full w-2/5 relative flex flex-col justify-evenly items-center"}>
-        <div className={"flex items-center justify-center w-full"}>
+    <div className={'size-full flex justify-center items-center'}>
+      <div
+        className={
+          'h-full w-2/5 relative flex flex-col justify-evenly items-center'
+        }
+      >
+        <div className={'flex items-center justify-center w-full'}>
           <Star />
           <Textarea
-            className={"w-full"}
+            className={'w-full'}
             required
             name="artist"
             id="artist-input"
@@ -29,10 +39,10 @@ export default function TrackInfoForm({ trackInfo, setTrackInfo }: TrackInfoForm
             placeholder="Enter track's artist..."
           />
         </div>
-        <div className={"flex items-center justify-center w-full"}>
+        <div className={'flex items-center justify-center w-full'}>
           <Music4 />
           <Textarea
-            className={"w-full"}
+            className={'w-full'}
             required
             name="title"
             id="title-input"
@@ -41,10 +51,10 @@ export default function TrackInfoForm({ trackInfo, setTrackInfo }: TrackInfoForm
             placeholder="Enter track's title..."
           />
         </div>
-        <div className={"flex items-center justify-center w-full"}>
+        <div className={'flex items-center justify-center w-full'}>
           <MicVocal />
           <Textarea
-            className={"w-full"}
+            className={'w-full'}
             name="lyrics"
             id="lyrics-input"
             onChange={handleChange}

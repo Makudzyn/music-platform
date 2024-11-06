@@ -1,19 +1,19 @@
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
-import { refreshAccessToken } from "@/app/services/authService";
+import { refreshAccessToken } from '@/app/services/authService';
 
-// Создание экземпляра axios
+// Creating an axios instance
 const axiosClient = axios.create({
   baseURL: 'http://localhost:5000', // базовый URL для запросов
 });
 
-// Флаг для отслеживания состояния обновления токена
+// Flag to track token update status
 let isRefreshing = false;
 let failedQueue: any[] = [];
 
-// Функция для обработки повторного выполнения запросов после обновления токена
+// Function to handle re-execution of requests after token update
 const processQueue = (error: any, token: string | null = null) => {
-  failedQueue.forEach(prom => {
+  failedQueue.forEach((prom) => {
     if (token) {
       prom.resolve(token);
     } else {
@@ -24,47 +24,51 @@ const processQueue = (error: any, token: string | null = null) => {
   failedQueue = [];
 };
 
-// Перехватчик запросов
-axiosClient.interceptors.request.use((config) => {
-  const accessToken = getCookie('accessToken'); // Получение access-токена из куки
+// Request Interceptor
+axiosClient.interceptors.request.use(
+  (config) => {
+    const accessToken = getCookie('accessToken'); // Получение access-токена из куки
 
-  if (accessToken) {
-    config.headers.Authorization = `Bearer ${accessToken}`;
-  }
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
 
-  return config;
-}, (error) => Promise.reject(error));
+    return config;
+  },
+  (error) => Promise.reject(error),
+);
 
-// Перехватчик ответов
+// Answer Interceptor
 axiosClient.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
-    // Если ошибка 401, пытаемся обновить токен
+    // If the error is 401, try to update the token
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
-        }).then((token) => {
-          originalRequest.headers.Authorization = `Bearer ${token}`;
-          return axiosClient(originalRequest);
-        }).catch(err => {
-          return Promise.reject(err);
-        });
+        })
+          .then((token) => {
+            originalRequest.headers.Authorization = `Bearer ${token}`;
+            return axiosClient(originalRequest);
+          })
+          .catch((err) => {
+            return Promise.reject(err);
+          });
       }
 
       isRefreshing = true;
 
-
       try {
-        // Отправляем запрос на обновление токена
+        // Send token update request
         const newAccessToken = await refreshAccessToken();
 
         processQueue(null, newAccessToken);
-        // Повторяем исходный запрос с новым токеном
+        // Repeat the original request with a new token
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
 
         return axiosClient(originalRequest);
@@ -78,7 +82,7 @@ axiosClient.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export default axiosClient;

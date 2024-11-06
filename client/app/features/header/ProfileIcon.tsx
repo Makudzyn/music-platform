@@ -1,14 +1,19 @@
 'use client';
 
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { LogOut } from "lucide-react";
-import { useDispatch } from "react-redux";
-import { deleteCookie } from "cookies-next";
-import { logout } from "@/lib/redux/userReducer/userSlice";
-import { useRouter } from "next/navigation";
-import { useAppSelector } from "@/lib/hooks/hooks";
-import { selectCurrentUser } from "@/lib/redux/userReducer/userSelectors";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { LogOut } from 'lucide-react';
+import { useDispatch } from 'react-redux';
+import { deleteCookie } from 'cookies-next';
+import { logout } from '@/lib/redux/userReducer/userSlice';
+import { useRouter } from 'next/navigation';
+import { useAppSelector } from '@/lib/hooks/hooks';
+import { selectCurrentUser } from '@/lib/redux/userReducer/userSelectors';
 
 export default function ProfileIcon() {
   const dispatch = useDispatch();
@@ -18,8 +23,8 @@ export default function ProfileIcon() {
   const handleLogout = () => {
     deleteCookie('accessToken');
     deleteCookie('refreshToken');
-    dispatch(logout())
-    router.push("/auth/login");
+    dispatch(logout());
+    router.push('/auth/login');
   };
 
   return (
@@ -34,10 +39,10 @@ export default function ProfileIcon() {
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem onSelect={() => router.push("/user/profile")}>
+        <DropdownMenuItem onSelect={() => router.push('/user/profile')}>
           Profile
         </DropdownMenuItem>
-        <DropdownMenuItem onSelect={() => router.push("/user/settings")}>
+        <DropdownMenuItem onSelect={() => router.push('/user/settings')}>
           Settings
         </DropdownMenuItem>
         <DropdownMenuItem onSelect={handleLogout}>
@@ -47,4 +52,4 @@ export default function ProfileIcon() {
       </DropdownMenuContent>
     </DropdownMenu>
   );
-};
+}

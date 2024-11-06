@@ -1,13 +1,13 @@
-import { Playlist } from "@/lib/defenitions";
-import { Card, CardContent } from "@/components/ui/card";
-import Link from "next/link";
-import Image from "next/image";
+import { Playlist } from '@/lib/defenitions';
+import { Card, CardContent } from '@/components/ui/card';
+import Link from 'next/link';
+import Image from 'next/image';
 
 interface AlbumCardProps {
   playlist: Playlist;
 }
 
-export default function AlbumCard({playlist}: AlbumCardProps) {
+export default function AlbumCard({ playlist }: AlbumCardProps) {
   return (
     <Card className="relative aspect-square w-full overflow-hidden group">
       <Link href={`/albums/${playlist._id}`} className="absolute size-full">
@@ -27,5 +27,5 @@ export default function AlbumCard({playlist}: AlbumCardProps) {
         </CardContent>
       </Link>
     </Card>
-  )
+  );
 }

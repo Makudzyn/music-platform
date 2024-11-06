@@ -1,21 +1,22 @@
 'use client';
 
-import { Card, CardContent } from "@/components/ui/card";
-import { Track } from "@/lib/defenitions";
-import { useDispatch } from "react-redux";
-import { useAppSelector } from "@/lib/hooks/hooks";
-import { pause, play, setCurrentTrack } from "@/lib/redux/playerSlice";
-import Image from "next/image";
-import { Pause, Play } from "lucide-react";
-import Link from "next/link";
+import { Card, CardContent } from '@/components/ui/card';
+import { Track } from '@/lib/defenitions';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks/hooks';
+import { pause, play, setCurrentTrack } from '@/lib/redux/playerSlice';
+import Image from 'next/image';
+import { Pause, Play } from 'lucide-react';
+import Link from 'next/link';
 
 interface TrackCardProps {
   track: Track;
 }
 
-export default function TrackCard({track}: TrackCardProps) {
-  const dispatch = useDispatch();
-  const {paused, currentTrack} = useAppSelector(state => state.player);
+export default function TrackCard({ track }: TrackCardProps) {
+  const dispatch = useAppDispatch();
+  const { paused, currentTrack } = useAppSelector((state) => state.player);
+
+  //To see if this track is the one that's playing now.
   const isActive = currentTrack && currentTrack._id === track._id;
 
   const handleTrackChange = (track: Track) => {
@@ -28,7 +29,7 @@ export default function TrackCard({track}: TrackCardProps) {
     } else {
       dispatch(setCurrentTrack(track));
     }
-  }
+  };
 
   return (
     <Card className="w-full max-w-80">
@@ -37,10 +38,12 @@ export default function TrackCard({track}: TrackCardProps) {
           onClick={() => handleTrackChange(track)}
           className="relative flex items-center justify-center cursor-pointer size-14 group shrink-0"
         >
-          <div
-            className="absolute inset-0 z-10 flex items-center justify-center text-background opacity-0 transition-opacity duration-300 size-14 group-hover:opacity-100"
-          >
-            {isActive && !paused ? <Pause className="fill-background"/> : <Play className="fill-background"/>}
+          <div className="absolute inset-0 z-10 flex items-center justify-center text-background opacity-0 transition-opacity duration-300 size-14 group-hover:opacity-100">
+            {isActive && !paused ? (
+              <Pause className="fill-background" />
+            ) : (
+              <Play className="fill-background" />
+            )}
           </div>
           <Image
             src={`http://localhost:5000/${track.thumbnail}`}
@@ -67,4 +70,4 @@ export default function TrackCard({track}: TrackCardProps) {
       </CardContent>
     </Card>
   );
-};
+}

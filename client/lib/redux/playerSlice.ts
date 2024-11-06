@@ -1,8 +1,8 @@
-import { RepeatMode, Track } from "@/lib/defenitions";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { shuffleArray } from "@/lib/utils";
+import { RepeatMode, Track } from '@/lib/defenitions';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { shuffleArray } from '@/lib/utils';
 
-type PlayerState = {
+interface PlayerState {
   currentTrack: Track | null;
   queue: Track[] | null;
   qIndex: number;
@@ -23,7 +23,7 @@ const initialState: PlayerState = {
   totalDuration: 0,
   currentPosition: 0,
   paused: true,
-  repeatMode: "none",
+  repeatMode: 'none',
 };
 
 const playerSlice = createSlice({
@@ -37,12 +37,15 @@ const playerSlice = createSlice({
       state.paused = true;
     },
     nextTrack(state) {
-      if (state.repeatMode === "one") { // Repeat the current track
+      if (state.repeatMode === 'one') {
+        // Repeat the current track
         state.currentPosition = 0;
-      } else if (state.repeatMode === "all") { // Move to the next track, or loop to the start if at the end of the queue
+      } else if (state.repeatMode === 'all') {
+        // Move to the next track, or loop to the start if at the end of the queue
         state.queueIndex = (state.queueIndex + 1) % state.queue.length;
         state.currentTrack = state.queue[state.queueIndex];
-      } else { // Standard mode, move to the next track or pause if at the end
+      } else {
+        // Standard mode, move to the next track or pause if at the end
         if (state.queueIndex < state.queue.length - 1) {
           state.queueIndex += 1;
           state.currentTrack = state.queue[state.queueIndex];
@@ -59,12 +62,13 @@ const playerSlice = createSlice({
     },
     toggleShuffle(state) {
       state.shuffle = !state.shuffle;
-      if (state.shuffle) { // Shuffle the queue and reset the current track index
+      if (state.shuffle) {
+        // Shuffle the queue and reset the current track index
         state.queue = shuffleArray(state.queue);
         state.queueIndex = 0;
         state.currentTrack = state.queue[0];
       } else {
-        // TODO: Implement a way to restore the original order
+        //Maybe restore original order
       }
     },
     setQueue(state, action: PayloadAction<Track[]>) {
@@ -72,16 +76,21 @@ const playerSlice = createSlice({
       state.queueIndex = 0;
     },
     addToQueue(state, action: PayloadAction<Track | Track[]>) {
-      // Если передан массив треков
+      // If an array of tracks is passed
       if (Array.isArray(action.payload)) {
-        const newTracks = action.payload.filter(newTrack =>
-          !state.queue.some(existingTrack => existingTrack._id === newTrack._id)
+        const newTracks = action.payload.filter(
+          (newTrack) =>
+            !state.queue.some(
+              (existingTrack) => existingTrack._id === newTrack._id,
+            ),
         );
         state.queue.push(...newTracks);
       } else {
-        // Если передан один трек
+        // If one track is passed
         const track = action.payload;
-        if (!state.queue.some(existingTrack => existingTrack._id === track._id)) {
+        if (
+          !state.queue.some((existingTrack) => existingTrack._id === track._id)
+        ) {
           state.queue.push(track);
         }
       }
@@ -90,10 +99,12 @@ const playerSlice = createSlice({
       const selectedTrack = action.payload;
       state.currentTrack = selectedTrack;
       if (selectedTrack && state.queue) {
-        // Находим индекс выбранного трека в очереди
-        const trackIndex = state.queue.findIndex(track => track._id === selectedTrack._id);
+        // Find the index of the selected track in the queue
+        const trackIndex = state.queue.findIndex(
+          (track) => track._id === selectedTrack._id,
+        );
 
-        // Если найден, обновляем индекс очереди
+        // If found, update the queue index
         if (trackIndex !== -1) {
           state.queueIndex = trackIndex;
         }
@@ -112,17 +123,23 @@ const playerSlice = createSlice({
     },
     setRepeatMode(state, action: PayloadAction<RepeatMode>) {
       state.repeatMode = action.payload;
-    }
-  }
+    },
+  },
 });
 
 export const {
-  play, pause, setCurrentTrack,
-  setQueue, addToQueue,
-  nextTrack, previousTrack,
-  toggleShuffle, setRepeatMode,
-  setVolume, setTotalDuration, setCurrentPosition
+  play,
+  pause,
+  setCurrentTrack,
+  setQueue,
+  addToQueue,
+  nextTrack,
+  previousTrack,
+  toggleShuffle,
+  setRepeatMode,
+  setVolume,
+  setTotalDuration,
+  setCurrentPosition,
 } = playerSlice.actions;
-
 
 export default playerSlice.reducer;

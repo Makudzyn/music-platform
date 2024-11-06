@@ -1,5 +1,5 @@
-import { User } from "@/lib/defenitions";
-import axiosClient from "@/lib/axiosClient";
+import { User } from '@/lib/defenitions';
+import axiosClient from '@/lib/axiosClient';
 
 export async function fetchUserById(userId: string): Promise<User> {
   try {
@@ -10,7 +10,10 @@ export async function fetchUserById(userId: string): Promise<User> {
   }
 }
 
-export async function patchUserData(formData: FormData, userId: string): Promise<void> {
+export async function patchUserData(
+  formData: FormData,
+  userId: string,
+): Promise<void> {
   try {
     await axiosClient.patch(`/user/${userId}`, formData);
   } catch (e) {
