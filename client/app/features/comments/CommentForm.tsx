@@ -8,77 +8,94 @@ import { Button } from '@/components/ui/button';
 import { MessageSquare } from 'lucide-react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import { postComment } from '@/app/services/tracksService';
 import { useAuthState } from '@/lib/hooks/hooks';
+import Toaster from "@/app/features/toast/Toaster";
 
 const formSchema = z.object({
-  text: z.string().min(1, 'Comment cannot be empty'),
+  text: z.string()
+  .min(1, 'Comment cannot be empty')
 });
 
 type FormData = z.infer<typeof formSchema>;
 
 export default function CommentForm() {
-  const [error, setError] = useState<string | null>(null);
   const params = useParams();
   const trackId = params.id;
-  const { user } = useAuthState();
+  const {user} = useAuthState();
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting },
+    formState: {errors, isSubmitting}
   } = useForm<FormData>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchema)
   });
 
-  const onSubmit = async (data: FormData) => {
-    try {
-      setError(null);
+  const [toastOpen, setToastOpen] = useState<boolean>(false);
+  const [toastInfo, setToastInfo] = useState<{
+    title: string;
+    description: string;
+  }>({
+    title: '',
+    description: ''
+  });
 
-      //You can`t submit comment if you're not logged in
-      if (!user) {
-        throw new Error('User not found');
+  const onSubmit = async(data: FormData) => {
+    try {
+      if (!user || !user._id) {
+        throw new Error('User not found or his id is not present');
       }
 
       const commentData = {
         ...data,
         user: user._id,
-        track: trackId,
+        track: trackId
       };
-
 
       const response = await postComment(commentData);
 
       if (!response) {
         throw new Error('Failed to post comment');
       }
-
+      setToastOpen(true);
+      setToastInfo({
+        title: 'Comment successfully posted',
+        description: 'If you do not see it yet refresh the page.'
+      });
       reset(); // Reset form after successful submission
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong');
+    } catch (error) {
+      setToastOpen(true);
+      setToastInfo({
+        title: 'Error posting a comment',
+        description: error.message || 'Try again later'
+      });
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      {error && (
-        <Alert variant="destructive">
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      )}
-      <Textarea
-        {...register('text')}
-        placeholder="Write a comment..."
-        className={errors.text ? 'border-red-500' : ''}
+    <>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <Textarea
+          {...register('text')}
+          placeholder="Write a comment..."
+          className={errors.text ? 'border-red-500' : ''}
+        />
+        {errors.text && (
+          <span className="text-sm text-red-500">{errors.text.message}</span>
+        )}
+        <Button type="submit" disabled={isSubmitting}>
+          <MessageSquare className="mr-2 h-4 w-4"/>
+          {isSubmitting ? 'Posting...' : 'Post Comment'}
+        </Button>
+      </form>
+      <Toaster
+        title={toastInfo.title}
+        description={toastInfo.description}
+        open={toastOpen}
+        onOpenChange={setToastOpen}
+        duration={5000}
       />
-      {errors.text && (
-        <span className="text-sm text-red-500">{errors.text.message}</span>
-      )}
-      <Button type="submit" disabled={isSubmitting}>
-        <MessageSquare className="mr-2 h-4 w-4" />
-        {isSubmitting ? 'Posting...' : 'Post Comment'}
-      </Button>
-    </form>
+    </>
   );
 }

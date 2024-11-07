@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { FormInput } from '@/app/features/auth/FormInput';
 import FormButton from '@/app/features/auth/FormButton';
 import { z } from 'zod';
-import { Toaster } from '@/app/features/toast/Toaster';
+import Toaster from '@/app/features/toast/Toaster';
 import { zodResolver } from '@hookform/resolvers/zod';
 import FormError from '@/app/features/auth/FormError';
 

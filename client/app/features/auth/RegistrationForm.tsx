@@ -7,7 +7,7 @@ import { AtSign, Key, User } from 'lucide-react';
 import { FormInput } from '@/app/features/auth/FormInput';
 import FormError from '@/app/features/auth/FormError';
 import FormButton from '@/app/features/auth/FormButton';
-import { Toaster } from '@/app/features/toast/Toaster';
+import Toaster from '@/app/features/toast/Toaster';
 import { registration } from '@/app/services/authService';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';

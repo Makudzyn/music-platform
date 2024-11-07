@@ -1,5 +1,6 @@
-import LoginForm from '@/app/features/auth/LoginForm';
+
 import AuthRedirect from '@/app/features/auth/AuthRedirect';
+import LoginForm from "@/app/features/auth/LoginForm";
 
 export default function Page() {
   return (
