@@ -10,11 +10,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { postComment } from '@/app/services/tracksService';
 import { useAuthState } from '@/lib/hooks/hooks';
-import Toaster from "@/app/features/toast/Toaster";
+import Toaster from '@/app/features/toast/Toaster';
 
 const formSchema = z.object({
-  text: z.string()
-  .min(1, 'Comment cannot be empty')
+  text: z.string().min(1, 'Comment cannot be empty'),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -22,14 +21,14 @@ type FormData = z.infer<typeof formSchema>;
 export default function CommentForm() {
   const params = useParams();
   const trackId = params.id;
-  const {user} = useAuthState();
+  const { user } = useAuthState();
   const {
     register,
     handleSubmit,
     reset,
-    formState: {errors, isSubmitting}
+    formState: { errors, isSubmitting },
   } = useForm<FormData>({
-    resolver: zodResolver(formSchema)
+    resolver: zodResolver(formSchema),
   });
 
   const [toastOpen, setToastOpen] = useState<boolean>(false);
@@ -38,10 +37,10 @@ export default function CommentForm() {
     description: string;
   }>({
     title: '',
-    description: ''
+    description: '',
   });
 
-  const onSubmit = async(data: FormData) => {
+  const onSubmit = async (data: FormData) => {
     try {
       if (!user || !user._id) {
         throw new Error('User not found or his id is not present');
@@ -50,7 +49,7 @@ export default function CommentForm() {
       const commentData = {
         ...data,
         user: user._id,
-        track: trackId
+        track: trackId,
       };
 
       const response = await postComment(commentData);
@@ -61,14 +60,14 @@ export default function CommentForm() {
       setToastOpen(true);
       setToastInfo({
         title: 'Comment successfully posted',
-        description: 'If you do not see it yet refresh the page.'
+        description: 'If you do not see it yet refresh the page.',
       });
       reset(); // Reset form after successful submission
     } catch (error) {
       setToastOpen(true);
       setToastInfo({
         title: 'Error posting a comment',
-        description: error.message || 'Try again later'
+        description: error.message || 'Try again later',
       });
     }
   };
@@ -85,7 +84,7 @@ export default function CommentForm() {
           <span className="text-sm text-red-500">{errors.text.message}</span>
         )}
         <Button type="submit" disabled={isSubmitting}>
-          <MessageSquare className="mr-2 h-4 w-4"/>
+          <MessageSquare className="mr-2 h-4 w-4" />
           {isSubmitting ? 'Posting...' : 'Post Comment'}
         </Button>
       </form>

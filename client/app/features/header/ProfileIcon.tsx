@@ -30,7 +30,7 @@ export default function ProfileIcon() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Avatar>
+        <Avatar className="cursor-pointer shadow hover:shadow-accent transition-all duration-500">
           <AvatarImage
             src={`http://localhost:5000/${user.avatar}`}
             alt={`${user.username}'s avatar`}

@@ -53,7 +53,6 @@ export default function Player({ toggleQueuePanel }: PlayerProps) {
     }
   };
 
-
   //Playing the current track
   useEffect(() => {
     //If the state 'currentTrack' has a track
@@ -69,12 +68,15 @@ export default function Player({ toggleQueuePanel }: PlayerProps) {
       audioRef.current!.volume = volume / 100;
 
       //Adding events defined earlier
-      audioRef.current!.addEventListener('loadedmetadata', handleLoadedMetadata);
+      audioRef.current!.addEventListener(
+        'loadedmetadata',
+        handleLoadedMetadata,
+      );
       audioRef.current!.addEventListener('timeupdate', handleTimeUpdate);
 
       //Play the received audio object and change the play state in the Store
-      audioRef.current!
-        .play()
+      audioRef
+        .current!.play()
         .then(dispatch(play()))
         .catch((error) => {
           console.error('Failed to play audio:', error);
@@ -97,7 +99,6 @@ export default function Player({ toggleQueuePanel }: PlayerProps) {
       }
     };
   }, [currentTrack]);
-
 
   //When the track ends, call the action to switch to the next track and play it immediately
   useEffect(() => {
@@ -143,7 +144,11 @@ export default function Player({ toggleQueuePanel }: PlayerProps) {
         <TimeSlider audioRef={audioRef} />
       </div>
       <div className="flex flex-row justify-end w-[30%] min-w-40 pe-2">
-        <PlayerButton onClick={toggleQueuePanel} icon={<ListMusic />} />
+        <PlayerButton
+          onClick={toggleQueuePanel}
+          icon={<ListMusic />}
+          tooltip="Toggle queue panel"
+        />
         <VolumeSlider />
       </div>
     </div>

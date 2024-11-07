@@ -1,10 +1,11 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { Heart, PlayCircle, Share2 } from 'lucide-react';
+import { Heart, Play, PlayCircle, Share2 } from 'lucide-react';
 import { Track } from '@/lib/defenitions';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/hooks';
 import { pause, play, setCurrentTrack } from '@/lib/redux/playerSlice';
+import CustomTooltip from '@/app/features/tooltip/Tooltip';
 
 interface TrackViewButtonsProps {
   track: Track;
@@ -29,17 +30,38 @@ export default function TrackViewButtons({ track }: TrackViewButtonsProps) {
     }
   };
   return (
-    <div className="flex gap-4 mb-6">
-      <Button size="lg" className="rounded-full" onClick={handlePlayPause}>
-        <PlayCircle className="mr-2 h-6 w-6" />
-        Play
-      </Button>
-      <Button size="icon" variant="outline" className="rounded-full">
-        <Heart className="h-6 w-6" />
-      </Button>
-      <Button size="icon" variant="outline" className="rounded-full">
-        <Share2 className="h-6 w-6" />
-      </Button>
+    <div className="mb-6 flex gap-4">
+      <CustomTooltip content="Play track">
+        <Button
+          size="lg"
+          variant="default"
+          className="rounded-xl group/play"
+          onClick={handlePlayPause}
+        >
+          <Play className="mr-2 transition-all fill-background stroke-background size-6" />
+          <span className="transition-all group-hover/play:text-background">
+            Play
+          </span>
+        </Button>
+      </CustomTooltip>
+      <CustomTooltip content="Add to favorites">
+        <Button
+          size="icon"
+          variant="outline"
+          className="rounded-full border-none group/heart"
+        >
+          <Heart className="size-6 group-hover/heart:stroke-background" />
+        </Button>
+      </CustomTooltip>
+      <CustomTooltip content="Share">
+        <Button
+          size="icon"
+          variant="outline"
+          className="rounded-full border-none group/share bg-background"
+        >
+          <Share2 className="size-6 group-hover/share:stroke-background" />
+        </Button>
+      </CustomTooltip>
     </div>
   );
 }

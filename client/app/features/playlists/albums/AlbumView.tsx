@@ -29,7 +29,9 @@ export default function AlbumView({ albumId, scrollRef }: AlbumViewProps) {
   );
 
   const { album, loading: albumLoading } = useAppSelector(selectAlbumViewData);
-  const { tracks, loading: tracksLoading } = useAppSelector(selectTracksByAlbumId);
+  const { tracks, loading: tracksLoading } = useAppSelector(
+    selectTracksByAlbumId,
+  );
 
   const actions = useMemo(() => [loadAlbumById, loadTracksByAlbumId], []);
 

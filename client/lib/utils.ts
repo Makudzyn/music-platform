@@ -117,7 +117,6 @@ export const isTokenExpired = (decodedToken: DecodedToken) => {
   return decodedToken.exp * 1000 < Date.now();
 };
 
-
 //Template of thunk function that is used in Redux requests
 export const createLoadThunk = <T extends string>(
   type: string,

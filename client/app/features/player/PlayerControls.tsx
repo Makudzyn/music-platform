@@ -21,6 +21,7 @@ import {
   SkipForward,
 } from 'lucide-react';
 import PlayerButton from '@/app/features/player/PlayerButton';
+import CustomTooltip from '@/app/features/tooltip/Tooltip';
 
 export default function PlayerControls() {
   const dispatch = useAppDispatch();
@@ -71,26 +72,40 @@ export default function PlayerControls() {
         <PlayerButton
           onClick={handleShuffleToggle}
           icon={<Shuffle />}
+          tooltip="Shuffle queue"
           className={shuffle ? 'text-accent' : 'text-foreground'}
         />
-        <PlayerButton onClick={goToPreviousTrack} icon={<SkipBack />} />
+        <PlayerButton
+          onClick={goToPreviousTrack}
+          icon={<SkipBack />}
+          tooltip="Go to previous track"
+        />
       </div>
       <div className="flex items-center justify-center">
-        <div
-          onClick={handlePlayPause}
-          className="cursor-pointer rounded-full bg-background p-1 shadow-sm transition-all duration-300 shadow-foreground hover:scale-110 hover:shadow-accent hover:shadow"
-        >
-          {paused ? (
-            <Play className={'size-6 pl-0.5 fill-foreground text-foreground'} />
-          ) : (
-            <Pause className={'size-6 fill-foreground text-foreground'} />
-          )}
-        </div>
+        <CustomTooltip content={paused ? 'Play song' : 'Pause song'}>
+          <div
+            onClick={handlePlayPause}
+            className="cursor-pointer rounded-full p-1 shadow-sm transition-all duration-300 bg-background shadow-foreground hover:shadow-accent hover:scale-110 hover:shadow"
+          >
+            {paused ? (
+              <Play
+                className={'size-6 pl-0.5 fill-foreground text-foreground'}
+              />
+            ) : (
+              <Pause className={'size-6 fill-foreground text-foreground'} />
+            )}
+          </div>
+        </CustomTooltip>
       </div>
       <div className="flex w-full items-center justify-start gap-2">
-        <PlayerButton onClick={goToNextTrack} icon={<SkipForward />} />
+        <PlayerButton
+          onClick={goToNextTrack}
+          icon={<SkipForward />}
+          tooltip="Go to next track"
+        />
         <PlayerButton
           onClick={handleRepeatToggle}
+          tooltip="Change repeat mode"
           icon={
             repeatMode === 'none' ? (
               <Repeat />

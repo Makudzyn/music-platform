@@ -81,7 +81,7 @@ export default function ArtistHeader({ artist, tracks }: ArtistHeaderProps) {
               <Button
                 variant="ghost"
                 size="sm"
-                className="mt-1 p-0 transition-all duration-500 text-primary-foreground/80 hover:text-primary-foreground dark:text-foreground/80 dark:hover:text-foreground"
+                className="mt-1 py-0 pl-0 pr-1 rounded-sm transition-all duration-500 text-primary-foreground/80 hover:text-primary-foreground dark:text-foreground/80 dark:hover:text-foreground"
                 onClick={() => setIsExpanded(!isExpanded)}
               >
                 {isExpanded ? (
@@ -104,9 +104,9 @@ export default function ArtistHeader({ artist, tracks }: ArtistHeaderProps) {
               onClick={handleSongsPlay}
             >
               {currentArtistInQ && !paused ? (
-                <Pause className="mr-2 stroke-transparent size-6 fill-primary-foreground" />
+                <Pause className="mr-2 stroke-primary-foreground size-6 fill-primary-foreground" />
               ) : (
-                <Play className="mr-2 stroke-transparent size-6 fill-primary-foreground" />
+                <Play className="mr-2 stroke-primary-foreground size-6 fill-primary-foreground" />
               )}
               Play Artist
             </Button>

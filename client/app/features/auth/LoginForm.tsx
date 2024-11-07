@@ -61,10 +61,7 @@ export default function LoginForm() {
   //If authorization was successful, redirect to the main page
   useEffect(() => {
     if (toastInfo.title === 'Login Successful') {
-      const redirectTimeout = setTimeout(
-        () => router.push('/'),
-        3000
-      );
+      const redirectTimeout = setTimeout(() => router.push('/'), 3000);
       return () => clearTimeout(redirectTimeout);
     }
   }, [toastInfo, router]);

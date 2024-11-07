@@ -26,9 +26,9 @@ export default function CarouselSection({
   return (
     <Carousel
       opts={{ align: 'start', loop: false }}
-      className="py-2 px-2.5 w-full"
+      className="py-0.5 px-2.5 w-full"
     >
-      <CarouselContent>
+      <CarouselContent className="my-3">
         {itemGroups.map((group, index) => (
           <CarouselItem
             key={index}

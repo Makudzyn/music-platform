@@ -12,7 +12,7 @@ export default function Home() {
         <div className="container mx-auto px-4 pb-2">
           <Link
             href={`/tracks`}
-            className="mt-2 mb-1 flex w-full flex-row items-center px-4 pb-1 pt-1.5"
+            className="mt-2 mb-0.5 flex w-full flex-row items-center px-4 pb-0.5 pt-1.5"
           >
             <h2 className="font-bold leading-6 text-foreground">All songs</h2>
             <ChevronRight />
@@ -22,7 +22,7 @@ export default function Home() {
         <div className="container mx-auto px-4 pb-2">
           <Link
             href={`/albums`}
-            className="mt-2 mb-1 flex w-full flex-row items-center px-4 pb-1 pt-1.5"
+            className="mt-2 mb-0.5 flex w-full flex-row items-center px-4 pb-0.5 pt-1.5"
           >
             <h2 className="font-bold leading-6 text-foreground">All albums</h2>
             <ChevronRight />
@@ -32,7 +32,7 @@ export default function Home() {
         <div className="container mx-auto px-4 pb-2">
           <Link
             href={`/artists`}
-            className="mt-2 mb-1 flex w-full flex-row items-center px-4 pb-1 pt-1.5"
+            className="mt-2 mb-0.5 flex w-full flex-row items-center px-4 pb-0.5 pt-1.5"
           >
             <h2 className="font-bold leading-6 text-foreground">All artists</h2>
             <ChevronRight />
