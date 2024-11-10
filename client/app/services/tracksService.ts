@@ -41,7 +41,7 @@ export const updateTrackListens = async (id: string): Promise<void> => {
 
 export const uploadTrack = async (formData: object): Promise<void> => {
   try {
-    const response = await axiosClient.post('/tracks', formData);
+    await axiosClient.post('/tracks', formData);
   } catch (error) {
     console.error('Error uploading track:', error);
   }

@@ -5,6 +5,7 @@ import CurrentIcon from '@/app/features/header/CurrentIcon';
 import SearchField from '@/app/features/header/SearchField';
 import ThemeToggleButton from '@/app/features/header/ThemeToggleButton';
 import CustomTooltip from '@/app/features/tooltip/Tooltip';
+import AdminMenuButton from '@/app/features/admin/AdminMenuButton';
 
 interface HeaderProps {
   isExpanded: boolean;
@@ -39,6 +40,7 @@ export default function Header({ isExpanded, toggleNavPanel }: HeaderProps) {
           <SearchField />
         </div>
         <div className="flex items-center space-x-4">
+          <AdminMenuButton />
           <ThemeToggleButton />
           <CurrentIcon />
         </div>

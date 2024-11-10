@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { Heart, Play, PlayCircle, Share2 } from 'lucide-react';
+import { Heart, Play, Share2 } from 'lucide-react';
 import { Track } from '@/lib/defenitions';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/hooks';
 import { pause, play, setCurrentTrack } from '@/lib/redux/playerSlice';

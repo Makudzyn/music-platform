@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { getCookie } from 'cookies-next';
+import { jwtDecode } from 'jwt-decode';
 
 export function middleware(req: NextRequest) {
   const accessToken = getCookie('accessToken', { req });
@@ -9,11 +10,11 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL('/auth/login', req.url));
   }
 
-  // Проверка на роли
-  const userRole = getCookie('userRole', { req });
+  // Decode token and extract the role from it
+  const { role } = jwtDecode(accessToken);
 
-  // Если страница для админов, но роль не админ, редирект на главную страницу
-  if (req.url.includes('/admin') && userRole !== 'ADMIN') {
+  // If the page is for admins, but the role is not admin, redirect to the main page
+  if (req.url.includes('/admin') && role !== 'ADMIN') {
     return NextResponse.redirect(new URL('/', req.url));
   }
 
