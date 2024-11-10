@@ -1,7 +1,7 @@
 'use client';
 
 import { AlertCircle } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@ui/button';
 import { ReactNode, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 

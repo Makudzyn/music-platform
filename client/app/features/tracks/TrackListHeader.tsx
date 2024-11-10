@@ -1,9 +1,9 @@
 'use client';
 
 import { Clock } from 'lucide-react';
-import { Separator } from '@/components/ui/separator';
+import { Separator } from '@ui/separator';
 import { RefObject, useEffect, useState } from 'react';
-import { cn } from '@/lib/utils';
+import { cn } from '@lib/utils';
 
 interface TrackListHeaderProps {
   scrollRef: RefObject<HTMLElement>;

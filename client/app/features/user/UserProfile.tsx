@@ -1,12 +1,12 @@
 'use client';
 
 import Image from 'next/image';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@ui/card';
 import { CalendarDays, Mail, User, Shield, Info } from 'lucide-react';
-import { useAppSelector } from '@/lib/hooks/hooks';
-import { formatDate } from '@/lib/utils';
-import { selectCurrentUser } from '@/lib/redux/userReducer/userSelectors';
+import { useAppSelector } from '@hooks/hooks';
+import { formatDate } from '@lib/utils';
+import { selectCurrentUser } from '@lib/redux/userReducer/userSelectors';
 
 export default function UserProfile() {
   const user = useAppSelector(selectCurrentUser);

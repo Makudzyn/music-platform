@@ -1,5 +1,5 @@
-import { User } from '@/lib/defenitions';
-import axiosClient from '@/lib/axiosClient';
+import { User } from '@lib/defenitions';
+import axiosClient from '@lib/axiosClient';
 
 export async function fetchUserById(userId: string): Promise<User> {
   try {

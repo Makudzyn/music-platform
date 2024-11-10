@@ -2,17 +2,17 @@
 
 import React, { useMemo, useState } from 'react';
 import Image from 'next/image';
-import { Button } from '@/components/ui/button';
+import { Button } from '@ui/button';
 import { ChevronDown, ChevronUp, Pause, Play } from 'lucide-react';
-import { areArraysEqualUnordered, cn } from '@/lib/utils';
-import { Artist, Track } from '@/lib/defenitions';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks/hooks';
+import { areArraysEqualUnordered, cn } from '@lib/utils';
+import { Artist, Track } from '@lib/defenitions';
+import { useAppDispatch, useAppSelector } from '@lib/hooks/hooks';
 import {
   pause,
   play,
   setCurrentTrack,
   setQueue,
-} from '@/lib/redux/playerSlice';
+} from '@lib/redux/playerSlice';
 
 interface ArtistHeaderProps {
   artist: Artist;

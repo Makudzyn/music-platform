@@ -1,12 +1,12 @@
 'use client';
 
-import { useAppSelector, useEntityLoader } from '@/lib/hooks/hooks';
+import { useAppSelector, useEntityLoader } from '@lib/hooks/hooks';
 import { Fragment, useMemo } from 'react';
 import ArtistCard from '@/app/features/artists/ArtistCard';
 import CarouselSection from '@/app/features/carousel/CarouselSection';
-import { loadArtists } from '@/lib/redux/artistReducer/artistActions';
+import { loadArtists } from '@lib/redux/artistReducer/artistActions';
 import ArtistCardSkeleton from '@/app/features/skeletons/ArtistCardSkeleton';
-import { Artist } from '@/lib/defenitions';
+import { Artist } from '@lib/defenitions';
 
 export default function ArtistSection() {
   const { artists, loading } = useAppSelector((state) => state.artists);

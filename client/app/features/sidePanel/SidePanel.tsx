@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import { Home, Music, Album, MicVocal } from 'lucide-react';
 import SidePanelItem from '@/app/features/sidePanel/SidePanelItem';
-import { cn } from '@/lib/utils';
+import { cn } from '@lib/utils';
 
 const sidePanelItems = [
   { icon: <Home className="size-6" />, label: 'Main page', href: '/' },

@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { Track } from '@/lib/defenitions';
+import { Track } from '@lib/defenitions';
 import Link from 'next/link';
 import CustomTooltip from '@/app/features/tooltip/Tooltip';
 

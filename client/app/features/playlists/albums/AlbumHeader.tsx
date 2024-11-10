@@ -3,16 +3,16 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Pause, Play } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { areArraysEqualUnordered, formatTotalDuration } from '@/lib/utils';
-import { Playlist, Track } from '@/lib/defenitions';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks/hooks';
+import { Button } from '@ui/button';
+import { areArraysEqualUnordered, formatTotalDuration } from '@lib/utils';
+import { Playlist, Track } from '@lib/defenitions';
+import { useAppDispatch, useAppSelector } from '@hooks/hooks';
 import {
   pause,
   play,
   setCurrentTrack,
   setQueue,
-} from '@/lib/redux/playerSlice';
+} from '@lib/redux/playerSlice';
 import { useMemo } from 'react';
 import CustomTooltip from '@/app/features/tooltip/Tooltip';
 

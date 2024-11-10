@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useTheme } from 'next-themes';
-import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
+import { Switch } from '@ui/switch';
+import { Label } from '@ui/label';
 import { Moon, Sun } from 'lucide-react';
 import CustomTooltip from '@/app/features/tooltip/Tooltip';
 

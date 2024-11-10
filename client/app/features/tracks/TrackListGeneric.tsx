@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import TrackItem from '@/app/features/tracks/TrackItem';
-import { Track } from '@/lib/defenitions';
+import { Track } from '@lib/defenitions';
 
 interface TrackListGenericProps {
   tracks: Track[];

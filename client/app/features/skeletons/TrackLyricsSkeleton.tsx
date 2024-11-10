@@ -1,5 +1,5 @@
-import { Skeleton } from '@/components/ui/skeleton';
-import { Button } from '@/components/ui/button';
+import { Skeleton } from '@ui/skeleton';
+import { Button } from '@ui/button';
 import { ChevronDown } from 'lucide-react';
 import { Fragment } from 'react';
 

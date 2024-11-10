@@ -1,4 +1,4 @@
-import { Comment } from '@/lib/defenitions';
+import { Comment } from '@lib/defenitions';
 import NoCommentsPlaceholder from '@/app/features/comments/NoCommentsPlaceholder';
 import { Fragment } from 'react';
 import CommentItem from '@/app/features/comments/CommentItem';

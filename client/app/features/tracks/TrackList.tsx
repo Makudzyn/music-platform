@@ -4,10 +4,10 @@ import {
   useAppSelector,
   useEntityLoader,
   useUpdateQueue,
-} from '@/lib/hooks/hooks';
+} from '@hooks/hooks';
 import { useMemo } from 'react';
 import TrackListGeneric from '@/app/features/tracks/TrackListGeneric';
-import { loadTracks } from '@/lib/redux/trackReducer/trackActions';
+import { loadTracks } from '@lib/redux/trackReducer/trackActions';
 import TrackListGenericSkeleton from '@/app/features/skeletons/TrackListGenericSkeleton';
 
 export default function TrackList() {

@@ -1,7 +1,7 @@
 'use client';
 
 import { FileQuestion, Home } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@ui/button';
 import Link from 'next/link';
 
 export default function RouteNotFoundError() {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useAppDispatch, useAppSelector } from '@/lib/hooks/hooks';
+import { useAppDispatch, useAppSelector } from '@hooks/hooks';
 import {
   nextTrack,
   pause,
@@ -10,7 +10,7 @@ import {
   setQueue,
   setRepeatMode,
   toggleShuffle,
-} from '@/lib/redux/playerSlice';
+} from '@lib/redux/playerSlice';
 import {
   Pause,
   Play,

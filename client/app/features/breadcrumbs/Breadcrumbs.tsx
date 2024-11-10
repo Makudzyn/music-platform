@@ -4,8 +4,8 @@ import {
   BreadcrumbLink,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
-import { cn } from '@/lib/utils';
+} from '@ui/breadcrumb';
+import { cn } from '@lib/utils';
 import Link from 'next/link';
 import { Fragment } from 'react';
 

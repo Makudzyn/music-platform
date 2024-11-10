@@ -1,28 +1,28 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@ui/tabs';
 import {
   Card,
   CardHeader,
   CardTitle,
   CardDescription,
   CardContent,
-} from '@/components/ui/card';
+} from '@ui/card';
 import {
   Select,
   SelectTrigger,
   SelectValue,
   SelectContent,
   SelectItem,
-} from '@/components/ui/select';
-import { Button } from '@/components/ui/button';
-import axiosClient from '@/lib/axiosClient';
-import Toaster from '@/app/features/toast/Toaster';
-import RequestResponse from '@/app/features/admin/RequestResponse';
-import { Endpoint, endpoints } from '@/lib/endpoints';
-import RequestBody from '@/app/features/admin/RequestBody';
-import UrlParamsSection from '@/app/features/admin/UrlParamsSection';
+} from '@ui/select';
+import { Button } from '@ui/button';
+import axiosClient from '@lib/axiosClient';
+import Toaster from '@features/toast/Toaster';
+import RequestResponse from '@features/admin/RequestResponse';
+import { Endpoint, endpoints } from '@lib/endpoints';
+import RequestBody from '@features/admin/RequestBody';
+import UrlParamsSection from '@features/admin/UrlParamsSection';
 
 export default function AdminTabs() {
   // State for managing the currently selected endpoint and its parameters

@@ -1,6 +1,6 @@
 'use client';
 
-import { Playlist } from '@/lib/defenitions';
+import { Playlist } from '@lib/defenitions';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 

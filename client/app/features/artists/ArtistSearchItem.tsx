@@ -1,6 +1,6 @@
 'use client';
 
-import { Artist } from '@/lib/defenitions';
+import { Artist } from '@lib/defenitions';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 

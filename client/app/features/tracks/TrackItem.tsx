@@ -1,11 +1,11 @@
 'use client';
 
 import Image from 'next/image';
-import { Track } from '@/lib/defenitions';
+import { Track } from '@lib/defenitions';
 import Link from 'next/link';
-import { pause, play, setCurrentTrack } from '@/lib/redux/playerSlice';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks/hooks';
-import { cn, formatDate, formatTime } from '@/lib/utils';
+import { pause, play, setCurrentTrack } from '@lib/redux/playerSlice';
+import { useAppDispatch, useAppSelector } from '@hooks/hooks';
+import { cn, formatDate, formatTime } from '@lib/utils';
 import { Pause, Play } from 'lucide-react';
 
 interface TrackItemProps {

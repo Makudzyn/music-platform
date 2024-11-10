@@ -1,12 +1,12 @@
 'use client';
 
-import { useAppSelector, useEntityLoader } from '@/lib/hooks/hooks';
+import { useAppSelector, useEntityLoader } from '@hooks/hooks';
 import { Fragment, useMemo } from 'react';
 import AlbumCard from '@/app/features/playlists/albums/AlbumCard';
 import CarouselSection from '@/app/features/carousel/CarouselSection';
-import { loadAlbums } from '@/lib/redux/albumReducer/albumActions';
+import { loadAlbums } from '@lib/redux/albumReducer/albumActions';
 import AlbumCardSkeleton from '@/app/features/skeletons/AlbumCardSkeleton';
-import { Playlist } from '@/lib/defenitions';
+import { Playlist } from '@lib/defenitions';
 
 export default function AlbumSection() {
   const { albums, loading } = useAppSelector((state) => state.albums);

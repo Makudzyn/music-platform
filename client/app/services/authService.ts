@@ -1,10 +1,10 @@
-import axiosClient from '@/lib/axiosClient';
+import axiosClient from '@lib/axiosClient';
 import { getCookie, setCookie } from 'cookies-next';
-import { useAppDispatch } from '@/lib/hooks/hooks';
-import { DecodedToken } from '@/lib/defenitions';
+import { useAppDispatch } from '@hooks/hooks';
+import { DecodedToken } from '@lib/defenitions';
 import { jwtDecode } from 'jwt-decode';
-import { loginSuccess } from '@/lib/redux/userReducer/userSlice';
-import { loadCurrentUser } from '@/lib/redux/userReducer/userActions';
+import { loginSuccess } from '@lib/redux/userReducer/userSlice';
+import { loadCurrentUser } from '@lib/redux/userReducer/userActions';
 
 interface LoginResponse {
   accessToken: string;

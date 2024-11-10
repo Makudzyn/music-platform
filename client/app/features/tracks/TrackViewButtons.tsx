@@ -1,10 +1,10 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
+import { Button } from '@ui/button';
 import { Heart, Play, Share2 } from 'lucide-react';
-import { Track } from '@/lib/defenitions';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks/hooks';
-import { pause, play, setCurrentTrack } from '@/lib/redux/playerSlice';
+import { Track } from '@lib/defenitions';
+import { useAppDispatch, useAppSelector } from '@hooks/hooks';
+import { pause, play, setCurrentTrack } from '@lib/redux/playerSlice';
 import CustomTooltip from '@/app/features/tooltip/Tooltip';
 
 interface TrackViewButtonsProps {

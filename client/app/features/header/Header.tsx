@@ -1,11 +1,12 @@
 import { Menu, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+
 import CookieLogo from '@/app/features/logo/CookieLogo';
 import CurrentIcon from '@/app/features/header/CurrentIcon';
 import SearchField from '@/app/features/header/SearchField';
 import ThemeToggleButton from '@/app/features/header/ThemeToggleButton';
 import CustomTooltip from '@/app/features/tooltip/Tooltip';
 import AdminMenuButton from '@/app/features/admin/AdminMenuButton';
+import { Button } from "@ui/button";
 
 interface HeaderProps {
   isExpanded: boolean;

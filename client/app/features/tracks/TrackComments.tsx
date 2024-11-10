@@ -1,7 +1,7 @@
-import { Comment } from '@/lib/defenitions';
+import { Comment } from '@lib/defenitions';
 import Comments from '@/app/features/comments/Comments';
 import CommentForm from '@/app/features/comments/CommentForm';
-import { useAuthState } from '@/lib/hooks/hooks';
+import { useAuthState } from '@hooks/hooks';
 
 interface TrackCommentsProps {
   comments: Comment[];

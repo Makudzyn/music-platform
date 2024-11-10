@@ -1,7 +1,7 @@
 'use client';
 
-import { Skeleton } from '@/components/ui/skeleton';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Skeleton } from '@ui/skeleton';
+import { Avatar, AvatarFallback } from '@ui/avatar';
 
 export default function TrackCommentsSkeleton() {
   return (

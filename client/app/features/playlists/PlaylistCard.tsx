@@ -1,7 +1,7 @@
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent } from '@ui/card';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Playlist } from '@/lib/defenitions';
+import { Playlist } from '@lib/defenitions';
 import CustomTooltip from '@/app/features/tooltip/Tooltip';
 
 interface PlaylistCardProps {

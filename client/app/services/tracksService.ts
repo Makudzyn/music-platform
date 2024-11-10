@@ -1,5 +1,5 @@
-import axiosClient from '@/lib/axiosClient';
-import { Track } from '@/lib/defenitions';
+import axiosClient from '@lib/axiosClient';
+import { Track } from '@lib/defenitions';
 
 export const fetchTracks = async (limit?: string): Promise<Track[]> => {
   const response = await axiosClient.get(`/tracks/?limit=${limit}`);

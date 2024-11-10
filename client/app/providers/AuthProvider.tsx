@@ -1,13 +1,13 @@
 'use client';
 
 import { ReactNode, useEffect } from 'react';
-import { useAppDispatch, useAuthState } from '@/lib/hooks/hooks';
+import { useAppDispatch, useAuthState } from '@hooks/hooks';
 import { getCookie } from 'cookies-next';
 import { jwtDecode } from 'jwt-decode';
-import { DecodedToken } from '@/lib/defenitions';
-import { loginSuccess, logout } from '@/lib/redux/userReducer/userSlice';
-import { loadCurrentUser } from '@/lib/redux/userReducer/userActions';
-import { isTokenExpired } from '@/lib/utils';
+import { DecodedToken } from '@lib/defenitions';
+import { loginSuccess, logout } from '@lib/redux/userReducer/userSlice';
+import { loadCurrentUser } from '@lib/redux/userReducer/userActions';
+import { isTokenExpired } from '@lib/utils';
 import { refreshAccessToken } from '@/app/services/authService';
 
 export function AuthProvider({ children }: { children: ReactNode }) {

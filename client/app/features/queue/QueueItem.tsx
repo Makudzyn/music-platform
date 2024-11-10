@@ -1,9 +1,9 @@
 'use client';
 
-import { Track } from '@/lib/defenitions';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks/hooks';
-import { pause, play, setCurrentTrack } from '@/lib/redux/playerSlice';
-import { cn } from '@/lib/utils';
+import { Track } from '@lib/defenitions';
+import { useAppDispatch, useAppSelector } from '@hooks/hooks';
+import { pause, play, setCurrentTrack } from '@lib/redux/playerSlice';
+import { cn } from '@lib/utils';
 import { Pause, Play } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';

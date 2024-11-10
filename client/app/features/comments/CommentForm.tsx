@@ -3,13 +3,13 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'next/navigation';
-import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
+import { Textarea } from '@ui/textarea';
+import { Button } from '@ui/button';
 import { MessageSquare } from 'lucide-react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { postComment } from '@/app/services/tracksService';
-import { useAuthState } from '@/lib/hooks/hooks';
+import { useAuthState } from '@hooks/hooks';
 import Toaster from '@/app/features/toast/Toaster';
 
 const formSchema = z.object({

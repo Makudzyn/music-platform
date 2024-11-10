@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { Track } from '@/lib/defenitions';
+import { Track } from '@lib/defenitions';
 import Image from 'next/image';
 
 interface TrackSearchItemProps {

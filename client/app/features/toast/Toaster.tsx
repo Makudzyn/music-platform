@@ -1,7 +1,7 @@
 'use client';
 
 import * as Toast from '@radix-ui/react-toast';
-import { cn } from '@/lib/utils';
+import { cn } from '@lib/utils';
 import { X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 

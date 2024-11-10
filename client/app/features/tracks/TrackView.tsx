@@ -1,12 +1,12 @@
 'use client';
 
 import { useMemo } from 'react';
-import { useAppSelector, useEntityLoader } from '@/lib/hooks/hooks';
+import { useAppSelector, useEntityLoader } from '@hooks/hooks';
 import TrackHeader from '@/app/features/tracks/TrackHeader';
 import TrackLyrics from '@/app/features/tracks/TrackLyrics';
 import TrackComments from '@/app/features/tracks/TrackComments';
-import { makeSelectTrackViewData } from '@/lib/redux/trackReducer/trackSelectors';
-import { loadTrackById } from '@/lib/redux/trackReducer/trackActions';
+import { makeSelectTrackViewData } from '@lib/redux/trackReducer/trackSelectors';
+import { loadTrackById } from '@lib/redux/trackReducer/trackActions';
 import TrackHeaderSkeleton from '@/app/features/skeletons/TrackHeaderSkeleton';
 import TrackLyricsSkeleton from '@/app/features/skeletons/TrackLyricsSkeleton';
 import TrackCommentsSkeleton from '@/app/features/skeletons/TrackCommentsSkeleton';

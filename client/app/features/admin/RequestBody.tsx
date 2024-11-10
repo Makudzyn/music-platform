@@ -1,8 +1,8 @@
 'use client';
 
-import { Textarea } from '@/components/ui/textarea';
+import { Textarea } from '@ui/textarea';
 import React from 'react';
-import { Endpoint } from '@/lib/endpoints';
+import { Endpoint } from '@lib/endpoints';
 
 interface RequestBodyProps {
   requestBody: string;

@@ -1,6 +1,6 @@
-import { Skeleton } from '@/components/ui/skeleton';
-import { Separator } from '@/components/ui/separator';
-import { Button } from '@/components/ui/button';
+import { Skeleton } from '@ui/skeleton';
+import { Separator } from '@ui/separator';
+import { Button } from '@ui/button';
 import {
   PlayCircle,
   Heart,

@@ -1,6 +1,6 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Comment } from '@/lib/defenitions';
-import { formatDate } from '@/lib/utils';
+import { Avatar, AvatarFallback, AvatarImage } from '@ui/avatar';
+import { Comment } from '@lib/defenitions';
+import { formatDate } from '@lib/utils';
 
 interface CommentItemProps {
   comment: Comment;

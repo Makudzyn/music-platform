@@ -4,7 +4,7 @@ import { useState } from 'react';
 import TrackInfoForm from '@/app/features/upload/TrackInfoForm';
 import UploadFilesForm from '@/app/features/upload/UploadFilesForm';
 import { uploadTrack } from '@/app/services/tracksService';
-import { Button } from '@/components/ui/button';
+import { Button } from '@ui/button';
 import Breadcrumbs from '@/app/features/breadcrumbs/Breadcrumbs';
 
 export default function Page() {

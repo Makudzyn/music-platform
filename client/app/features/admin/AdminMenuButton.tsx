@@ -1,7 +1,7 @@
-import { Button } from '@/components/ui/button';
+import { Button } from '@components/ui/button';
 import { Settings } from 'lucide-react';
 import Link from 'next/link';
-import { useAuthState } from '@/lib/hooks/hooks';
+import { useAuthState } from '@lib/hooks/hooks';
 
 export default function AdminMenuButton() {
   const { isAuthenticated, user } = useAuthState();

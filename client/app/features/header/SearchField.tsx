@@ -1,7 +1,7 @@
 'use client';
 
 import { Search } from 'lucide-react';
-import { Input } from '@/components/ui/input';
+import { Input } from '@ui/input';
 import {
   ChangeEvent,
   Fragment,
@@ -12,9 +12,9 @@ import {
 } from 'react';
 import { searchTracks } from '@/app/services/tracksService';
 import { debounce } from 'lodash';
-import { Artist, Playlist, Track } from '@/lib/defenitions';
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
-import { cn } from '@/lib/utils';
+import { Artist, Playlist, Track } from '@lib/defenitions';
+import { ScrollArea, ScrollBar } from '@ui/scroll-area';
+import { cn } from '@lib/utils';
 import TrackSearchItem from '@/app/features/tracks/TrackSearchItem';
 import ArtistSearchItem from '@/app/features/artists/ArtistSearchItem';
 import PlaylistSearchItem from '@/app/features/playlists/PlaylistSearchItem';

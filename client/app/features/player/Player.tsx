@@ -4,7 +4,7 @@ import TimeSlider from '@/app/features/player/TimeSlider';
 import VolumeSlider from '@/app/features/player/VolumeSlider';
 import PlayerControls from '@/app/features/player/PlayerControls';
 import SongInfo from '@/app/features/player/SongInfo';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks/hooks';
+import { useAppDispatch, useAppSelector } from '@hooks/hooks';
 import { useEffect, useRef } from 'react';
 import {
   nextTrack,
@@ -13,7 +13,7 @@ import {
   setCurrentPosition,
   setCurrentTrack,
   setTotalDuration,
-} from '@/lib/redux/playerSlice';
+} from '@lib/redux/playerSlice';
 import { updateTrackListens } from '@/app/services/tracksService';
 import { ListMusic } from 'lucide-react';
 import PlayerButton from '@/app/features/player/PlayerButton';

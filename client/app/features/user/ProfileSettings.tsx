@@ -2,18 +2,18 @@
 
 import { useCallback, useState } from 'react';
 import Image from 'next/image';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { useAppSelector } from '@/lib/hooks/hooks';
-import { selectCurrentUser } from '@/lib/redux/userReducer/userSelectors';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Button } from '@ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@ui/card';
+import { Input } from '@ui/input';
+import { Label } from '@ui/label';
+import { Textarea } from '@ui/textarea';
+import { useAppSelector } from '@hooks/hooks';
+import { selectCurrentUser } from '@lib/redux/userReducer/userSelectors';
+import { Alert, AlertDescription } from '@ui/alert';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { cn } from '@/lib/utils';
+import { cn } from '@lib/utils';
 import Toaster from '@/app/features/toast/Toaster';
 import { patchUserData } from '@/app/services/userService';
 

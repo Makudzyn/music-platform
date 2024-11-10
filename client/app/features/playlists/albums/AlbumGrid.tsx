@@ -1,9 +1,9 @@
 'use client';
 
-import { useAppSelector, useEntityLoader } from '@/lib/hooks/hooks';
+import { useAppSelector, useEntityLoader } from '@hooks/hooks';
 import { Fragment, useMemo } from 'react';
 import PlaylistCard from '@/app/features/playlists/PlaylistCard';
-import { loadAlbums } from '@/lib/redux/albumReducer/albumActions';
+import { loadAlbums } from '@lib/redux/albumReducer/albumActions';
 import AlbumGridSkeleton from '@/app/features/skeletons/AlbumGridSkeleton';
 
 export default function AlbumGrid() {

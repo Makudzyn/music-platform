@@ -1,9 +1,9 @@
 'use client';
 
 import { MutableRefObject } from 'react';
-import { setCurrentPosition } from '@/lib/redux/playerSlice';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks/hooks';
-import { formatTime } from '@/lib/utils';
+import { setCurrentPosition } from '@lib/redux/playerSlice';
+import { useAppDispatch, useAppSelector } from '@hooks/hooks';
+import { formatTime } from '@lib/utils';
 import * as Slider from '@radix-ui/react-slider';
 import CustomTooltip from '@/app/features/tooltip/Tooltip';
 

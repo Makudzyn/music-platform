@@ -1,5 +1,5 @@
-import { Input } from '@/components/ui/input';
-import { Separator } from '@/components/ui/separator';
+import { Input } from '@ui/input';
+import { Separator } from '@ui/separator';
 import { FieldError, FieldValues, UseFormRegister } from 'react-hook-form';
 import { ReactNode } from 'react';
 import FormError from '@/app/features/auth/FormError';

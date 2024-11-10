@@ -5,15 +5,15 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+} from '@ui/dropdown-menu';
+import { Avatar, AvatarFallback, AvatarImage } from '@ui/avatar';
 import { LogOut } from 'lucide-react';
 import { useDispatch } from 'react-redux';
 import { deleteCookie } from 'cookies-next';
-import { logout } from '@/lib/redux/userReducer/userSlice';
+import { logout } from '@lib/redux/userReducer/userSlice';
 import { useRouter } from 'next/navigation';
-import { useAppSelector } from '@/lib/hooks/hooks';
-import { selectCurrentUser } from '@/lib/redux/userReducer/userSelectors';
+import { useAppSelector } from '@hooks/hooks';
+import { selectCurrentUser } from '@lib/redux/userReducer/userSelectors';
 
 export default function ProfileIcon() {
   const dispatch = useDispatch();

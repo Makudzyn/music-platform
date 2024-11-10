@@ -1,6 +1,6 @@
 import { ChangeEvent } from 'react';
 import { MicVocal, Music4, Star } from 'lucide-react';
-import { Textarea } from '@/components/ui/textarea';
+import { Textarea } from '@ui/textarea';
 
 interface TrackInfoFormProps {
   trackInfo: { artist: string; title: string; lyrics: string };

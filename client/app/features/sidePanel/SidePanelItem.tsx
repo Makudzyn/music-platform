@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import { cn } from '@/lib/utils';
+import { cn } from '@lib/utils';
 import React, { ReactElement } from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@ui/button';
 import CustomTooltip from '@/app/features/tooltip/Tooltip';
 
 interface SidePanelItemProps {

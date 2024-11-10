@@ -4,7 +4,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/tooltip';
+} from '@ui/tooltip';
 
 interface CustomTooltipProps {
   content: ReactNode;

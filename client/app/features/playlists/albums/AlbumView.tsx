@@ -1,14 +1,14 @@
 'use client';
 
-import { useAppSelector, useEntityLoader } from '@/lib/hooks/hooks';
+import { useAppSelector, useEntityLoader } from '@hooks/hooks';
 import { MutableRefObject, useMemo } from 'react';
 import AlbumHeader from '@/app/features/playlists/albums/AlbumHeader';
 import TrackListGeneric from '@/app/features/tracks/TrackListGeneric';
 import TrackListHeader from '@/app/features/tracks/TrackListHeader';
-import { loadTracksByAlbumId } from '@/lib/redux/trackReducer/trackActions';
-import { makeSelectAlbumViewData } from '@/lib/redux/albumReducer/albumSelectors';
-import { loadAlbumById } from '@/lib/redux/albumReducer/albumActions';
-import { makeSelectTracksByAlbumId } from '@/lib/redux/trackReducer/trackSelectors';
+import { loadTracksByAlbumId } from '@lib/redux/trackReducer/trackActions';
+import { makeSelectAlbumViewData } from '@lib/redux/albumReducer/albumSelectors';
+import { loadAlbumById } from '@lib/redux/albumReducer/albumActions';
+import { makeSelectTracksByAlbumId } from '@lib/redux/trackReducer/trackSelectors';
 import AlbumHeaderSkeleton from '@/app/features/skeletons/AlbumHeaderSkeleton';
 import TrackListGenericSkeleton from '@/app/features/skeletons/TrackListGenericSkeleton';
 

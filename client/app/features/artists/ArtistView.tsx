@@ -1,22 +1,22 @@
 'use client';
 
-import { useAppSelector, useEntityLoader } from '@/lib/hooks/hooks';
+import { useAppSelector, useEntityLoader } from '@hooks/hooks';
 import { Fragment, MutableRefObject, useMemo } from 'react';
 import ArtistHeader from '@/app/features/artists/ArtistHeader';
 import TrackListHeader from '@/app/features/tracks/TrackListHeader';
 import TrackListGeneric from '@/app/features/tracks/TrackListGeneric';
 import CarouselSection from '@/app/features/carousel/CarouselSection';
 import AlbumCard from '@/app/features/playlists/albums/AlbumCard';
-import { loadTracksByArtistId } from '@/lib/redux/trackReducer/trackActions';
-import { loadAlbumsByArtistId } from '@/lib/redux/albumReducer/albumActions';
-import { makeSelectArtistViewData } from '@/lib/redux/artistReducer/artistSelectors';
-import { makeSelectAlbumsByArtistId } from '@/lib/redux/albumReducer/albumSelectors';
-import { makeSelectTracksByArtistId } from '@/lib/redux/trackReducer/trackSelectors';
-import { loadArtistById } from '@/lib/redux/artistReducer/artistActions';
+import { loadTracksByArtistId } from '@lib/redux/trackReducer/trackActions';
+import { loadAlbumsByArtistId } from '@lib/redux/albumReducer/albumActions';
+import { makeSelectArtistViewData } from '@lib/redux/artistReducer/artistSelectors';
+import { makeSelectAlbumsByArtistId } from '@lib/redux/albumReducer/albumSelectors';
+import { makeSelectTracksByArtistId } from '@lib/redux/trackReducer/trackSelectors';
+import { loadArtistById } from '@lib/redux/artistReducer/artistActions';
 import ArtistHeaderSkeleton from '@/app/features/skeletons/ArtistHeaderSkeleton';
 import TrackListGenericSkeleton from '@/app/features/skeletons/TrackListGenericSkeleton';
 import AlbumCardSkeleton from '@/app/features/skeletons/AlbumCardSkeleton';
-import { Playlist } from '@/lib/defenitions';
+import { Playlist } from '@lib/defenitions';
 
 interface ArtistViewProps {
   artistId: string;

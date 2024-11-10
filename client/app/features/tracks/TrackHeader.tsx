@@ -1,4 +1,4 @@
-import { Track } from '@/lib/defenitions';
+import { Track } from '@lib/defenitions';
 import { Calendar, Clock, FileAudio, Wifi } from 'lucide-react';
 import Image from 'next/image';
 import {
@@ -6,9 +6,9 @@ import {
   convertToKbps,
   formatDate,
   formatTotalDuration,
-} from '@/lib/utils';
+} from '@lib/utils';
 import Link from 'next/link';
-import { Separator } from '@/components/ui/separator';
+import { Separator } from '@ui/separator';
 import TrackViewButtons from '@/app/features/tracks/TrackViewButtons';
 import CustomTooltip from '@/app/features/tooltip/Tooltip';
 

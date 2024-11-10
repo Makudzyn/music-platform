@@ -1,9 +1,9 @@
 'use client';
 
-import { useAppSelector, useEntityLoader } from '@/lib/hooks/hooks';
+import { useAppSelector, useEntityLoader } from '@lib/hooks/hooks';
 import { Fragment, useMemo } from 'react';
 import ArtistCard from '@/app/features/artists/ArtistCard';
-import { loadArtists } from '@/lib/redux/artistReducer/artistActions';
+import { loadArtists } from '@lib/redux/artistReducer/artistActions';
 
 export default function ArtistGrid() {
   const { artists } = useAppSelector((state) => state.artists);

@@ -1,5 +1,5 @@
-import { Artist } from '@/lib/defenitions';
-import { Card, CardContent } from '@/components/ui/card';
+import { Artist } from '@lib/defenitions';
+import { Card, CardContent } from '@ui/card';
 import Link from 'next/link';
 import Image from 'next/image';
 import CustomTooltip from '@/app/features/tooltip/Tooltip';

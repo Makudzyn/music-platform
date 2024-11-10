@@ -4,13 +4,13 @@ import {
   useAppSelector,
   useEntityLoader,
   useUpdateQueue,
-} from '@/lib/hooks/hooks';
+} from '@hooks/hooks';
 import { Fragment, useMemo } from 'react';
 import TrackCard from '@/app/features/tracks/TrackCard';
 import CarouselSection from '@/app/features/carousel/CarouselSection';
-import { loadTracks } from '@/lib/redux/trackReducer/trackActions';
+import { loadTracks } from '@lib/redux/trackReducer/trackActions';
 import TrackCardSkeleton from '@/app/features/skeletons/TrackCardSkeleton';
-import { Track } from '@/lib/defenitions';
+import { Track } from '@lib/defenitions';
 
 export default function TrackSection() {
   const { tracks, loading } = useAppSelector((state) => state.tracks);
