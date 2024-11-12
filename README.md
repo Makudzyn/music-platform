@@ -8,8 +8,6 @@
   <br>
 </h1>
 
-<hr/>
-
 <h3>
 A feature-rich music platform to explore and enjoy music with ease.
 </h3>
@@ -38,7 +36,7 @@ A feature-rich music platform to explore and enjoy music with ease.
   <a href="#database-schema">Database Schema</a> •
   <a href="#how-to-use">How To Use</a> •
   <a href="#license">MIT License</a> •
-  <a href="#feedback">MIT License</a> •
+  <a href="#feedback">Feedback</a>
 </p>
 
 ## Introduction
