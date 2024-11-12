@@ -42,22 +42,22 @@ const playerSlice = createSlice({
         state.currentPosition = 0;
       } else if (state.repeatMode === 'all') {
         // Move to the next track, or loop to the start if at the end of the queue
-        state.queueIndex = (state.queueIndex + 1) % state.queue.length;
-        state.currentTrack = state.queue[state.queueIndex];
+        state.qIndex = (state.qIndex + 1) % state.queue.length;
+        state.currentTrack = state.queue[state.qIndex];
       } else {
         // Standard mode, move to the next track or pause if at the end
-        if (state.queueIndex < state.queue.length - 1) {
-          state.queueIndex += 1;
-          state.currentTrack = state.queue[state.queueIndex];
+        if (state.qIndex < state.queue.length - 1) {
+          state.qIndex += 1;
+          state.currentTrack = state.queue[state.qIndex];
         } else {
           state.paused = true;
         }
       }
     },
     previousTrack(state) {
-      if (state.queueIndex > 0) {
-        state.queueIndex -= 1;
-        state.currentTrack = state.queue[state.queueIndex];
+      if (state.qIndex > 0) {
+        state.qIndex -= 1;
+        state.currentTrack = state.queue[state.qIndex];
       }
     },
     toggleShuffle(state) {
@@ -65,7 +65,7 @@ const playerSlice = createSlice({
       if (state.shuffle) {
         // Shuffle the queue and reset the current track index
         state.queue = shuffleArray(state.queue);
-        state.queueIndex = 0;
+        state.qIndex = 0;
         state.currentTrack = state.queue[0];
       } else {
         //Maybe restore original order
@@ -73,7 +73,7 @@ const playerSlice = createSlice({
     },
     setQueue(state, action: PayloadAction<Track[]>) {
       state.queue = action.payload;
-      state.queueIndex = 0;
+      state.qIndex = 0;
     },
     addToQueue(state, action: PayloadAction<Track | Track[]>) {
       // If an array of tracks is passed
@@ -106,7 +106,7 @@ const playerSlice = createSlice({
 
         // If found, update the queue index
         if (trackIndex !== -1) {
-          state.queueIndex = trackIndex;
+          state.qIndex = trackIndex;
         }
       }
       state.currentPosition = 0;

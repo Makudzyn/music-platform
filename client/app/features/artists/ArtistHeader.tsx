@@ -30,7 +30,7 @@ export default function ArtistHeader({ artist, tracks }: ArtistHeaderProps) {
 
   const handleSongsPlay = () => {
     //If the queue is empty or tracks in queue don`t match tracks loaded with this page - overwrite the queue.
-    if (queue.length === 0 || !currentArtistInQ) {
+    if (queue && queue.length === 0 || !currentArtistInQ) {
       dispatch(setQueue(tracks));
       dispatch(setCurrentTrack(tracks[0]));
       dispatch(play());

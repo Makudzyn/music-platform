@@ -23,6 +23,8 @@ const profileSchema = z.object({
   bio: z.string().max(300, 'Bio must not exceed 300 characters').optional(),
 });
 
+type ProfileFormInputs = z.infer<typeof profileSchema>;
+
 export default function ProfileSettings() {
   const user = useAppSelector(selectCurrentUser);
 
@@ -38,9 +40,9 @@ export default function ProfileSettings() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     watch,
-  } = useForm({
+  } = useForm<ProfileFormInputs>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
       username: user?.username || '',
@@ -51,7 +53,7 @@ export default function ProfileSettings() {
 
   const bio = watch('bio');
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: ProfileFormInputs) => {
     try {
       const formData = new FormData();
       formData.append('username', data.username);

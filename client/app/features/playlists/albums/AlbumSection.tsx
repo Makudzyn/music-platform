@@ -7,9 +7,11 @@ import CarouselSection from '@/app/features/carousel/CarouselSection';
 import { loadAlbums } from '@lib/redux/albumReducer/albumActions';
 import AlbumCardSkeleton from '@/app/features/skeletons/AlbumCardSkeleton';
 import { Playlist } from '@lib/defenitions';
+import { selectAlbums, selectAlbumsLoading } from "@lib/redux/albumReducer/albumSelectors";
 
 export default function AlbumSection() {
-  const { albums, loading } = useAppSelector((state) => state.albums);
+  const albums: Playlist[] = useAppSelector(selectAlbums);
+  const loading = useAppSelector(selectAlbumsLoading);
   const FETCHED_ALBUMS = '8';
 
   const actions = useMemo(() => [loadAlbums], []);
@@ -27,7 +29,7 @@ export default function AlbumSection() {
   const renderSkeleton = () => <AlbumCardSkeleton />;
 
   return (
-    <CarouselSection
+    <CarouselSection<Playlist>
       items={albums}
       renderItem={loading ? renderSkeleton : renderAlbum}
     />

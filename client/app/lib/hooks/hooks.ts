@@ -24,7 +24,7 @@ export const useUpdateQueue = (tracks: Track[]) => {
     //Check the received array for the presence of tracks
     if (tracks.length > 0) {
       //If there are already tracks in the queue, add to them the tracks received in the parameter
-      if (queue.length > 0) {
+      if (queue && queue.length > 0) {
         dispatch(addToQueue(tracks));
       } else {
         //If there are no tracks in the queue, we simply write the received tracks to the queue

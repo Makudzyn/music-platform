@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '@lib/store';
 import { User } from '@lib/defenitions';
 import { fetchUserById } from '@/app/services/userService';
+import { AxiosError } from "axios";
 
 export const loadUserById = createAsyncThunk<
   User,
@@ -15,8 +16,14 @@ export const loadUserById = createAsyncThunk<
       const existingUser = state.user.users.find((user) => user._id === userId);
       if (existingUser) return existingUser;
       return await fetchUserById(userId);
-    } catch (e) {
-      return rejectWithValue(e.message);
+    } catch (error) {
+      let errorMessage;
+      if (error instanceof AxiosError) {
+        errorMessage = error.response?.data?.message ||
+          error.message ||
+          'User loading error';
+      } else errorMessage = 'An unexpected error occurred';
+      return rejectWithValue(errorMessage);
     }
   },
 );
@@ -27,7 +34,13 @@ export const loadCurrentUser = createAsyncThunk<User, string>(
     try {
       return await fetchUserById(userId);
     } catch (error) {
-      return rejectWithValue(error.message);
+      let errorMessage;
+      if (error instanceof AxiosError) {
+        errorMessage = error.response?.data?.message ||
+          error.message ||
+          'User loading error';
+      } else errorMessage = 'An unexpected error occurred';
+      return rejectWithValue(errorMessage);
     }
   },
 );

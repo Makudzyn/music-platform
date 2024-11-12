@@ -11,9 +11,11 @@ import CarouselSection from '@/app/features/carousel/CarouselSection';
 import { loadTracks } from '@lib/redux/trackReducer/trackActions';
 import TrackCardSkeleton from '@/app/features/skeletons/TrackCardSkeleton';
 import { Track } from '@lib/defenitions';
+import { selectTracks, selectTracksLoading } from "@lib/redux/trackReducer/trackSelectors";
 
 export default function TrackSection() {
-  const { tracks, loading } = useAppSelector((state) => state.tracks);
+  const tracks: Track[] = useAppSelector(selectTracks);
+  const loading = useAppSelector(selectTracksLoading);
   const FETCHED_TRACKS = '24';
 
   const actions = useMemo(() => [loadTracks], []);
@@ -32,7 +34,7 @@ export default function TrackSection() {
   const renderSkeleton = () => <TrackCardSkeleton />;
 
   return (
-    <CarouselSection
+    <CarouselSection<Track>
       items={tracks}
       renderItem={loading ? renderSkeleton : renderTrack}
       itemsPerGroup={3}

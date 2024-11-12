@@ -18,6 +18,7 @@ import { cn } from '@lib/utils';
 import TrackSearchItem from '@/app/features/tracks/TrackSearchItem';
 import ArtistSearchItem from '@/app/features/artists/ArtistSearchItem';
 import PlaylistSearchItem from '@/app/features/playlists/PlaylistSearchItem';
+import { AxiosError } from "axios";
 
 interface SearchResults {
   tracks: Track[];
@@ -26,15 +27,15 @@ interface SearchResults {
 }
 
 export default function SearchField() {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState<string>('');
   const [results, setResults] = useState<SearchResults>({
     tracks: [],
     artists: [],
     playlists: [],
   });
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>('');
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   // Handling clicks outside the menu area
@@ -49,8 +50,6 @@ export default function SearchField() {
     };
     if (isDropdownOpen) {
       document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
     }
 
     return () => {
@@ -64,10 +63,9 @@ export default function SearchField() {
     setQuery('');
   }, []);
 
-  //Search with debounce
-  const handleSearchChange = useCallback(
-    debounce(async (searchQuery: string) => {
-      //Start search if there are at least two characters, not counting spaces.
+  //Memoize the search function that will be used with debounce
+  const searchWithDebounce = useCallback(
+    async (searchQuery: string) => {
       if (searchQuery.trim().length >= 2) {
         setIsLoading(true);
         try {
@@ -79,21 +77,44 @@ export default function SearchField() {
             searchResults.playlists.length > 0;
           setIsDropdownOpen(ifArraysNotEmpty);
         } catch (error) {
-          setError(error.message);
+          let errorMessage;
+          if (error instanceof AxiosError) {
+            errorMessage = error.response?.data?.message ||
+              error.message ||
+              'An error occurred';
+          } else errorMessage = 'An unexpected error occurred';
+
+          setError(errorMessage);
           setIsDropdownOpen(false);
+        } finally {
+          setIsLoading(false);
         }
       } else {
         setResults({ tracks: [], artists: [], playlists: [] });
         setIsDropdownOpen(false);
       }
-    }, 400),
-    [],
+    },
+    []
   );
+
+  const debouncedSearch = useCallback(
+    debounce((searchQuery: string) => {
+      searchWithDebounce(searchQuery);
+    }, 400),
+    [searchWithDebounce]
+  );
+
+  // Clear the debounced function on unmount
+  useEffect(() => {
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [debouncedSearch]);
 
   const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
     const searchQuery = e.target.value;
     setQuery(searchQuery);
-    handleSearchChange(searchQuery);
+    debouncedSearch(searchQuery);
   };
 
   return (

@@ -11,6 +11,7 @@ import * as z from 'zod';
 import { postComment } from '@/app/services/tracksService';
 import { useAuthState } from '@hooks/hooks';
 import Toaster from '@/app/features/toast/Toaster';
+import { AxiosError } from "axios";
 
 const formSchema = z.object({
   text: z.string().min(1, 'Comment cannot be empty'),
@@ -64,10 +65,17 @@ export default function CommentForm() {
       });
       reset(); // Reset form after successful submission
     } catch (error) {
+      let errorMessage;
+      if (error instanceof AxiosError) {
+        errorMessage = error.response?.data?.message ||
+          error.message ||
+          'An error occurred';
+      } else errorMessage = 'An unexpected error occurred';
+
       setToastOpen(true);
       setToastInfo({
         title: 'Error posting a comment',
-        description: error.message || 'Try again later',
+        description: errorMessage,
       });
     }
   };

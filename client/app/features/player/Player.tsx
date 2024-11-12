@@ -45,7 +45,7 @@ export default function Player({ toggleQueuePanel }: PlayerProps) {
       which shows whether the listen value has been updated in the current playback session
      */
     if (
-      audioRef.current!.currentTime > audioRef.current!.duration * 0.2 &&
+      currentTrack && audioRef.current!.currentTime > audioRef.current!.duration * 0.2 &&
       !hasListenedRef.current
     ) {
       updateTrackListens(currentTrack._id);

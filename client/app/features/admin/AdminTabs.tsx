@@ -23,6 +23,16 @@ import RequestResponse from '@features/admin/RequestResponse';
 import { Endpoint, endpoints } from '@lib/endpoints';
 import RequestBody from '@features/admin/RequestBody';
 import UrlParamsSection from '@features/admin/UrlParamsSection';
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+
+interface ToastInfo {
+  title: string;
+  description: string;
+}
+
+interface EndpointGroup {
+  [key: string]: Endpoint[];
+}
 
 export default function AdminTabs() {
   // State for managing the currently selected endpoint and its parameters
@@ -30,15 +40,12 @@ export default function AdminTabs() {
     null,
   );
   const [params, setParams] = useState<Record<string, string>>({});
-  const [requestBody, setRequestBody] = useState('');
-  const [response, setResponse] = useState('');
+  const [requestBody, setRequestBody] = useState<string>('');
+  const [response, setResponse] = useState<string>('');
 
   // State for managing toast notifications
   const [toastOpen, setToastOpen] = useState<boolean>(false);
-  const [toastInfo, setToastInfo] = useState<{
-    title: string;
-    description: string;
-  }>({
+  const [toastInfo, setToastInfo] = useState<ToastInfo>({
     title: '',
     description: '',
   });
@@ -49,18 +56,18 @@ export default function AdminTabs() {
    *
    * @param endpointStr - JSON string containing endpoint details
    */
-  const handleEndpointSelect = (endpointStr: string) => {
-    const endpoint = JSON.parse(endpointStr);
+  const handleEndpointSelect = (endpointStr: string): void => {
+    const endpoint: Endpoint = JSON.parse(endpointStr);
     setSelectedEndpoint(endpoint);
     setRequestBody('');
     setResponse('');
 
     // Extract URL parameters from the endpoint path
-    const pathParams = endpoint.path.match(/:([^/]+)/g);
+    const pathParams: RegExpMatchArray | null = endpoint.path.match(/:([^/]+)/g);
     if (pathParams) {
-      const newParams = {};
-      pathParams.forEach((param) => {
-        const paramName = param.slice(1);
+      const newParams: Record<string, string> = {};
+      pathParams.forEach((param: string) => {
+        const paramName: string = param.slice(1);
         newParams[paramName] = '';
       });
       setParams(newParams);
@@ -92,7 +99,7 @@ export default function AdminTabs() {
 
     try {
       const url = buildUrl();
-      let requestConfig: any = {
+      let requestConfig: AxiosRequestConfig = {
         url,
         method: selectedEndpoint.method,
       };
@@ -115,7 +122,7 @@ export default function AdminTabs() {
       }
 
       // Send request and handle response
-      const response = await axiosClient(requestConfig);
+      const response: AxiosResponse = await axiosClient(requestConfig);
       setResponse(JSON.stringify(response.data, null, 2));
       setToastInfo({
         title: 'Request sent successfully',
@@ -124,10 +131,11 @@ export default function AdminTabs() {
       setToastOpen(true);
     } catch (error) {
       console.error('Error sending request:', error);
+      const axiosError = error as AxiosError;
       setToastInfo({
         title: 'Error sending request',
         description:
-          error.response?.data?.message ||
+          (axiosError.response?.data as any)?.message ||
           'Please check the console for more details.',
       });
       setToastOpen(true);

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Check, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { emailConfirmation } from '@/app/services/authService';
+import { AxiosError } from "axios";
 
 interface EmailConfirmationProps {
   token: string;
@@ -24,7 +25,13 @@ export default function EmailConfirmation({ token }: EmailConfirmationProps) {
           setStatus('error');
         }
       } catch (error) {
-        setStatus(error.message || 'error');
+        let errorMessage;
+        if (error instanceof AxiosError) {
+          errorMessage = error.response?.data?.message ||
+            error.message ||
+            'An error occurred';
+        } else errorMessage = 'An unexpected error occurred';
+        setStatus(errorMessage);
       }
 
       setTimeout(() => {

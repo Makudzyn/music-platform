@@ -11,6 +11,7 @@ import { z } from 'zod';
 import Toaster from '@/app/features/toast/Toaster';
 import { zodResolver } from '@hookform/resolvers/zod';
 import FormError from '@/app/features/auth/FormError';
+import { AxiosError } from "axios";
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email format').min(1, 'Email is required'),
@@ -50,10 +51,17 @@ export default function LoginForm() {
         description: 'You have successfully logged in!',
       });
     } catch (error) {
+      let errorMessage;
+      if (error instanceof AxiosError) {
+        errorMessage = error.response?.data?.message ||
+          error.message ||
+          'Authorization error';
+      } else errorMessage = 'An unexpected error occurred';
+
       setToastOpen(true);
       setToastInfo({
         title: 'Login Failed',
-        description: error.message || 'Authorization error',
+        description: errorMessage,
       });
     }
   };
@@ -69,7 +77,7 @@ export default function LoginForm() {
   return (
     <>
       <form className="mt-8 space-y-4" onSubmit={handleSubmit(onSubmit)}>
-        <FormInput
+        <FormInput<LoginFormInputs>
           id="email"
           label="Email"
           type="email"
@@ -80,7 +88,7 @@ export default function LoginForm() {
           autoComplete="email"
         />
 
-        <FormInput
+        <FormInput<LoginFormInputs>
           id="password"
           label="Password"
           type="password"

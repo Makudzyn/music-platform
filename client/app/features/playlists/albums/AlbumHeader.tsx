@@ -31,7 +31,7 @@ export default function AlbumHeader({ album, tracks }: AlbumHeaderProps) {
 
   const handleAlbumPlay = () => {
     //If the queue is empty or tracks in queue don`t match tracks loaded with this page - overwrite the queue.
-    if (queue.length === 0 || !currentAlbumInQ) {
+    if (queue && queue.length === 0 || !currentAlbumInQ) {
       dispatch(setQueue(tracks));
       dispatch(setCurrentTrack(tracks[0]));
       dispatch(play());

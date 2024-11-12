@@ -1,11 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import TrackInfoForm from '@/app/features/upload/TrackInfoForm';
-import UploadFilesForm from '@/app/features/upload/UploadFilesForm';
-import { uploadTrack } from '@/app/services/tracksService';
+import TrackInfoForm from '@features/upload/TrackInfoForm';
+import UploadFilesForm from '@features/upload/UploadFilesForm';
+import { uploadTrack } from '@services/tracksService';
 import { Button } from '@ui/button';
-import Breadcrumbs from '@/app/features/breadcrumbs/Breadcrumbs';
+import Breadcrumbs from '@features/breadcrumbs/Breadcrumbs';
 
 export default function Page() {
   const [activeStep, setActiveStep] = useState(0);
@@ -59,9 +59,9 @@ export default function Page() {
   };
 
   return (
-    <div className={'h-[600px] max-w-[960px] my-0 mx-auto'}>
+    <div className='mx-auto my-0 h-[600px] max-w-[960px]'>
       <Breadcrumbs items={[{ title: 'Home', href: '/' }]} />
-      <div className={'container flex-col justify-between h-full'}>
+      <div className='container h-full flex-col justify-between'>
         {renderStepContent(activeStep)}
       </div>
       <div className={'flex justify-between mt-4'}>

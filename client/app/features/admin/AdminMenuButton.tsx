@@ -7,7 +7,7 @@ export default function AdminMenuButton() {
   const { isAuthenticated, user } = useAuthState();
   return (
     <>
-      {isAuthenticated && user.role === 'ADMIN' && (
+      {isAuthenticated && user && user.role === 'ADMIN' && (
         <Button asChild className="gap-2 bg-foreground hover:bg-accent">
           <Link href={`/admin`}>
             <Settings className="size-4" />

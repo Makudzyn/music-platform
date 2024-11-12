@@ -66,6 +66,8 @@ export type RepeatMode = 'none' | 'all' | 'one';
 
 export type PlaylistType = 'album' | 'playlist';
 
+export type AnyOfTAP = Track | Artist | Playlist;
+
 export interface DecodedToken {
   _id: string;
   role: string;

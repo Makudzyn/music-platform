@@ -5,6 +5,7 @@ import { DecodedToken } from '@lib/defenitions';
 import { jwtDecode } from 'jwt-decode';
 import { loginSuccess } from '@lib/redux/userReducer/userSlice';
 import { loadCurrentUser } from '@lib/redux/userReducer/userActions';
+import { AxiosError } from "axios";
 
 interface LoginResponse {
   accessToken: string;
@@ -18,13 +19,13 @@ export const authenticate = async (
     const response = await axiosClient.post(`/auth/login`, formData);
     return response.data;
   } catch (error) {
-    console.error(
-      'Authentication error:',
-      error.response?.data?.message || error.message,
-    );
-    throw new Error(
-      error.response?.data?.message || 'Error during authentication',
-    );
+    let errorMessage;
+    if (error instanceof AxiosError) {
+      errorMessage = error.response?.data?.message ||
+        error.message ||
+        'Error during authentication';
+    } else errorMessage = 'An unexpected error occurred';
+    throw new Error(errorMessage);
   }
 };
 
@@ -58,13 +59,13 @@ export const registration = async (formData: object) => {
     const response = await axiosClient.post(`/auth/register`, formData);
     return response.data;
   } catch (error) {
-    console.error(
-      'Registration error:',
-      error.response?.data?.message || error.message,
-    );
-    throw new Error(
-      error.response?.data?.message || 'Error during registration',
-    );
+    let errorMessage;
+    if (error instanceof AxiosError) {
+      errorMessage = error.response?.data?.message ||
+        error.message ||
+        'Error during registration';
+    } else errorMessage = 'An unexpected error occurred';
+    throw new Error(errorMessage);
   }
 };
 
@@ -72,13 +73,13 @@ export const emailConfirmation = async (token: string) => {
   try {
     return await axiosClient.get(`/auth/confirm-email?token=${token}`);
   } catch (error) {
-    console.error(
-      'Email confirmation error:',
-      error.response?.data?.message || error.message,
-    );
-    throw new Error(
-      error.response?.data?.message || 'Error during email confirmation',
-    );
+    let errorMessage;
+    if (error instanceof AxiosError) {
+      errorMessage = error.response?.data?.message ||
+        error.message ||
+        'Error during email confirmation';
+    } else errorMessage = 'An unexpected error occurred';
+    throw new Error(errorMessage);
   }
 };
 
@@ -93,12 +94,12 @@ export const refreshAccessToken = async () => {
     setCookie('accessToken', accessToken);
     return accessToken;
   } catch (error) {
-    console.error(
-      'Error refreshing token:',
-      error.response?.data?.message || error.message,
-    );
-    throw new Error(
-      error.response?.data?.message || 'Error during token refresh',
-    );
+    let errorMessage;
+    if (error instanceof AxiosError) {
+      errorMessage = error.response?.data?.message ||
+        error.message ||
+        'Error during token refresh';
+    } else errorMessage = 'An unexpected error occurred';
+    throw new Error(errorMessage);
   }
 };

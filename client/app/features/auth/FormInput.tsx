@@ -1,22 +1,22 @@
 import { Input } from '@ui/input';
 import { Separator } from '@ui/separator';
-import { FieldError, FieldValues, UseFormRegister } from 'react-hook-form';
+import { FieldError, FieldValues, Path, RegisterOptions, UseFormRegister } from 'react-hook-form';
 import { ReactNode } from 'react';
 import FormError from '@/app/features/auth/FormError';
 
-interface FormInputProps {
-  id: string;
+interface FormInputProps<TFormValues extends FieldValues> {
+  id: Path<TFormValues>;
   label: string;
-  type: string;
+  type: 'text' | 'email' | 'password' | 'number';
   placeholder: string;
   icon: ReactNode;
-  register: UseFormRegister<FieldValues>;
+  register: UseFormRegister<TFormValues>;
   autoComplete?: string;
   error?: FieldError;
-  validation?: object;
+  validation?: RegisterOptions<TFormValues, Path<TFormValues>>;
 }
 
-export function FormInput({
+export function FormInput<TFormValues extends FieldValues>({
   id,
   label,
   type,
@@ -26,7 +26,7 @@ export function FormInput({
   autoComplete,
   error,
   validation = {},
-}: FormInputProps) {
+}: FormInputProps<TFormValues>) {
   return (
     <div>
       <label className="block text-base font-medium mb-1.5" htmlFor={id}>

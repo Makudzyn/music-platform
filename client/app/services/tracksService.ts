@@ -1,5 +1,6 @@
 import axiosClient from '@lib/axiosClient';
 import { Track } from '@lib/defenitions';
+import { AxiosError } from "axios";
 
 export const fetchTracks = async (limit?: string): Promise<Track[]> => {
   const response = await axiosClient.get(`/tracks/?limit=${limit}`);
@@ -11,9 +12,13 @@ export const fetchTrackById = async (id: string): Promise<Track> => {
     const response = await axiosClient.get(`/tracks/${id}`);
     return response.data;
   } catch (error) {
-    throw new Error(
-      error.response?.data?.message || 'Error during fetching track',
-    );
+    let errorMessage;
+    if (error instanceof AxiosError) {
+      errorMessage = error.response?.data?.message ||
+        error.message ||
+        'Error during fetching track';
+    } else errorMessage = 'An unexpected error occurred';
+    throw new Error(errorMessage);
   }
 };
 
@@ -35,7 +40,13 @@ export const updateTrackListens = async (id: string): Promise<void> => {
   try {
     await axiosClient.post(`/tracks/listen/${id}`);
   } catch (error) {
-    console.error('Error updating track listens:', error);
+    let errorMessage;
+    if (error instanceof AxiosError) {
+      errorMessage = error.response?.data?.message ||
+        error.message ||
+        'Error updating track listens';
+    } else errorMessage = 'An unexpected error occurred';
+    throw new Error(errorMessage);
   }
 };
 
@@ -43,7 +54,13 @@ export const uploadTrack = async (formData: object): Promise<void> => {
   try {
     await axiosClient.post('/tracks', formData);
   } catch (error) {
-    console.error('Error uploading track:', error);
+    let errorMessage;
+    if (error instanceof AxiosError) {
+      errorMessage = error.response?.data?.message ||
+        error.message ||
+        'Error uploading track';
+    } else errorMessage = 'An unexpected error occurred';
+    throw new Error(errorMessage);
   }
 };
 
@@ -54,8 +71,13 @@ export const searchTracks = async (query: string) => {
     });
     return response.data;
   } catch (error) {
-    console.error('Search error:', error);
-    throw error;
+    let errorMessage;
+    if (error instanceof AxiosError) {
+      errorMessage = error.response?.data?.message ||
+        error.message ||
+        'Search error';
+    } else errorMessage = 'An unexpected error occurred';
+    throw new Error(errorMessage);
   }
 };
 
@@ -63,7 +85,13 @@ export const postComment = async (formData: object) => {
   try {
     const response = await axiosClient.post(`/comment`, formData);
     return response.data;
-  } catch (e) {
-    console.error('Error posting comment:', e);
+  } catch (error) {
+    let errorMessage;
+    if (error instanceof AxiosError) {
+      errorMessage = error.response?.data?.message ||
+        error.message ||
+        'Error posting comment';
+    } else errorMessage = 'An unexpected error occurred';
+    throw new Error(errorMessage);
   }
 };

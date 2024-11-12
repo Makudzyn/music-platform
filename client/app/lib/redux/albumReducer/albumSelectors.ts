@@ -1,14 +1,14 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from '@lib/store';
 
-const selectAlbums = (state: RootState) => state.albums.albums;
-const selectLoading = (state: RootState) => state.albums.loading;
-const selectError = (state: RootState) => state.albums.error;
+export const selectAlbums = (state: RootState) => state.albums.albums;
+export const selectAlbumsLoading = (state: RootState) => state.albums.loading;
+const selectAlbumsError = (state: RootState) => state.albums.error;
 
 // Selector to retrieve album data with download status
 export const makeSelectAlbumViewData = (albumId: string) =>
   createSelector(
-    [selectAlbums, selectLoading, selectError],
+    [selectAlbums, selectAlbumsLoading, selectAlbumsError],
     (albums, loading, error) => ({
       album: albums.find((album) => album._id === albumId),
       loading,
@@ -19,7 +19,7 @@ export const makeSelectAlbumViewData = (albumId: string) =>
 // Selector to retrieve albums by artistId
 export const makeSelectAlbumsByArtistId = (artistId: string) =>
   createSelector(
-    [selectAlbums, selectLoading, selectError],
+    [selectAlbums, selectAlbumsLoading, selectAlbumsError],
     (albums, loading, error) => ({
       albums: albums.filter((album) => album.artist._id === artistId),
       loading,

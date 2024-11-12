@@ -24,7 +24,7 @@ export default function QueuePanel({ isExpanded }: QueuePanelProps) {
       )}
     >
       <nav className="py-3 pl-1 pr-2 transition-all duration-300">
-        {queue.length > 0 ? (
+        {queue && queue.length > 0 ? (
           queue.map((track, index) => (
             <Fragment key={track._id}>
               <QueueItem track={track} index={index} />

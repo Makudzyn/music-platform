@@ -7,9 +7,11 @@ import CarouselSection from '@/app/features/carousel/CarouselSection';
 import { loadArtists } from '@lib/redux/artistReducer/artistActions';
 import ArtistCardSkeleton from '@/app/features/skeletons/ArtistCardSkeleton';
 import { Artist } from '@lib/defenitions';
+import { selectArtistLoading, selectArtists } from "@lib/redux/artistReducer/artistSelectors";
 
 export default function ArtistSection() {
-  const { artists, loading } = useAppSelector((state) => state.artists);
+  const artists: Artist[] = useAppSelector(selectArtists);
+  const loading = useAppSelector(selectArtistLoading);
   const FETCHED_ARTISTS = '8';
 
   const actions = useMemo(() => [loadArtists], []);
@@ -27,7 +29,7 @@ export default function ArtistSection() {
   const renderSkeleton = () => <ArtistCardSkeleton />;
 
   return (
-    <CarouselSection
+    <CarouselSection<Artist>
       items={artists}
       renderItem={loading ? renderSkeleton : renderArtist}
     />
