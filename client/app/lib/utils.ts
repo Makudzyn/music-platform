@@ -2,19 +2,20 @@ import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { DecodedToken, Track } from '@lib/defenitions';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { AxiosError } from "axios";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-//Function for formatting seconds into 00:00 string format
+// Function for formatting seconds into 00:00 string format
 export const formatTime = (timeInSeconds: number): string => {
   const minutes = Math.floor(timeInSeconds / 60);
   const seconds = Math.floor(timeInSeconds % 60);
   return `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 };
 
-//Function for formatting the date into the string format 00 Mmm, 0000
+// Function for formatting the date into the string format 00 Mmm, 0000
 export function formatDate(createdAt: Date): string {
   const date = new Date(createdAt);
   const day = date.getDate();
@@ -57,7 +58,7 @@ export function convertToKbps(bitrate: string | number): number | null {
   }
 }
 
-//Function for comparing arrays of Track type for equality by _id.
+// Function for comparing arrays of Track type for equality by _id.
 export function areArraysEqualUnordered(
   tracks: Track[],
   queue: Track[],
@@ -77,7 +78,7 @@ export function areArraysEqualUnordered(
   return true;
 }
 
-//Function for shuffling tracks in an array.
+// Function for shuffling tracks in an array.
 export function shuffleArray(array: Track[]): Track[] {
   const shuffled = array.slice();
   for (let i = shuffled.length - 1; i > 0; i--) {
@@ -87,8 +88,8 @@ export function shuffleArray(array: Track[]): Track[] {
   return shuffled;
 }
 
-//Function to convert seconds to general format (00 min 00 sec; about 0 hr; about 0 hr 00 min)
-//Used to calculate the total duration of tracks in the playlist
+// Function to convert seconds to general format (00 min 00 sec; about 0 hr; about 0 hr 00 min)
+// Used to calculate the total duration of tracks in the playlist
 export function formatTotalDuration(totalSeconds: number): string {
   const minutes = Math.floor(totalSeconds / 60);
   const hours = Math.floor(minutes / 60);

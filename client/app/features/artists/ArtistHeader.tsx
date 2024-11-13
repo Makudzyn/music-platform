@@ -22,11 +22,10 @@ interface ArtistHeaderProps {
 export default function ArtistHeader({ artist, tracks }: ArtistHeaderProps) {
   const dispatch = useAppDispatch();
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
-  const { paused, queue } = useAppSelector((state) => state.player);
-  const currentArtistInQ = useMemo(
-    () => areArraysEqualUnordered(tracks, queue),
-    [tracks, queue],
-  );
+  const { paused, queue = [] } = useAppSelector((state) => state.player);
+  const currentArtistInQ = useMemo(() => {
+    return tracks && queue ? areArraysEqualUnordered(tracks, queue) : false;
+  }, [tracks, queue]);
 
   const handleSongsPlay = () => {
     //If the queue is empty or tracks in queue don`t match tracks loaded with this page - overwrite the queue.

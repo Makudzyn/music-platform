@@ -22,23 +22,26 @@ import {
 } from 'lucide-react';
 import PlayerButton from '@/app/features/player/PlayerButton';
 import CustomTooltip from '@/app/features/tooltip/Tooltip';
+import { selectTracks } from "@lib/redux/trackReducer/trackSelectors";
 
 export default function PlayerControls() {
   const dispatch = useAppDispatch();
   const { paused, repeatMode, shuffle, queue, currentTrack } = useAppSelector(
     (state) => state.player,
   );
-  const tracks = useAppSelector((state) => state.tracks.tracks);
+  const tracks = useAppSelector(selectTracks);
 
   const handlePlayPause = () => {
     if (paused) {
-      if (queue && tracks.length > 0) {
-        dispatch(setQueue(tracks));
+      if (queue) {
+        if (tracks.length > 0) {
+          dispatch(setQueue(tracks));
+        }
+        if (!currentTrack) {
+          dispatch(setCurrentTrack(queue[0]));
+        }
+        dispatch(play());
       }
-      if (!currentTrack) {
-        dispatch(setCurrentTrack(queue[0]));
-      }
-      dispatch(play());
     } else {
       dispatch(pause());
     }

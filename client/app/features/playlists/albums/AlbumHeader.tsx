@@ -24,10 +24,9 @@ interface AlbumHeaderProps {
 export default function AlbumHeader({ album, tracks }: AlbumHeaderProps) {
   const dispatch = useAppDispatch();
   const { paused, queue } = useAppSelector((state) => state.player);
-  const currentAlbumInQ = useMemo(
-    () => areArraysEqualUnordered(tracks, queue),
-    [tracks, queue],
-  );
+  const currentAlbumInQ = useMemo(() => {
+    return tracks && queue ? areArraysEqualUnordered(tracks, queue) : false
+  },[tracks, queue]);
 
   const handleAlbumPlay = () => {
     //If the queue is empty or tracks in queue don`t match tracks loaded with this page - overwrite the queue.

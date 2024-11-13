@@ -77,10 +77,10 @@ export default function Player({ toggleQueuePanel }: PlayerProps) {
       //Play the received audio object and change the play state in the Store
       audioRef
         .current!.play()
-        .then(dispatch(play()))
         .catch((error) => {
           console.error('Failed to play audio:', error);
         });
+        dispatch(play())
     }
     return () => {
       //When unmounting, pause the track, unsubscribe from events,

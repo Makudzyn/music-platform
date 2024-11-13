@@ -12,11 +12,11 @@ import { useDispatch } from 'react-redux';
 import { deleteCookie } from 'cookies-next';
 import { logout } from '@lib/redux/userReducer/userSlice';
 import { useRouter } from 'next/navigation';
-import { useAppSelector } from '@hooks/hooks';
+import { useAppDispatch, useAppSelector } from '@hooks/hooks';
 import { selectCurrentUser } from '@lib/redux/userReducer/userSelectors';
 
 export default function ProfileIcon() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const user = useAppSelector(selectCurrentUser);
 
@@ -26,6 +26,11 @@ export default function ProfileIcon() {
     dispatch(logout());
     router.push('/auth/login');
   };
+
+  // In case if user happens to be null
+  if (!user) {
+    return <AvatarFallback>Unknown User</AvatarFallback>;
+  }
 
   return (
     <DropdownMenu>
