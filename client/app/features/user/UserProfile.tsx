@@ -6,16 +6,26 @@ import { Card, CardContent, CardHeader, CardTitle } from '@ui/card';
 import { CalendarDays, Mail, User, Shield, Info } from 'lucide-react';
 import { useAppSelector } from '@hooks/hooks';
 import { formatDate } from '@lib/utils';
-import { selectCurrentUser } from '@lib/redux/userReducer/userSelectors';
+import { selectCurrentUser, selectUserLoading } from '@lib/redux/userReducer/userSelectors';
+import UserProfileSkeleton from "@features/skeletons/UserProfileSkeleton";
 
 export default function UserProfile() {
   const user = useAppSelector(selectCurrentUser);
+  const isLoading = useAppSelector(selectUserLoading);
+
+  if (isLoading || !user) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <UserProfileSkeleton />
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">
       <Card className="max-w-2xl mx-auto">
         <CardHeader className="flex flex-col items-center space-y-4">
-          <div className="relative w-32 h-32">
+          <div className="relative size-32">
             <Image
               src={`http://localhost:5000/${user.avatar}`}
               alt={`${user.username}'s avatar`}
@@ -42,7 +52,7 @@ export default function UserProfile() {
           <div className="flex items-center space-x-2">
             <Shield className="w-5 h-5 text-muted-foreground" />
             <span>Role:</span>
-            <Badge variant="secondary">{user.role}</Badge>
+            <Badge variant="default">{user.role}</Badge>
           </div>
           <div className="flex items-center space-x-2">
             <CalendarDays className="w-5 h-5 text-muted-foreground" />
