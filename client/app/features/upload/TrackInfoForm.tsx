@@ -1,14 +1,11 @@
 import { ChangeEvent } from 'react';
 import { MicVocal, Music4, Star } from 'lucide-react';
 import { Textarea } from '@ui/textarea';
+import { TrackInfoInputs } from "@app/(pages)/admin/upload/page";
 
 interface TrackInfoFormProps {
-  trackInfo: { artist: string; title: string; lyrics: string };
-  setTrackInfo: (info: {
-    artist: string;
-    title: string;
-    lyrics: string;
-  }) => void;
+  trackInfo: TrackInfoInputs;
+  setTrackInfo: (value: (((prevState: TrackInfoInputs) => TrackInfoInputs) | TrackInfoInputs)) => void
 }
 
 export default function TrackInfoForm({
@@ -21,13 +18,9 @@ export default function TrackInfoForm({
   };
 
   return (
-    <div className={'size-full flex justify-center items-center'}>
-      <div
-        className={
-          'h-full w-2/5 relative flex flex-col justify-evenly items-center'
-        }
-      >
-        <div className={'flex items-center justify-center w-full'}>
+    <div className='size-full flex justify-center items-center'>
+      <div className='h-full w-2/5 relative flex flex-col justify-evenly items-center'>
+        <div className='flex items-center justify-center w-full'>
           <Star />
           <Textarea
             className={'w-full'}
@@ -39,7 +32,7 @@ export default function TrackInfoForm({
             placeholder="Enter track's artist..."
           />
         </div>
-        <div className={'flex items-center justify-center w-full'}>
+        <div className='flex items-center justify-center w-full'>
           <Music4 />
           <Textarea
             className={'w-full'}
@@ -51,7 +44,7 @@ export default function TrackInfoForm({
             placeholder="Enter track's title..."
           />
         </div>
-        <div className={'flex items-center justify-center w-full'}>
+        <div className='flex items-center justify-center w-full'>
           <MicVocal />
           <Textarea
             className={'w-full'}

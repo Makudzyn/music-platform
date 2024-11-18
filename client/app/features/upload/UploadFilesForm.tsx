@@ -1,10 +1,10 @@
 import { useCallback, useState } from 'react';
-import { useDropzone } from 'react-dropzone';
+import { Accept, useDropzone } from 'react-dropzone';
 import { Check } from 'lucide-react';
 
 interface UploadFilesFormProps {
   formTitle: string;
-  accept: string;
+  accept: Accept;
   setFile: (file: File) => void;
 }
 
