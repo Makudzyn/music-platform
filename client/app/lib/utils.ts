@@ -2,7 +2,6 @@ import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { DecodedToken, Track } from '@lib/defenitions';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { AxiosError } from "axios";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -114,16 +113,16 @@ export function formatTotalDuration(totalSeconds: number): string {
   }
 }
 
-//Function to check if the token has expired
+// Function to check if the token has expired
 export const isTokenExpired = (decodedToken: DecodedToken) => {
   return decodedToken.exp * 1000 < Date.now();
 };
 
-//Template of thunk function that is used in Redux requests
-export const createLoadThunk = <T extends string>(
+// Template of thunk function that is used in Redux requests
+export const createLoadThunk = <ResponseType, ParamType extends string>(
   type: string,
-  fetchFunction: (id: T) => Promise<object[]>,
+  fetchFunction: (id: ParamType) => Promise<ResponseType[]>,
 ) =>
-  createAsyncThunk<object[], T>(type, async (id: T) => {
+  createAsyncThunk<ResponseType[], ParamType>(type, async (id: ParamType) => {
     return await fetchFunction(id);
   });

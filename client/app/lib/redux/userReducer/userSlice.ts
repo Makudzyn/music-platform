@@ -21,15 +21,19 @@ const initialState: UserState = {
   error: null,
 };
 
-const userSlice = createSlice<UserState, {}>({
+type UserReducers = {
+  logout: (state: UserState) => void;
+};
+
+const userSlice = createSlice<
+  UserState,    // State type
+  UserReducers, // Reducers
+  'user',       // Slice name
+  {}            // Selector`s types
+>({
   name: 'user',
   initialState,
   reducers: {
-    // Action for setting user data during authorization
-    loginSuccess: (state, action: PayloadAction<Partial<User>>) => {
-      state.isAuthenticated = true;
-      state.currentUser = action.payload;
-    },
     // Account logout action
     logout: (state) => {
       state.isAuthenticated = false;
@@ -38,48 +42,48 @@ const userSlice = createSlice<UserState, {}>({
   },
   extraReducers: (builder) => {
     builder
-      //loadCurrentUser
-      .addCase(loadCurrentUser.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(
-        loadCurrentUser.fulfilled,
-        (state, action: PayloadAction<User>) => {
-          state.currentUser = action.payload;
-          state.loading = false;
-          state.isAuthenticated = true;
-        },
-      )
-      .addCase(loadCurrentUser.rejected, (state, action) => {
+    //loadCurrentUser
+    .addCase(loadCurrentUser.pending, (state) => {
+      state.loading = true;
+    })
+    .addCase(
+      loadCurrentUser.fulfilled,
+      (state, action: PayloadAction<User>) => {
+        state.currentUser = action.payload;
         state.loading = false;
-        if ('error' in action) {
-          state.error =
-            typeof action.error.message === 'string'
-              ? action.error.message
-              : 'Failed to load user data';
-        }
-        state.isAuthenticated = false;
-      })
+        state.isAuthenticated = true;
+      },
+    )
+    .addCase(loadCurrentUser.rejected, (state, action) => {
+      state.loading = false;
+      if ('error' in action) {
+        state.error =
+          typeof action.error.message === 'string'
+            ? action.error.message
+            : 'Failed to load user data';
+      }
+      state.isAuthenticated = false;
+    })
 
-      //loadUserById
-      .addCase(loadUserById.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(loadUserById.fulfilled, (state, action: PayloadAction<User>) => {
-        state.users.push(action.payload);
-        state.loading = false;
-      })
-      .addCase(loadUserById.rejected, (state, action) => {
-        state.loading = false;
-        if ('error' in action) {
-          state.error =
-            typeof action.error.message === 'string'
-              ? action.error.message
-              : 'Failed to load user data';
-        }
-      });
+    //loadUserById
+    .addCase(loadUserById.pending, (state) => {
+      state.loading = true;
+    })
+    .addCase(loadUserById.fulfilled, (state, action: PayloadAction<User>) => {
+      state.users.push(action.payload);
+      state.loading = false;
+    })
+    .addCase(loadUserById.rejected, (state, action) => {
+      state.loading = false;
+      if ('error' in action) {
+        state.error =
+          typeof action.error.message === 'string'
+            ? action.error.message
+            : 'Failed to load user data';
+      }
+    });
   },
 });
 
-export const { loginSuccess, logout } = userSlice.actions;
+export const { logout } = userSlice.actions;
 export default userSlice.reducer;

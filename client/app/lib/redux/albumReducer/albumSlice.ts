@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, SliceCaseReducers } from '@reduxjs/toolkit';
 import { Playlist } from '@lib/defenitions';
 import {
   loadAlbums,
@@ -50,48 +50,44 @@ const updateAlbums = (state: AlbumsState, albums: Playlist | Playlist[]) => {
   state.loading = false;
 };
 
-const albumSlice = createSlice<AlbumsState, {}>({
+const albumSlice = createSlice<
+  AlbumsState, // State type
+  {},          // Reducers
+  'albums',    // Slice name
+  {}           // Selector`s types
+>({
   name: 'albums',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // loadAlbums
-      .addCase(loadAlbums.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(
-        loadAlbums.fulfilled,
-        (state, action: PayloadAction<Playlist[]>) => {
-          state.albums = action.payload;
-          state.loading = false;
-        },
-      )
-      .addCase(loadAlbums.rejected, handleError)
+    // loadAlbums
+    .addCase(loadAlbums.pending, (state) => {
+      state.loading = true;
+    })
+    .addCase(loadAlbums.fulfilled, (state, { payload }) => {
+      state.albums = payload;
+      state.loading = false;
+    })
+    .addCase(loadAlbums.rejected, handleError)
 
-      // loadAlbumById
-      .addCase(loadAlbumById.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(
-        loadAlbumById.fulfilled,
-        (state, action: PayloadAction<Playlist>) => {
-          updateAlbums(state, action.payload);
-        },
-      )
-      .addCase(loadAlbumById.rejected, handleError)
+    // loadAlbumById
+    .addCase(loadAlbumById.pending, (state) => {
+      state.loading = true;
+    })
+    .addCase(loadAlbumById.fulfilled, (state, { payload }) => {
+      updateAlbums(state, payload);
+    })
+    .addCase(loadAlbumById.rejected, handleError)
 
-      // loadAlbumsByArtistId
-      .addCase(loadAlbumsByArtistId.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(
-        loadAlbumsByArtistId.fulfilled,
-        (state, action: PayloadAction<Playlist[]>) => {
-          updateAlbums(state, action.payload);
-        },
-      )
-      .addCase(loadAlbumsByArtistId.rejected, handleError);
+    // loadAlbumsByArtistId
+    .addCase(loadAlbumsByArtistId.pending, (state) => {
+      state.loading = true;
+    })
+    .addCase(loadAlbumsByArtistId.fulfilled, (state, { payload }) => {
+      updateAlbums(state, payload);
+    })
+    .addCase(loadAlbumsByArtistId.rejected, handleError);
   },
 });
 

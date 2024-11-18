@@ -4,7 +4,7 @@ import { shuffleArray } from '@lib/utils';
 
 interface PlayerState {
   currentTrack: Track | null;
-  queue: Track[] | null;
+  queue: Track[];
   qIndex: number;
   shuffle: boolean;
   volume: number;
@@ -37,6 +37,8 @@ const playerSlice = createSlice({
       state.paused = true;
     },
     nextTrack(state) {
+      if (state.queue.length === 0) return;
+
       if (state.repeatMode === 'one') {
         // Repeat the current track
         state.currentPosition = 0;
@@ -55,12 +57,16 @@ const playerSlice = createSlice({
       }
     },
     previousTrack(state) {
+      if (state.queue.length === 0) return;
+
       if (state.qIndex > 0) {
         state.qIndex -= 1;
         state.currentTrack = state.queue[state.qIndex];
       }
     },
     toggleShuffle(state) {
+      if (state.queue.length === 0) return;
+
       state.shuffle = !state.shuffle;
       if (state.shuffle) {
         // Shuffle the queue and reset the current track index
@@ -98,7 +104,7 @@ const playerSlice = createSlice({
     setCurrentTrack(state, action: PayloadAction<Track | null>) {
       const selectedTrack = action.payload;
       state.currentTrack = selectedTrack;
-      if (selectedTrack && state.queue) {
+      if (selectedTrack && state.queue.length > 0) {
         // Find the index of the selected track in the queue
         const trackIndex = state.queue.findIndex(
           (track) => track._id === selectedTrack._id,
