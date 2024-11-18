@@ -5,7 +5,7 @@ import { useAppDispatch, useAuthState } from '@hooks/hooks';
 import { getCookie } from 'cookies-next';
 import { jwtDecode } from 'jwt-decode';
 import { DecodedToken } from '@lib/defenitions';
-import { loginSuccess, logout } from '@lib/redux/userReducer/userSlice';
+import { logout } from '@lib/redux/userReducer/userSlice';
 import { loadCurrentUser } from '@lib/redux/userReducer/userActions';
 import { isTokenExpired } from '@lib/utils';
 import { refreshAccessToken } from '@/app/services/authService';
@@ -27,16 +27,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             // If the token has expired, initiate a request to renew it
             await refreshAccessToken();
           } else {
-            const userData = {
-              _id: decoded.sub,
-              ...decoded,
-            };
-
-            // Set the basic information from the token
-            dispatch(loginSuccess(userData));
-
             // Load full user data
-            dispatch(loadCurrentUser(userData._id));
+            dispatch(loadCurrentUser(decoded.sub));
           }
         } catch (error) {
           console.error('Failed to initialize auth:', error);

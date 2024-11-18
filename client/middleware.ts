@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { getCookie } from 'cookies-next';
 import { jwtDecode } from 'jwt-decode';
+import { DecodedToken } from "@lib/defenitions";
+
 
 export function middleware(req: NextRequest) {
   const accessToken = getCookie('accessToken', { req });
@@ -11,7 +13,7 @@ export function middleware(req: NextRequest) {
   }
 
   // Decode token and extract the role from it
-  const { role } = jwtDecode(accessToken);
+  const { role } = jwtDecode<DecodedToken>(accessToken);
 
   // If the page is for admins, but the role is not admin, redirect to the main page
   if (req.url.includes('/admin') && role !== 'ADMIN') {

@@ -3,7 +3,6 @@ import { getCookie, setCookie } from 'cookies-next';
 import { useAppDispatch } from '@hooks/hooks';
 import { DecodedToken } from '@lib/defenitions';
 import { jwtDecode } from 'jwt-decode';
-import { loginSuccess } from '@lib/redux/userReducer/userSlice';
 import { loadCurrentUser } from '@lib/redux/userReducer/userActions';
 import { AxiosError } from "axios";
 
@@ -37,17 +36,12 @@ export const useAuthenticate = () => {
 
     if (data) {
       const decoded: DecodedToken = jwtDecode(data.accessToken);
-      const userData = {
-        _id: decoded.sub,
-        ...decoded,
-      };
 
       setCookie('accessToken', data.accessToken);
       setCookie('refreshToken', data.refreshToken);
 
-      // Set the base data from the token and load the full user data
-      dispatch(loginSuccess(userData));
-      dispatch(loadCurrentUser(userData._id));
+      // Load the full user data
+      dispatch(loadCurrentUser(decoded.sub));
     }
   };
 
