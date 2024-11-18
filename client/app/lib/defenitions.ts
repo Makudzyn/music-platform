@@ -68,6 +68,18 @@ export type PlaylistType = 'album' | 'playlist';
 
 export type AnyOfTAP = Track | Artist | Playlist;
 
+export const ACCEPTED_IMAGE_TYPES = {
+  'image/jpeg': ['.jpg', '.jpeg'],
+  'image/png': ['.png'],
+  'image/webp': ['.webp']
+};
+
+export const ACCEPTED_AUDIO_TYPES = {
+  'audio/mpeg': ['.mp3'],
+  'audio/wav': ['.wav'],
+};
+
+
 export interface DecodedToken {
   _id: string;
   role: string;

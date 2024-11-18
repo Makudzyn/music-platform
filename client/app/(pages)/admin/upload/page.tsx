@@ -6,10 +6,17 @@ import UploadFilesForm from '@features/upload/UploadFilesForm';
 import { uploadTrack } from '@services/tracksService';
 import { Button } from '@ui/button';
 import Breadcrumbs from '@features/breadcrumbs/Breadcrumbs';
+import { ACCEPTED_AUDIO_TYPES, ACCEPTED_IMAGE_TYPES } from "@lib/defenitions";
+
+export interface TrackInfoInputs {
+  artist: string;
+  title: string;
+  lyrics: string;
+}
 
 export default function Page() {
   const [activeStep, setActiveStep] = useState(0);
-  const [trackInfo, setTrackInfo] = useState({
+  const [trackInfo, setTrackInfo] = useState<TrackInfoInputs>({
     artist: '',
     title: '',
     lyrics: '',
@@ -41,7 +48,7 @@ export default function Page() {
         return (
           <UploadFilesForm
             formTitle="Upload thumbnail"
-            accept="image/*"
+            accept={ACCEPTED_IMAGE_TYPES}
             setFile={setThumbnail}
           />
         );
@@ -49,7 +56,7 @@ export default function Page() {
         return (
           <UploadFilesForm
             formTitle="Upload audio"
-            accept="audio/*"
+            accept={ACCEPTED_AUDIO_TYPES}
             setFile={setAudio}
           />
         );
