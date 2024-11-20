@@ -18,7 +18,7 @@ import { cn } from '@lib/utils';
 import TrackSearchItem from '@/app/features/tracks/TrackSearchItem';
 import ArtistSearchItem from '@/app/features/artists/ArtistSearchItem';
 import PlaylistSearchItem from '@/app/features/playlists/PlaylistSearchItem';
-import { AxiosError } from "axios";
+import { AxiosError } from 'axios';
 
 interface SearchResults {
   tracks: Track[];
@@ -64,44 +64,42 @@ export default function SearchField() {
   }, []);
 
   //Memoize the search function that will be used with debounce
-  const searchWithDebounce = useCallback(
-    async (searchQuery: string) => {
-      if (searchQuery.trim().length >= 2) {
-        setIsLoading(true);
-        try {
-          const searchResults = await searchTracks(searchQuery);
-          setResults(searchResults);
-          const ifArraysNotEmpty =
-            searchResults.tracks.length > 0 ||
-            searchResults.artists.length > 0 ||
-            searchResults.playlists.length > 0;
-          setIsDropdownOpen(ifArraysNotEmpty);
-        } catch (error) {
-          let errorMessage;
-          if (error instanceof AxiosError) {
-            errorMessage = error.response?.data?.message ||
-              error.message ||
-              'An error occurred';
-          } else errorMessage = 'An unexpected error occurred';
+  const searchWithDebounce = useCallback(async (searchQuery: string) => {
+    if (searchQuery.trim().length >= 2) {
+      setIsLoading(true);
+      try {
+        const searchResults = await searchTracks(searchQuery);
+        setResults(searchResults);
+        const ifArraysNotEmpty =
+          searchResults.tracks.length > 0 ||
+          searchResults.artists.length > 0 ||
+          searchResults.playlists.length > 0;
+        setIsDropdownOpen(ifArraysNotEmpty);
+      } catch (error) {
+        let errorMessage;
+        if (error instanceof AxiosError) {
+          errorMessage =
+            error.response?.data?.message ||
+            error.message ||
+            'An error occurred';
+        } else errorMessage = 'An unexpected error occurred';
 
-          setError(errorMessage);
-          setIsDropdownOpen(false);
-        } finally {
-          setIsLoading(false);
-        }
-      } else {
-        setResults({ tracks: [], artists: [], playlists: [] });
+        setError(errorMessage);
         setIsDropdownOpen(false);
+      } finally {
+        setIsLoading(false);
       }
-    },
-    []
-  );
+    } else {
+      setResults({ tracks: [], artists: [], playlists: [] });
+      setIsDropdownOpen(false);
+    }
+  }, []);
 
   const debouncedSearch = useCallback(
     debounce((searchQuery: string) => {
       searchWithDebounce(searchQuery);
     }, 400),
-    [searchWithDebounce]
+    [searchWithDebounce],
   );
 
   // Clear the debounced function on unmount

@@ -6,7 +6,7 @@ import SearchField from '@/app/features/header/SearchField';
 import ThemeToggleButton from '@/app/features/header/ThemeToggleButton';
 import CustomTooltip from '@/app/features/tooltip/Tooltip';
 import AdminMenuButton from '@/app/features/admin/AdminMenuButton';
-import { Button } from "@ui/button";
+import { Button } from '@ui/button';
 
 interface HeaderProps {
   isExpanded: boolean;

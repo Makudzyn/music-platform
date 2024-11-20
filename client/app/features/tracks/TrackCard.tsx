@@ -48,7 +48,7 @@ export default function TrackCard({ track }: TrackCardProps) {
               )}
             </div>
             <Image
-              src={`http://localhost:5000/${track.thumbnail}`}
+              src={`${process.env.NEXT_PUBLIC_API_URL}/${track.thumbnail}`}
               alt={`${track.title} song thumbnail`}
               className="rounded-sm object-cover transition-all duration-300 group-hover:brightness-75"
               width={56}

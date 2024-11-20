@@ -1,7 +1,7 @@
-import { IsArray, IsMongoId, IsNumber, IsOptional } from "class-validator";
-import mongoose from "mongoose";
-import { PartialType } from "@nestjs/mapped-types";
-import { CreateTrackDto } from "./create-track.dto";
+import { IsArray, IsMongoId, IsNumber, IsOptional } from 'class-validator';
+import mongoose from 'mongoose';
+import { PartialType } from '@nestjs/mapped-types';
+import { CreateTrackDto } from './create-track.dto';
 
 export class PatchTrackDto extends PartialType(CreateTrackDto) {
   @IsOptional()
@@ -10,8 +10,6 @@ export class PatchTrackDto extends PartialType(CreateTrackDto) {
 
   @IsOptional()
   @IsArray()
-  @IsMongoId({each: true})
+  @IsMongoId({ each: true })
   readonly comments?: mongoose.Types.ObjectId[];
 }
-
-

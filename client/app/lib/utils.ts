@@ -62,7 +62,6 @@ export function areArraysEqualUnordered(
   tracks: Track[],
   queue: Track[],
 ): boolean {
-
   if (tracks.length !== queue.length) return false;
 
   const tracksIds = tracks.map((track) => track._id).sort();

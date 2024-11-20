@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import * as process from "node:process";
+import * as process from 'node:process';
 
 async function bootstrap() {
   const PORT = process.env.PORT || 5000;
@@ -12,14 +12,13 @@ async function bootstrap() {
       new ValidationPipe({
         whitelist: true,
         forbidNonWhitelisted: true,
-        transform: true
-      })
+        transform: true,
+      }),
     );
-    await app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+    await app.listen(PORT, "0.0.0.0",() => console.log(`Listening on port ${PORT}`));
   } catch (e) {
     console.log(e);
   }
 }
 
 bootstrap();
-

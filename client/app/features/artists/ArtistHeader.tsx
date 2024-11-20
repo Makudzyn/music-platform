@@ -7,12 +7,7 @@ import { ChevronDown, ChevronUp, Pause, Play } from 'lucide-react';
 import { areArraysEqualUnordered, cn } from '@lib/utils';
 import { Artist, Track } from '@lib/defenitions';
 import { useAppDispatch, useAppSelector } from '@lib/hooks/hooks';
-import {
-  pause,
-  play,
-  setCurrentTrack,
-  setQueue,
-} from '@lib/redux/playerSlice';
+import { pause, play, setCurrentTrack, setQueue } from '@lib/redux/playerSlice';
 
 interface ArtistHeaderProps {
   artist: Artist;
@@ -29,7 +24,7 @@ export default function ArtistHeader({ artist, tracks }: ArtistHeaderProps) {
 
   const handleSongsPlay = () => {
     //If the queue is empty or tracks in queue don`t match tracks loaded with this page - overwrite the queue.
-    if (queue && queue.length === 0 || !currentArtistInQ) {
+    if ((queue && queue.length === 0) || !currentArtistInQ) {
       dispatch(setQueue(tracks));
       dispatch(setCurrentTrack(tracks[0]));
       dispatch(play());
@@ -52,7 +47,7 @@ export default function ArtistHeader({ artist, tracks }: ArtistHeaderProps) {
           )}
         >
           <Image
-            src={`http://localhost:5000/${artist.artistImage}`}
+            src={`${process.env.NEXT_PUBLIC_API_URL}/${artist.artistImage}`}
             alt={`${artist.name} cover`}
             fill
             className="object-cover object-top"

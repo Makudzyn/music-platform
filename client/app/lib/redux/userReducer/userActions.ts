@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '@lib/store';
 import { User } from '@lib/defenitions';
 import { fetchUserById } from '@/app/services/userService';
-import { AxiosError } from "axios";
+import { AxiosError } from 'axios';
 
 export const loadUserById = createAsyncThunk<
   User,
@@ -19,7 +19,8 @@ export const loadUserById = createAsyncThunk<
     } catch (error) {
       let errorMessage;
       if (error instanceof AxiosError) {
-        errorMessage = error.response?.data?.message ||
+        errorMessage =
+          error.response?.data?.message ||
           error.message ||
           'User loading error';
       } else errorMessage = 'An unexpected error occurred';
@@ -36,7 +37,8 @@ export const loadCurrentUser = createAsyncThunk<User, string>(
     } catch (error) {
       let errorMessage;
       if (error instanceof AxiosError) {
-        errorMessage = error.response?.data?.message ||
+        errorMessage =
+          error.response?.data?.message ||
           error.message ||
           'User loading error';
       } else errorMessage = 'An unexpected error occurred';

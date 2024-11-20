@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import { IsMongoId, IsString } from "class-validator";
+import mongoose from 'mongoose';
+import { IsMongoId, IsString } from 'class-validator';
 
 export class CreateCommentDto {
   @IsMongoId()

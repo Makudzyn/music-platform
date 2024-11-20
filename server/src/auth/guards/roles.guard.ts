@@ -1,7 +1,7 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { JwtAuthGuard } from './jwt-auth.guard';  // Guard для аутентификации
-import { ROLES_KEY } from '../roles.decorator';  // Декоратор для ролей
+import { JwtAuthGuard } from './jwt-auth.guard';
+import { ROLES_KEY } from '../roles.decorator';
 
 @Injectable()
 export class RolesGuard extends JwtAuthGuard implements CanActivate {
@@ -10,10 +10,10 @@ export class RolesGuard extends JwtAuthGuard implements CanActivate {
   }
 
   canActivate(context: ExecutionContext): boolean {
-    const requiredRoles = this.reflector.getAllAndOverride<string[]>(ROLES_KEY, [
-      context.getHandler(),
-      context.getClass(),
-    ]);
+    const requiredRoles = this.reflector.getAllAndOverride<string[]>(
+      ROLES_KEY,
+      [context.getHandler(), context.getClass()],
+    );
 
     if (!requiredRoles) {
       return true;
@@ -21,10 +21,9 @@ export class RolesGuard extends JwtAuthGuard implements CanActivate {
 
     const { user } = context.switchToHttp().getRequest();
     if (!user) {
-      return false; // Возвращаем false, если пользователь отсутствует
+      return false;
     }
 
-
-    return requiredRoles.includes(user.role);  // Сравниваем роль пользователя с требуемой ролью
+    return requiredRoles.includes(user.role); // Compare user`s role with required
   }
 }

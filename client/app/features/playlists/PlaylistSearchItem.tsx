@@ -28,7 +28,7 @@ export default function PlaylistSearchItem({
     >
       <div className="relative mr-2 flex flex-shrink-0 items-center justify-center overflow-hidden rounded-md shadow size-16">
         <Image
-          src={`http://localhost:5000/${playlist.coverImage}`}
+          src={`${process.env.NEXT_PUBLIC_API_URL}/${playlist.coverImage}`}
           alt="Playlist cover"
           width={64}
           height={64}

@@ -22,7 +22,7 @@ import {
 } from 'lucide-react';
 import PlayerButton from '@/app/features/player/PlayerButton';
 import CustomTooltip from '@/app/features/tooltip/Tooltip';
-import { selectTracks } from "@lib/redux/trackReducer/trackSelectors";
+import { selectTracks } from '@lib/redux/trackReducer/trackSelectors';
 
 export default function PlayerControls() {
   const dispatch = useAppDispatch();

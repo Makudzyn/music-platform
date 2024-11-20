@@ -1,6 +1,6 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
-import { ConfigService } from "@nestjs/config";
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class MailService {
@@ -20,18 +20,21 @@ export class MailService {
   }
 
   async sendEmailConfirmation(email: string, token: string) {
-    const confirmationUrl = `http://localhost:3000/auth/email-confirmation/${token}`;
+    const confirmationUrl = `${this.configService.get<string>('CLIENT_URL')}/auth/email-confirmation/${token}`;
 
-    await this.transporter.sendMail({
-      from: '"Cookie Music" <your-email@example.com>',
-      to: email,
-      subject: 'Please confirm your email on Cookie Music',
-      text: "Confirm your email",
-      html: `<b>Click <a href="${confirmationUrl}">here</a> to confirm your email</b>`
-    }, (err, info) => {
-      if (err) {
-        console.log('Error occurred. ' + err.message);
-      }
-    });
+    await this.transporter.sendMail(
+      {
+        from: '"Cookie Music" <your-email@example.com>',
+        to: email,
+        subject: 'Please confirm your email on Cookie Music',
+        text: 'Confirm your email',
+        html: `<b>Click <a href="${confirmationUrl}">here</a> to confirm your email</b>`,
+      },
+      (err, info) => {
+        if (err) {
+          console.log('Error occurred. ' + err.message);
+        }
+      },
+    );
   }
 }

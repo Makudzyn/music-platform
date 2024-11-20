@@ -7,7 +7,10 @@ import CarouselSection from '@/app/features/carousel/CarouselSection';
 import { loadArtists } from '@lib/redux/artistReducer/artistActions';
 import ArtistCardSkeleton from '@/app/features/skeletons/ArtistCardSkeleton';
 import { Artist } from '@lib/defenitions';
-import { selectArtistLoading, selectArtists } from "@lib/redux/artistReducer/artistSelectors";
+import {
+  selectArtistLoading,
+  selectArtists,
+} from '@lib/redux/artistReducer/artistSelectors';
 
 export default function ArtistSection() {
   const artists: Artist[] = useAppSelector(selectArtists);

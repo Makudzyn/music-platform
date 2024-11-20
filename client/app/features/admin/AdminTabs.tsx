@@ -23,7 +23,7 @@ import RequestResponse from '@features/admin/RequestResponse';
 import { Endpoint, endpoints } from '@lib/endpoints';
 import RequestBody from '@features/admin/RequestBody';
 import UrlParamsSection from '@features/admin/UrlParamsSection';
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 interface ToastInfo {
   title: string;
@@ -63,7 +63,8 @@ export default function AdminTabs() {
     setResponse('');
 
     // Extract URL parameters from the endpoint path
-    const pathParams: RegExpMatchArray | null = endpoint.path.match(/:([^/]+)/g);
+    const pathParams: RegExpMatchArray | null =
+      endpoint.path.match(/:([^/]+)/g);
     if (pathParams) {
       const newParams: Record<string, string> = {};
       pathParams.forEach((param: string) => {

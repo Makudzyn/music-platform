@@ -4,7 +4,7 @@ import { refreshAccessToken } from '@/app/services/authService';
 
 // Creating an axios instance
 const axiosClient = axios.create({
-  baseURL: 'http://localhost:5000', // базовый URL для запросов
+  baseURL: process.env.NEXT_PUBLIC_API_URL, // базовый URL для запросов
 });
 
 // Flag to track token update status

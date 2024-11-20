@@ -3,10 +3,10 @@ import {
   CarouselContent,
   CarouselItem,
   CarouselNext,
-  CarouselPrevious
+  CarouselPrevious,
 } from '@ui/carousel';
-import { AnyOfTAP } from "@lib/defenitions";
-import { ReactNode } from "react";
+import { AnyOfTAP } from '@lib/defenitions';
+import { ReactNode } from 'react';
 
 interface CarouselSectionProps<T extends AnyOfTAP> {
   items: Array<T>;
@@ -17,7 +17,7 @@ interface CarouselSectionProps<T extends AnyOfTAP> {
 export default function CarouselSection<T extends AnyOfTAP>({
   items,
   renderItem,
-  itemsPerGroup = 1
+  itemsPerGroup = 1,
 }: CarouselSectionProps<T>) {
   // Function for grouping elements. Used for tracks grouping on home page
   const groupItems = (items: Array<T>, itemsPerGroup: number) => {
@@ -31,11 +31,11 @@ export default function CarouselSection<T extends AnyOfTAP>({
   const itemGroups =
     itemsPerGroup && itemsPerGroup > 1
       ? groupItems(items, itemsPerGroup)
-      : items.map(item => [item]);
+      : items.map((item) => [item]);
 
   return (
     <Carousel
-      opts={{align: 'start', loop: false}}
+      opts={{ align: 'start', loop: false }}
       className="py-0.5 px-2.5 w-full"
     >
       <CarouselContent className="my-3">
@@ -50,8 +50,8 @@ export default function CarouselSection<T extends AnyOfTAP>({
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious className="ml-5 border-none"/>
-      <CarouselNext className="mr-5 border-none"/>
+      <CarouselPrevious className="ml-5 border-none" />
+      <CarouselNext className="mr-5 border-none" />
     </Carousel>
   );
 }

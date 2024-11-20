@@ -1,12 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
-import { Comment } from "../comment/comment.schema";
+import { Comment } from '../comment/comment.schema';
 
 export type TrackDocument = HydratedDocument<Track>;
 
-@Schema({timestamps: true})
+@Schema({ timestamps: true })
 export class Track {
-  @Prop({type: mongoose.Schema.Types.ObjectId, ref: 'Artist'})
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Artist' })
   artist: mongoose.Types.ObjectId;
   @Prop()
   title: string;
@@ -24,9 +24,13 @@ export class Track {
   bitrate: string;
   @Prop()
   format: string;
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Playlist', required: false })
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Playlist',
+    required: false,
+  })
   album: mongoose.Types.ObjectId;
-  @Prop({type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Comment'}]})
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }] })
   comments: mongoose.Types.ObjectId[];
 }
 

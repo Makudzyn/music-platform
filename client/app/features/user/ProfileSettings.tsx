@@ -9,8 +9,8 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Toaster from '@/app/features/toast/Toaster';
 import { patchUserData } from '@/app/services/userService';
-import AvatarUploader from "@features/user/AvatarUploader";
-import ProfileForm from "@features/user/ProfileForm";
+import AvatarUploader from '@features/user/AvatarUploader';
+import ProfileForm from '@features/user/ProfileForm';
 
 export const profileSchema = z.object({
   username: z.string().min(3, 'Username must be at least 3 characters long'),
@@ -60,7 +60,10 @@ export default function ProfileSettings() {
       if (!user) return;
 
       await patchUserData(formData, user._id);
-      handleToast('Profile updated', 'Your profile has been successfully updated.');
+      handleToast(
+        'Profile updated',
+        'Your profile has been successfully updated.',
+      );
     } catch (error) {
       handleToast('Error', 'Failed to update profile. Please try again.');
     }
@@ -69,7 +72,7 @@ export default function ProfileSettings() {
   const currentAvatarUrl = avatar
     ? URL.createObjectURL(avatar)
     : user?.avatar
-      ? `http://localhost:5000/${user.avatar}`
+      ? `${process.env.NEXT_PUBLIC_API_URL}/${user.avatar}`
       : null;
 
   const handleToast = (title: string, description: string) => {

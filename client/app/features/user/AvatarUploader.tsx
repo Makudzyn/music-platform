@@ -1,12 +1,11 @@
 'use client';
 
-import { Label } from "@ui/label";
-import { cn } from "@lib/utils";
-import { useCallback } from "react";
-import { useDropzone } from "react-dropzone";
-import Image from "next/image";
-import { ACCEPTED_IMAGE_TYPES } from "@lib/defenitions";
-
+import { Label } from '@ui/label';
+import { cn } from '@lib/utils';
+import { useCallback } from 'react';
+import { useDropzone } from 'react-dropzone';
+import Image from 'next/image';
+import { ACCEPTED_IMAGE_TYPES } from '@lib/defenitions';
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
@@ -16,7 +15,11 @@ interface AvatarUploaderProps {
   onError: (title: string, description: string) => void;
 }
 
-export default function AvatarUploader({ currentAvatar, onAvatarChange, onError }: AvatarUploaderProps) {
+export default function AvatarUploader({
+  currentAvatar,
+  onAvatarChange,
+  onError,
+}: AvatarUploaderProps) {
   const onDrop = useCallback(
     (acceptedFiles: File[], rejectedFiles: any[]) => {
       if (rejectedFiles.length > 0) {
@@ -24,17 +27,14 @@ export default function AvatarUploader({ currentAvatar, onAvatarChange, onError 
         const error = errors[0];
 
         if (error.code === 'file-too-large') {
-          onError(
-            'File too large',
-            'Please upload an image smaller than 5MB'
-          );
+          onError('File too large', 'Please upload an image smaller than 5MB');
           return;
         }
 
         if (error.code === 'file-invalid-type') {
           onError(
             'Invalid file type',
-            'Please upload a JPEG, JPG, PNG, or WebP image'
+            'Please upload a JPEG, JPG, PNG, or WebP image',
           );
           return;
         }
@@ -45,7 +45,7 @@ export default function AvatarUploader({ currentAvatar, onAvatarChange, onError 
         onAvatarChange(file);
       }
     },
-    [onAvatarChange, onError]
+    [onAvatarChange, onError],
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -65,7 +65,7 @@ export default function AvatarUploader({ currentAvatar, onAvatarChange, onError 
           'flex flex-col items-center justify-center border-2 border-dashed rounded-lg p-4 cursor-pointer transition-colors',
           isDragActive
             ? 'border-blue-500 bg-blue-50'
-            : 'border-gray-300 hover:border-gray-400'
+            : 'border-gray-300 hover:border-gray-400',
         )}
       >
         <input {...getInputProps()} />

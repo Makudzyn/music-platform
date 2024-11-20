@@ -1,17 +1,16 @@
 'use client';
 
-import {
-  useAppSelector,
-  useEntityLoader,
-  useUpdateQueue,
-} from '@hooks/hooks';
+import { useAppSelector, useEntityLoader, useUpdateQueue } from '@hooks/hooks';
 import { Fragment, useMemo } from 'react';
 import TrackCard from '@/app/features/tracks/TrackCard';
 import CarouselSection from '@/app/features/carousel/CarouselSection';
 import { loadTracks } from '@lib/redux/trackReducer/trackActions';
 import TrackCardSkeleton from '@/app/features/skeletons/TrackCardSkeleton';
 import { Track } from '@lib/defenitions';
-import { selectTracks, selectTracksLoading } from "@lib/redux/trackReducer/trackSelectors";
+import {
+  selectTracks,
+  selectTracksLoading,
+} from '@lib/redux/trackReducer/trackSelectors';
 
 export default function TrackSection() {
   const tracks: Track[] = useAppSelector(selectTracks);

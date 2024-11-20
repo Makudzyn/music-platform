@@ -1,6 +1,10 @@
-import { registerDecorator, ValidationOptions, ValidationArguments } from 'class-validator';
+import {
+  registerDecorator,
+  ValidationOptions,
+  ValidationArguments,
+} from 'class-validator';
 
-// Кастомная функция для проверки формата даты
+// Function for checking whether the received date corresponds to the required format
 export function IsFormattedDate(validationOptions?: ValidationOptions) {
   return function (object: Object, propertyName: string) {
     registerDecorator({
@@ -10,8 +14,9 @@ export function IsFormattedDate(validationOptions?: ValidationOptions) {
       options: validationOptions,
       validator: {
         validate(value: any, args: ValidationArguments) {
-          // Регулярное выражение для проверки формата даты DD Mon, YYYY
-          const dateRegex = /^\d{1,2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec), \d{4}$/;
+          // Regular expression to check the date format is DD Mon, YYYY
+          const dateRegex =
+            /^\d{1,2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec), \d{4}$/;
           return typeof value === 'string' && dateRegex.test(value);
         },
         defaultMessage(args: ValidationArguments) {

@@ -13,7 +13,7 @@ export default function AlbumCard({ playlist }: AlbumCardProps) {
     <Card className="relative aspect-square w-full overflow-hidden group">
       <Link href={`/albums/${playlist._id}`} className="absolute size-full">
         <Image
-          src={`http://localhost:5000/${playlist.coverImage}`}
+          src={`${process.env.NEXT_PUBLIC_API_URL}/${playlist.coverImage}`}
           alt={`${playlist.title} album cover`}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

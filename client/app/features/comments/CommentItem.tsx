@@ -11,7 +11,7 @@ export default function CommentItem({ comment }: CommentItemProps) {
     <div className="flex items-start p-4 space-x-4 bg-background border border-border rounded-lg shadow hover:shadow-md transition-shadow">
       <Avatar>
         <AvatarImage
-          src={`http://localhost:5000/${comment.user.avatar}`}
+          src={`${process.env.NEXT_PUBLIC_API_URL}/${comment.user.avatar}`}
           alt={comment.user.username}
           className="object-cover"
         />

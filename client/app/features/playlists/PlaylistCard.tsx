@@ -22,7 +22,7 @@ export default function PlaylistCard({ playlist }: PlaylistCardProps) {
           >
             <div className="aspect-square relative overflow-hidden rounded-t-md mb-4">
               <Image
-                src={`http://localhost:5000/${playlist.coverImage}`}
+                src={`${process.env.NEXT_PUBLIC_API_URL}/${playlist.coverImage}`}
                 alt={`${playlist.title} cover`}
                 fill
                 className="object-cover"

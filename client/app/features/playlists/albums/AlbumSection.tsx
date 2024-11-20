@@ -7,7 +7,10 @@ import CarouselSection from '@/app/features/carousel/CarouselSection';
 import { loadAlbums } from '@lib/redux/albumReducer/albumActions';
 import AlbumCardSkeleton from '@/app/features/skeletons/AlbumCardSkeleton';
 import { Playlist } from '@lib/defenitions';
-import { selectAlbums, selectAlbumsLoading } from "@lib/redux/albumReducer/albumSelectors";
+import {
+  selectAlbums,
+  selectAlbumsLoading,
+} from '@lib/redux/albumReducer/albumSelectors';
 
 export default function AlbumSection() {
   const albums: Playlist[] = useAppSelector(selectAlbums);

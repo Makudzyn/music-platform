@@ -1,12 +1,7 @@
 import { Track } from '@lib/defenitions';
 import { Calendar, Clock, FileAudio, Wifi } from 'lucide-react';
 import Image from 'next/image';
-import {
-  cn,
-  convertToKbps,
-  formatDate,
-  formatTotalDuration,
-} from '@lib/utils';
+import { cn, convertToKbps, formatDate, formatTotalDuration } from '@lib/utils';
 import Link from 'next/link';
 import { Separator } from '@ui/separator';
 import TrackViewButtons from '@/app/features/tracks/TrackViewButtons';
@@ -21,7 +16,7 @@ export default function TrackHeader({ track }: TrackHeaderProps) {
     <div className="mb-8 flex flex-col items-end gap-6 md:flex-row md:items-center">
       <div className="relative flex-shrink-0 shadow-lg size-48 md:size-64">
         <Image
-          src={`http://localhost:5000/${track.thumbnail}`}
+          src={`${process.env.NEXT_PUBLIC_API_URL}/${track.thumbnail}`}
           alt={`${track.title} cover`}
           fill
           className="object-cover rounded-sm"

@@ -1,12 +1,12 @@
 'use client';
 
-import { FieldErrors, UseFormRegister } from "react-hook-form";
-import { Alert, AlertDescription } from "@ui/alert";
-import { Button } from "@ui/button";
-import { ProfileFormInputs } from "@features/user/ProfileSettings";
-import { Label } from "@ui/label";
-import { Textarea } from "@ui/textarea";
-import { Input } from "@ui/input";
+import { FieldErrors, UseFormRegister } from 'react-hook-form';
+import { Alert, AlertDescription } from '@ui/alert';
+import { Button } from '@ui/button';
+import { ProfileFormInputs } from '@features/user/ProfileSettings';
+import { Label } from '@ui/label';
+import { Textarea } from '@ui/textarea';
+import { Input } from '@ui/input';
 
 interface ProfileFormProps {
   register: UseFormRegister<ProfileFormInputs>;
@@ -19,7 +19,7 @@ export default function ProfileForm({
   register,
   errors,
   bioLength,
-  isSubmitting
+  isSubmitting,
 }: ProfileFormProps) {
   return (
     <>
@@ -60,9 +60,7 @@ export default function ProfileForm({
           rows={3}
           className={errors.bio ? 'border-red-500' : ''}
         />
-        <div className="text-sm text-gray-500">
-          {bioLength}/300 characters
-        </div>
+        <div className="text-sm text-gray-500">{bioLength}/300 characters</div>
         {errors.bio && (
           <Alert variant="destructive">
             <AlertDescription>{errors.bio.message}</AlertDescription>
@@ -79,4 +77,4 @@ export default function ProfileForm({
       </Button>
     </>
   );
-};
+}

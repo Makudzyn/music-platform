@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader } from "@ui/card";
-import { CalendarDays, Info, Mail, Shield, User } from "lucide-react";
+import { Card, CardContent, CardHeader } from '@ui/card';
+import { CalendarDays, Info, Mail, Shield, User } from 'lucide-react';
 
 export default function UserProfileSkeleton() {
   return (
@@ -42,4 +42,4 @@ export default function UserProfileSkeleton() {
       </CardContent>
     </Card>
   );
-};
+}

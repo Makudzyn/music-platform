@@ -6,7 +6,7 @@ import UploadFilesForm from '@features/upload/UploadFilesForm';
 import { uploadTrack } from '@services/tracksService';
 import { Button } from '@ui/button';
 import Breadcrumbs from '@features/breadcrumbs/Breadcrumbs';
-import { ACCEPTED_AUDIO_TYPES, ACCEPTED_IMAGE_TYPES } from "@lib/defenitions";
+import { ACCEPTED_AUDIO_TYPES, ACCEPTED_IMAGE_TYPES } from '@lib/defenitions';
 
 export interface TrackInfoInputs {
   artist: string;
@@ -66,9 +66,9 @@ export default function Page() {
   };
 
   return (
-    <div className='mx-auto my-0 h-[600px] max-w-[960px]'>
+    <div className="mx-auto my-0 h-[600px] max-w-[960px]">
       <Breadcrumbs items={[{ title: 'Home', href: '/' }]} />
-      <div className='container h-full flex-col justify-between'>
+      <div className="container h-full flex-col justify-between">
         {renderStepContent(activeStep)}
       </div>
       <div className={'flex justify-between mt-4'}>

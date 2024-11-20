@@ -28,7 +28,7 @@ export default function TrackSearchItem({
     >
       <div className="relative mr-2 flex flex-shrink-0 items-center justify-center overflow-hidden rounded shadow size-14">
         <Image
-          src={`http://localhost:5000/${track.thumbnail}`}
+          src={`${process.env.NEXT_PUBLIC_API_URL}/${track.thumbnail}`}
           alt="Song thumbnail"
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

@@ -37,7 +37,7 @@ export default function ProfileIcon() {
       <DropdownMenuTrigger asChild>
         <Avatar className="cursor-pointer shadow hover:shadow-accent transition-all duration-500">
           <AvatarImage
-            src={`http://localhost:5000/${user.avatar}`}
+            src={`${process.env.NEXT_PUBLIC_API_URL}/${user.avatar}`}
             alt={`${user.username}'s avatar`}
           />
           <AvatarFallback>${user.username}</AvatarFallback>

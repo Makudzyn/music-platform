@@ -1,9 +1,9 @@
-import mongoose, { HydratedDocument } from "mongoose";
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import mongoose, { HydratedDocument } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 export type PlaylistDocument = HydratedDocument<Playlist>;
 
-@Schema({timestamps: true})
+@Schema({ timestamps: true })
 export class Playlist {
   @Prop()
   title: string;
@@ -17,11 +17,11 @@ export class Playlist {
   tracksAmount: number;
   @Prop({ default: 0 })
   totalDuration: number;
-  @Prop({type: mongoose.Schema.Types.ObjectId, ref: 'User'})
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
   owner: mongoose.Types.ObjectId;
-  @Prop({type: mongoose.Schema.Types.ObjectId, ref: 'Artist'})
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Artist' })
   artist: mongoose.Types.ObjectId;
-  @Prop({type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Track'}]})
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Track' }] })
   tracks: mongoose.Types.ObjectId[];
   @Prop({ enum: ['playlist', 'album'], default: 'playlist' })
   type: string; // 'playlist' or 'album'

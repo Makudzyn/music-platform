@@ -11,7 +11,7 @@ import Toaster from '@/app/features/toast/Toaster';
 import { registration } from '@/app/services/authService';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { AxiosError } from "axios";
+import { AxiosError } from 'axios';
 
 const registrationSchema = z
   .object({
@@ -61,14 +61,15 @@ export default function RegistrationForm() {
     } catch (error) {
       let errorMessage;
       if (error instanceof AxiosError) {
-        errorMessage = error.response?.data?.message ||
+        errorMessage =
+          error.response?.data?.message ||
           error.message ||
           'Something went wrong during registration.';
       } else errorMessage = 'An unexpected error occurred';
       setToastOpen(true);
       setToastInfo({
         title: 'Registration error',
-        description: errorMessage
+        description: errorMessage,
       });
     }
   };

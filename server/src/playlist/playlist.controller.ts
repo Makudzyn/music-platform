@@ -1,17 +1,32 @@
-import { Body, Controller, DefaultValuePipe, Delete, Get, Param, ParseIntPipe, Patch, Post, Query, Req, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
-import { PlaylistService } from "./playlist.service";
-import { Playlist } from "./playlist.schema";
-import { CreatePlaylistDto } from "./dto/create-playlist.dto";
-import { FileInterceptor } from "@nestjs/platform-express";
-import mongoose from "mongoose";
-import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
-import { RolesGuard } from "../auth/guards/roles.guard";
-import { Roles } from "../auth/roles.decorator";
-import { RemoveTracksDto } from "./dto/remove-tracks.dto";
-import { EditInfoDto } from "./dto/edit-info.dto";
-import { PlaylistOwnerGuard } from "./owner.guard";
-import { AddTrackDto } from "./dto/add-track.dto";
-import { EditTracksDto } from "./dto/edit-tracks.dto";
+import {
+  Body,
+  Controller,
+  DefaultValuePipe,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  Query,
+  Req,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
+import { PlaylistService } from './playlist.service';
+import { Playlist } from './playlist.schema';
+import { CreatePlaylistDto } from './dto/create-playlist.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import mongoose from 'mongoose';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/roles.decorator';
+import { RemoveTracksDto } from './dto/remove-tracks.dto';
+import { EditInfoDto } from './dto/edit-info.dto';
+import { PlaylistOwnerGuard } from './owner.guard';
+import { AddTrackDto } from './dto/add-track.dto';
+import { EditTracksDto } from './dto/edit-tracks.dto';
 
 @Controller('/playlists')
 export class PlaylistController {
@@ -33,13 +48,15 @@ export class PlaylistController {
 
   @Get('/albums/:artistId')
   getAllAlbumsByArtistId(
-    @Param('artistId') artistId: mongoose.Types.ObjectId
+    @Param('artistId') artistId: mongoose.Types.ObjectId,
   ): Promise<Playlist[]> {
     return this.playlistService.getAllAlbumsByArtistId(artistId);
   }
 
   @Get('/:playlistId')
-  getPlaylistById(@Param('playlistId') playlistId: mongoose.Types.ObjectId): Promise<Playlist> {
+  getPlaylistById(
+    @Param('playlistId') playlistId: mongoose.Types.ObjectId,
+  ): Promise<Playlist> {
     return this.playlistService.getPlaylistById(playlistId);
   }
 
@@ -49,7 +66,7 @@ export class PlaylistController {
   @UseInterceptors(FileInterceptor(''))
   createPlaylist(
     @Body() playlistDto: CreatePlaylistDto,
-    @Req() req
+    @Req() req,
   ): Promise<Playlist> {
     const userId = req.user.userId;
     return this.playlistService.createPlaylist(playlistDto, userId);
@@ -64,7 +81,11 @@ export class PlaylistController {
     @UploadedFile() coverImage: Express.Multer.File,
     @Body() editInfoDto: EditInfoDto,
   ) {
-    return this.playlistService.editPlaylistInfo(playlistId, editInfoDto, coverImage);
+    return this.playlistService.editPlaylistInfo(
+      playlistId,
+      editInfoDto,
+      coverImage,
+    );
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard, PlaylistOwnerGuard)
@@ -75,7 +96,7 @@ export class PlaylistController {
     @Param('playlistId') playlistId: mongoose.Types.ObjectId,
     @Body() editTracksDto: EditTracksDto,
   ): Promise<Playlist> {
-    const {tracksIds} = editTracksDto;
+    const { tracksIds } = editTracksDto;
     return this.playlistService.editPlaylistTracks(playlistId, tracksIds);
   }
 
@@ -85,9 +106,9 @@ export class PlaylistController {
   @UseInterceptors(FileInterceptor(''))
   addTrackToPlaylist(
     @Param('playlistId') playlistId: mongoose.Types.ObjectId,
-    @Body() addTrackDTO: AddTrackDto
+    @Body() addTrackDTO: AddTrackDto,
   ): Promise<Playlist> {
-    const {trackId} = addTrackDTO;
+    const { trackId } = addTrackDTO;
     return this.playlistService.addTrackToPlaylist(playlistId, trackId);
   }
 
@@ -97,9 +118,9 @@ export class PlaylistController {
   @UseInterceptors(FileInterceptor(''))
   addTrackToAlbum(
     @Param('playlistId') playlistId: mongoose.Types.ObjectId,
-    @Body() addTrackDTO: AddTrackDto
+    @Body() addTrackDTO: AddTrackDto,
   ): Promise<Playlist> {
-    const {trackId} = addTrackDTO;
+    const { trackId } = addTrackDTO;
     return this.playlistService.addTrackToAlbum(playlistId, trackId);
   }
 
@@ -109,9 +130,9 @@ export class PlaylistController {
   @UseInterceptors(FileInterceptor(''))
   removeTracksFromPlaylist(
     @Param('playlistId') playlistId: mongoose.Types.ObjectId,
-    @Body() removeTracksDto: RemoveTracksDto
+    @Body() removeTracksDto: RemoveTracksDto,
   ): Promise<Playlist> {
-    const {trackIds} = removeTracksDto;
+    const { trackIds } = removeTracksDto;
     return this.playlistService.removeTracks(playlistId, trackIds);
   }
 
@@ -119,7 +140,7 @@ export class PlaylistController {
   @Roles('ADMIN', 'USER')
   @Delete('/:playlistId')
   deletePlaylist(
-    @Param('playlistId') playlistId: mongoose.Types.ObjectId
+    @Param('playlistId') playlistId: mongoose.Types.ObjectId,
   ): Promise<Playlist> {
     return this.playlistService.deletePlaylist(playlistId);
   }

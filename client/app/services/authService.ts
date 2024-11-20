@@ -4,7 +4,7 @@ import { useAppDispatch } from '@hooks/hooks';
 import { DecodedToken } from '@lib/defenitions';
 import { jwtDecode } from 'jwt-decode';
 import { loadCurrentUser } from '@lib/redux/userReducer/userActions';
-import { AxiosError } from "axios";
+import { AxiosError } from 'axios';
 
 interface LoginResponse {
   accessToken: string;
@@ -20,7 +20,8 @@ export const authenticate = async (
   } catch (error) {
     let errorMessage;
     if (error instanceof AxiosError) {
-      errorMessage = error.response?.data?.message ||
+      errorMessage =
+        error.response?.data?.message ||
         error.message ||
         'Error during authentication';
     } else errorMessage = 'An unexpected error occurred';
@@ -55,7 +56,8 @@ export const registration = async (formData: object) => {
   } catch (error) {
     let errorMessage;
     if (error instanceof AxiosError) {
-      errorMessage = error.response?.data?.message ||
+      errorMessage =
+        error.response?.data?.message ||
         error.message ||
         'Error during registration';
     } else errorMessage = 'An unexpected error occurred';
@@ -69,7 +71,8 @@ export const emailConfirmation = async (token: string) => {
   } catch (error) {
     let errorMessage;
     if (error instanceof AxiosError) {
-      errorMessage = error.response?.data?.message ||
+      errorMessage =
+        error.response?.data?.message ||
         error.message ||
         'Error during email confirmation';
     } else errorMessage = 'An unexpected error occurred';
@@ -90,7 +93,8 @@ export const refreshAccessToken = async () => {
   } catch (error) {
     let errorMessage;
     if (error instanceof AxiosError) {
-      errorMessage = error.response?.data?.message ||
+      errorMessage =
+        error.response?.data?.message ||
         error.message ||
         'Error during token refresh';
     } else errorMessage = 'An unexpected error occurred';

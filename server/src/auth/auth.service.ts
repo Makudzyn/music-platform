@@ -1,10 +1,14 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
-import { UserService } from "../user/user.service";
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { UserService } from '../user/user.service';
 import * as bcrypt from 'bcrypt';
-import { JwtService } from "@nestjs/jwt";
-import { User } from "../user/user.schema";
-import { CreateUserDto } from "../user/dto/create-user.dto";
-import { MailService } from "./mail/mail.service";
+import { JwtService } from '@nestjs/jwt';
+import { User } from '../user/user.schema';
+import { CreateUserDto } from '../user/dto/create-user.dto';
+import { MailService } from './mail/mail.service';
 
 @Injectable()
 export class AuthService {
@@ -12,11 +16,14 @@ export class AuthService {
     private userService: UserService,
     private jwtService: JwtService,
     private mailService: MailService,
-    ) {}
+  ) {}
 
-  async validateUser(email: string, password: string): Promise<Omit<User, "passwordHash"> | null> {
+  async validateUser(
+    email: string,
+    password: string,
+  ): Promise<Omit<User, 'passwordHash'> | null> {
     const user = await this.userService.findByEmail(email);
-    if (user && await bcrypt.compare(password, user.passwordHash)) {
+    if (user && (await bcrypt.compare(password, user.passwordHash))) {
       const { passwordHash, ...result } = user;
       return result;
     }
@@ -27,23 +34,25 @@ export class AuthService {
     const { username, _id, role } = user._doc;
     const payload = { username, sub: _id, role };
 
-    // Генерация access-токена с коротким сроком действия
+    // access-token creation with short validity period
     const accessToken = this.jwtService.sign(payload, { expiresIn: '15m' });
 
-    // Генерация refresh-токена с более долгим сроком действия
+    // refresh-token creation with a longer validity period
     const refreshToken = this.jwtService.sign(payload, { expiresIn: '7d' });
 
-    return {accessToken, refreshToken};
+    return { accessToken, refreshToken };
   }
 
-  async refreshAccessToken(refreshToken: string): Promise<{accessToken: string}> {
+  async refreshAccessToken(
+    refreshToken: string,
+  ): Promise<{ accessToken: string }> {
     try {
-      const payload = this.jwtService.verify(refreshToken); // Верификация refresh-токена
+      const payload = this.jwtService.verify(refreshToken); // Refresh-token verification
 
-      // Генерация нового access-токена
+      // Creating new access-token
       const accessToken = this.jwtService.sign(
         { sub: payload.sub, role: payload.role },
-        { expiresIn: '15m' }
+        { expiresIn: '15m' },
       );
 
       return { accessToken };
@@ -54,10 +63,16 @@ export class AuthService {
 
   async register(createUserDto: CreateUserDto): Promise<User> {
     const passwordHash = await bcrypt.hash(createUserDto.password, 5);
-    const newUser = await this.userService.createUser(createUserDto, passwordHash);
+    const newUser = await this.userService.createUser(
+      createUserDto,
+      passwordHash,
+    );
 
-    // Отправляем письмо для подтверждения email
-    await this.mailService.sendEmailConfirmation(newUser.email, newUser.verificationToken);
+    // Sending email for confirmation
+    await this.mailService.sendEmailConfirmation(
+      newUser.email,
+      newUser.verificationToken,
+    );
 
     return newUser;
   }
@@ -69,11 +84,10 @@ export class AuthService {
       throw new BadRequestException('Invalid or expired token');
     }
 
-    // Обновляем статус пользователя
+    // Updating user`s status
     user.isVerified = true;
     user.verificationToken = null;
 
     return this.userService.updateEmailConfirmation(user);
   }
-
 }

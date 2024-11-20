@@ -18,7 +18,7 @@ export default function SongInfo({ currentTrack }: SongInfoProps) {
               className="relative mr-2 flex-shrink-0 cursor-pointer overflow-hidden rounded shadow size-14"
             >
               <Image
-                src={`http://localhost:5000/${currentTrack.thumbnail}`}
+                src={`${process.env.NEXT_PUBLIC_API_URL}/${currentTrack.thumbnail}`}
                 alt={'Song thumbnail'}
                 width={56}
                 height={56}

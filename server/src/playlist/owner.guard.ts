@@ -2,12 +2,13 @@ import {
   CanActivate,
   ExecutionContext,
   Injectable,
-  ForbiddenException, NotFoundException
+  ForbiddenException,
+  NotFoundException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { InjectModel } from "@nestjs/mongoose";
-import { Playlist, PlaylistDocument } from "./playlist.schema";
-import { Model } from "mongoose";
+import { InjectModel } from '@nestjs/mongoose';
+import { Playlist, PlaylistDocument } from './playlist.schema';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class PlaylistOwnerGuard implements CanActivate {
@@ -21,8 +22,7 @@ export class PlaylistOwnerGuard implements CanActivate {
     const user = request.user;
     const playlistId = request.params.playlistId;
 
-    // Получаем плейлист и проверяем его владельца
-    const playlist = await this.playlistModel.findById(playlistId).exec()
+    const playlist = await this.playlistModel.findById(playlistId).exec();
     if (!playlist) {
       throw new NotFoundException(`Playlist with ID ${playlistId} not found`);
     }

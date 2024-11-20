@@ -7,12 +7,7 @@ import { Button } from '@ui/button';
 import { areArraysEqualUnordered, formatTotalDuration } from '@lib/utils';
 import { Playlist, Track } from '@lib/defenitions';
 import { useAppDispatch, useAppSelector } from '@hooks/hooks';
-import {
-  pause,
-  play,
-  setCurrentTrack,
-  setQueue,
-} from '@lib/redux/playerSlice';
+import { pause, play, setCurrentTrack, setQueue } from '@lib/redux/playerSlice';
 import { useMemo } from 'react';
 import CustomTooltip from '@/app/features/tooltip/Tooltip';
 
@@ -25,12 +20,12 @@ export default function AlbumHeader({ album, tracks }: AlbumHeaderProps) {
   const dispatch = useAppDispatch();
   const { paused, queue } = useAppSelector((state) => state.player);
   const currentAlbumInQ = useMemo(() => {
-    return tracks && queue ? areArraysEqualUnordered(tracks, queue) : false
-  },[tracks, queue]);
+    return tracks && queue ? areArraysEqualUnordered(tracks, queue) : false;
+  }, [tracks, queue]);
 
   const handleAlbumPlay = () => {
     //If the queue is empty or tracks in queue don`t match tracks loaded with this page - overwrite the queue.
-    if (queue && queue.length === 0 || !currentAlbumInQ) {
+    if ((queue && queue.length === 0) || !currentAlbumInQ) {
       dispatch(setQueue(tracks));
       dispatch(setCurrentTrack(tracks[0]));
       dispatch(play());
@@ -51,7 +46,7 @@ export default function AlbumHeader({ album, tracks }: AlbumHeaderProps) {
           onClick={handleAlbumPlay}
         >
           <Image
-            src={`http://localhost:5000/${album.coverImage}`}
+            src={`${process.env.NEXT_PUBLIC_API_URL}/${album.coverImage}`}
             alt={`${album.title} cover`}
             fill
             className="object-cover rounded-sm"

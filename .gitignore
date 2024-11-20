@@ -9,6 +9,7 @@ server/pnpm-debug.log*
 server/*.log
 
 # dotenv environment variable files
+client/.env
 server/.env
 server/.env.development.local
 server/.env.test.local

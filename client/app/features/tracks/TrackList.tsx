@@ -1,10 +1,6 @@
 'use client';
 
-import {
-  useAppSelector,
-  useEntityLoader,
-  useUpdateQueue,
-} from '@hooks/hooks';
+import { useAppSelector, useEntityLoader, useUpdateQueue } from '@hooks/hooks';
 import { useMemo } from 'react';
 import TrackListGeneric from '@/app/features/tracks/TrackListGeneric';
 import { loadTracks } from '@lib/redux/trackReducer/trackActions';

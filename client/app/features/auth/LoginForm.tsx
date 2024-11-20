@@ -11,7 +11,7 @@ import { z } from 'zod';
 import Toaster from '@/app/features/toast/Toaster';
 import { zodResolver } from '@hookform/resolvers/zod';
 import FormError from '@/app/features/auth/FormError';
-import { AxiosError } from "axios";
+import { AxiosError } from 'axios';
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email format').min(1, 'Email is required'),
@@ -53,7 +53,8 @@ export default function LoginForm() {
     } catch (error) {
       let errorMessage;
       if (error instanceof AxiosError) {
-        errorMessage = error.response?.data?.message ||
+        errorMessage =
+          error.response?.data?.message ||
           error.message ||
           'Authorization error';
       } else errorMessage = 'An unexpected error occurred';

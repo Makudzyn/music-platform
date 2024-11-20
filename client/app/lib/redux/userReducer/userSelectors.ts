@@ -1,8 +1,7 @@
 import { RootState } from '@lib/store';
 import { createSelector } from '@reduxjs/toolkit';
 
-export const selectCurrentUser = (state: RootState) =>
-  state.user.currentUser;
+export const selectCurrentUser = (state: RootState) => state.user.currentUser;
 export const selectIsAuthenticated = (state: RootState) =>
   state.user.isAuthenticated;
 const selectUsers = (state: RootState) => state.user.users;

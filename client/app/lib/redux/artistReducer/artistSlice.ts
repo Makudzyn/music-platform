@@ -30,9 +30,9 @@ const handleError = (state: ArtistsState, action: any) => {
 
 const artistSlice = createSlice<
   ArtistsState, // State type
-  {},           // Reducers
-  'artists',    // Slice name
-  {}            // Selector`s types
+  {}, // Reducers
+  'artists', // Slice name
+  {} // Selector`s types
 >({
   name: 'artists',
   initialState,
@@ -40,41 +40,41 @@ const artistSlice = createSlice<
   extraReducers: (builder) => {
     //loadArtists
     builder
-    .addCase(loadArtists.pending, (state) => {
-      state.loading = true;
-    })
-    .addCase(
-      loadArtists.fulfilled,
-      (state, action: PayloadAction<Artist[]>) => {
-        state.artists = action.payload;
-        state.loading = false;
-      },
-    )
-    .addCase(loadArtists.rejected, handleError)
+      .addCase(loadArtists.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(
+        loadArtists.fulfilled,
+        (state, action: PayloadAction<Artist[]>) => {
+          state.artists = action.payload;
+          state.loading = false;
+        },
+      )
+      .addCase(loadArtists.rejected, handleError)
 
-    //loadArtistById
-    .addCase(loadArtistById.pending, (state) => {
-      state.loading = true;
-    })
-    .addCase(
-      loadArtistById.fulfilled,
-      (state, action: PayloadAction<Artist>) => {
-        const index = state.artists.findIndex(
-          (artist) => artist._id === action.payload._id,
-        );
-        if (index !== -1) {
-          // Обновляем существующий альбом, сохраняя полную информацию о треках
-          state.artists[index] = {
-            ...state.artists[index],
-            ...action.payload,
-          };
-        } else {
-          state.artists.push(action.payload);
-        }
-        state.loading = false;
-      },
-    )
-    .addCase(loadArtistById.rejected, handleError);
+      //loadArtistById
+      .addCase(loadArtistById.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(
+        loadArtistById.fulfilled,
+        (state, action: PayloadAction<Artist>) => {
+          const index = state.artists.findIndex(
+            (artist) => artist._id === action.payload._id,
+          );
+          if (index !== -1) {
+            // Обновляем существующий альбом, сохраняя полную информацию о треках
+            state.artists[index] = {
+              ...state.artists[index],
+              ...action.payload,
+            };
+          } else {
+            state.artists.push(action.payload);
+          }
+          state.loading = false;
+        },
+      )
+      .addCase(loadArtistById.rejected, handleError);
   },
 });
 

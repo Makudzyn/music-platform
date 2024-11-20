@@ -45,7 +45,8 @@ export default function Player({ toggleQueuePanel }: PlayerProps) {
       which shows whether the listen value has been updated in the current playback session
      */
     if (
-      currentTrack && audioRef.current!.currentTime > audioRef.current!.duration * 0.2 &&
+      currentTrack &&
+      audioRef.current!.currentTime > audioRef.current!.duration * 0.2 &&
       !hasListenedRef.current
     ) {
       updateTrackListens(currentTrack._id);
@@ -63,7 +64,7 @@ export default function Player({ toggleQueuePanel }: PlayerProps) {
       }
       //Install a new Audio object with track using the link from the server
       audioRef.current = new Audio(
-        `http://localhost:5000/${currentTrack.audio}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/${currentTrack.audio}`,
       );
       audioRef.current!.volume = volume / 100;
 
@@ -75,12 +76,10 @@ export default function Player({ toggleQueuePanel }: PlayerProps) {
       audioRef.current!.addEventListener('timeupdate', handleTimeUpdate);
 
       //Play the received audio object and change the play state in the Store
-      audioRef
-        .current!.play()
-        .catch((error) => {
-          console.error('Failed to play audio:', error);
-        });
-        dispatch(play())
+      audioRef.current!.play().catch((error) => {
+        console.error('Failed to play audio:', error);
+      });
+      dispatch(play());
     }
     return () => {
       //When unmounting, pause the track, unsubscribe from events,

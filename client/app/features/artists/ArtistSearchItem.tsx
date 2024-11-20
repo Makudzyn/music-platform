@@ -28,7 +28,7 @@ export default function ArtistSearchItem({
     >
       <div className="relative mr-2 flex flex-shrink-0 aspect-square items-center justify-center overflow-hidden rounded-full shadow size-12">
         <Image
-          src={`http://localhost:5000/${artist.artistImage}`}
+          src={`${process.env.NEXT_PUBLIC_API_URL}/${artist.artistImage}`}
           alt="Artist image"
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

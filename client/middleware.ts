@@ -2,8 +2,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { getCookie } from 'cookies-next';
 import { jwtDecode } from 'jwt-decode';
-import { DecodedToken } from "@lib/defenitions";
-
+import { DecodedToken } from '@lib/defenitions';
 
 export function middleware(req: NextRequest) {
   const accessToken = getCookie('accessToken', { req });

@@ -64,7 +64,7 @@ export default function TrackItem({ track, index }: TrackItemProps) {
       </div>
       <Link href={`/tracks/${track._id}`} className="flex items-center group">
         <Image
-          src={`http://localhost:5000/${track.thumbnail}`}
+          src={`${process.env.NEXT_PUBLIC_API_URL}/${track.thumbnail}`}
           alt={`${track.title} song thumbnail`}
           className="mr-3 rounded-sm"
           width={48}

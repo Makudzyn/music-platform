@@ -1,8 +1,16 @@
-import { Controller, Post, Body, UnauthorizedException, Get, Query, UseInterceptors } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UnauthorizedException,
+  Get,
+  Query,
+  UseInterceptors,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { CreateUserDto } from "../user/dto/create-user.dto";
-import { LoginDto } from "./login.dto";
-import { FileInterceptor } from "@nestjs/platform-express";
+import { CreateUserDto } from '../user/dto/create-user.dto';
+import { LoginDto } from './login.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('auth')
 export class AuthController {
@@ -16,7 +24,10 @@ export class AuthController {
   @Post('login')
   @UseInterceptors(FileInterceptor(''))
   async login(@Body() loginDto: LoginDto) {
-    const user = await this.authService.validateUser(loginDto.email, loginDto.password);
+    const user = await this.authService.validateUser(
+      loginDto.email,
+      loginDto.password,
+    );
     if (!user) {
       throw new UnauthorizedException();
     }
@@ -24,7 +35,9 @@ export class AuthController {
   }
 
   @Post('refresh')
-  refreshToken(@Body('refreshToken') refreshToken: string): Promise<{ accessToken: string }> {
+  refreshToken(
+    @Body('refreshToken') refreshToken: string,
+  ): Promise<{ accessToken: string }> {
     return this.authService.refreshAccessToken(refreshToken);
   }
 

@@ -6,8 +6,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@ui/card';
 import { CalendarDays, Mail, User, Shield, Info } from 'lucide-react';
 import { useAppSelector } from '@hooks/hooks';
 import { formatDate } from '@lib/utils';
-import { selectCurrentUser, selectUserLoading } from '@lib/redux/userReducer/userSelectors';
-import UserProfileSkeleton from "@features/skeletons/UserProfileSkeleton";
+import {
+  selectCurrentUser,
+  selectUserLoading,
+} from '@lib/redux/userReducer/userSelectors';
+import UserProfileSkeleton from '@features/skeletons/UserProfileSkeleton';
 
 export default function UserProfile() {
   const user = useAppSelector(selectCurrentUser);
@@ -27,7 +30,7 @@ export default function UserProfile() {
         <CardHeader className="flex flex-col items-center space-y-4">
           <div className="relative size-32">
             <Image
-              src={`http://localhost:5000/${user.avatar}`}
+              src={`${process.env.NEXT_PUBLIC_API_URL}/${user.avatar}`}
               alt={`${user.username}'s avatar`}
               fill
               className="rounded-full object-cover"

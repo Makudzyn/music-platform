@@ -26,10 +26,10 @@ type UserReducers = {
 };
 
 const userSlice = createSlice<
-  UserState,    // State type
+  UserState, // State type
   UserReducers, // Reducers
-  'user',       // Slice name
-  {}            // Selector`s types
+  'user', // Slice name
+  {} // Selector`s types
 >({
   name: 'user',
   initialState,
@@ -42,46 +42,46 @@ const userSlice = createSlice<
   },
   extraReducers: (builder) => {
     builder
-    //loadCurrentUser
-    .addCase(loadCurrentUser.pending, (state) => {
-      state.loading = true;
-    })
-    .addCase(
-      loadCurrentUser.fulfilled,
-      (state, action: PayloadAction<User>) => {
-        state.currentUser = action.payload;
+      //loadCurrentUser
+      .addCase(loadCurrentUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(
+        loadCurrentUser.fulfilled,
+        (state, action: PayloadAction<User>) => {
+          state.currentUser = action.payload;
+          state.loading = false;
+          state.isAuthenticated = true;
+        },
+      )
+      .addCase(loadCurrentUser.rejected, (state, action) => {
         state.loading = false;
-        state.isAuthenticated = true;
-      },
-    )
-    .addCase(loadCurrentUser.rejected, (state, action) => {
-      state.loading = false;
-      if ('error' in action) {
-        state.error =
-          typeof action.error.message === 'string'
-            ? action.error.message
-            : 'Failed to load user data';
-      }
-      state.isAuthenticated = false;
-    })
+        if ('error' in action) {
+          state.error =
+            typeof action.error.message === 'string'
+              ? action.error.message
+              : 'Failed to load user data';
+        }
+        state.isAuthenticated = false;
+      })
 
-    //loadUserById
-    .addCase(loadUserById.pending, (state) => {
-      state.loading = true;
-    })
-    .addCase(loadUserById.fulfilled, (state, action: PayloadAction<User>) => {
-      state.users.push(action.payload);
-      state.loading = false;
-    })
-    .addCase(loadUserById.rejected, (state, action) => {
-      state.loading = false;
-      if ('error' in action) {
-        state.error =
-          typeof action.error.message === 'string'
-            ? action.error.message
-            : 'Failed to load user data';
-      }
-    });
+      //loadUserById
+      .addCase(loadUserById.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(loadUserById.fulfilled, (state, action: PayloadAction<User>) => {
+        state.users.push(action.payload);
+        state.loading = false;
+      })
+      .addCase(loadUserById.rejected, (state, action) => {
+        state.loading = false;
+        if ('error' in action) {
+          state.error =
+            typeof action.error.message === 'string'
+              ? action.error.message
+              : 'Failed to load user data';
+        }
+      });
   },
 });
 

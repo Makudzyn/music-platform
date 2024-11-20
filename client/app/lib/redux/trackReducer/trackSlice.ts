@@ -51,9 +51,9 @@ const updateTracks = (state: TracksState, tracks: Track[]) => {
 
 const tracksSlice = createSlice<
   TracksState, // State type
-  {},          // Reducers
-  'tracks',    // Slice name
-  {}           // Selector`s types
+  {}, // Reducers
+  'tracks', // Slice name
+  {} // Selector`s types
 >({
   name: 'tracks',
   initialState,
@@ -61,53 +61,53 @@ const tracksSlice = createSlice<
   extraReducers: (builder) => {
     // loadTracks
     builder
-    .addCase(loadTracks.pending, (state) => {
-      state.loading = true;
-    })
-    .addCase(
-      loadTracks.fulfilled,
-      (state, action: PayloadAction<Track[]>) => {
-        state.tracks = action.payload;
-        state.loading = false;
-      },
-    )
-    .addCase(loadTracks.rejected, handleError)
+      .addCase(loadTracks.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(
+        loadTracks.fulfilled,
+        (state, action: PayloadAction<Track[]>) => {
+          state.tracks = action.payload;
+          state.loading = false;
+        },
+      )
+      .addCase(loadTracks.rejected, handleError)
 
-    // loadTrackById
-    .addCase(loadTrackById.pending, (state) => {
-      state.loading = true;
-    })
-    .addCase(
-      loadTrackById.fulfilled,
-      (state, action: PayloadAction<Track>) => {
-        updateTracks(state, [action.payload]);
-      },
-    )
-    .addCase(loadTrackById.rejected, handleError)
+      // loadTrackById
+      .addCase(loadTrackById.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(
+        loadTrackById.fulfilled,
+        (state, action: PayloadAction<Track>) => {
+          updateTracks(state, [action.payload]);
+        },
+      )
+      .addCase(loadTrackById.rejected, handleError)
 
-    // loadTracksByArtistId
-    .addCase(loadTracksByArtistId.pending, (state) => {
-      state.loading = true;
-    })
-    .addCase(
-      loadTracksByArtistId.fulfilled,
-      (state, action: PayloadAction<Track[]>) => {
-        updateTracks(state, action.payload);
-      },
-    )
-    .addCase(loadTracksByArtistId.rejected, handleError)
+      // loadTracksByArtistId
+      .addCase(loadTracksByArtistId.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(
+        loadTracksByArtistId.fulfilled,
+        (state, action: PayloadAction<Track[]>) => {
+          updateTracks(state, action.payload);
+        },
+      )
+      .addCase(loadTracksByArtistId.rejected, handleError)
 
-    // loadTracksByAlbumId
-    .addCase(loadTracksByAlbumId.pending, (state) => {
-      state.loading = true;
-    })
-    .addCase(
-      loadTracksByAlbumId.fulfilled,
-      (state, action: PayloadAction<Track[]>) => {
-        updateTracks(state, action.payload);
-      },
-    )
-    .addCase(loadTracksByAlbumId.rejected, handleError);
+      // loadTracksByAlbumId
+      .addCase(loadTracksByAlbumId.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(
+        loadTracksByAlbumId.fulfilled,
+        (state, action: PayloadAction<Track[]>) => {
+          updateTracks(state, action.payload);
+        },
+      )
+      .addCase(loadTracksByAlbumId.rejected, handleError);
   },
 });
 
