@@ -17,10 +17,6 @@ export default function TrackCard({ track }: TrackCardProps) {
   const dispatch = useAppDispatch();
   const { paused, currentTrack } = useAppSelector((state) => state.player);
 
-
-  console.log(process.env.NEXT_PUBLIC_API_URL);
-  console.log(process.env.NEXT_PUBLIC_API_PORT);
-  
   //To see if this track is the one that's playing now.
   const isActive = currentTrack && currentTrack._id === track._id;
 
@@ -34,6 +30,12 @@ export default function TrackCard({ track }: TrackCardProps) {
     } else {
       dispatch(setCurrentTrack(track));
     }
+  };
+
+  const getImageUrl = (apiUrl: string, path: string) => {
+    const baseUrl = apiUrl.endsWith('/') ? apiUrl.slice(0, -1) : apiUrl;
+    const imagePath = path.startsWith('/') ? path : `/${path}`;
+    return `${baseUrl}${imagePath}`;
   };
 
   return (
@@ -52,7 +54,7 @@ export default function TrackCard({ track }: TrackCardProps) {
               )}
             </div>
             <Image
-              src={`${process.env.NEXT_PUBLIC_API_URL}/${track.thumbnail}`}
+              src={getImageUrl(process.env.NEXT_PUBLIC_API_URL!, track.thumbnail)}
               alt={`${track.title} song thumbnail`}
               className="rounded-sm object-cover transition-all duration-300 group-hover:brightness-75"
               width={56}

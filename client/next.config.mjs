@@ -3,9 +3,9 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: process.env.NEXT_PUBLIC_API_PROTOCOL || 'http',
-        hostname: process.env.NEXT_PUBLIC_API_HOSTNAME || 'localhost',
-        port: process.env.NEXT_PUBLIC_API_PORT || '5000',
+        protocol: 'https',
+        hostname: 'cookie-music-api.up.railway.app',
+        port: '',
         pathname: '/**',
       },
     ],
