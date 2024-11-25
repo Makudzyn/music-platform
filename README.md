@@ -13,7 +13,7 @@ A feature-rich music platform to explore and enjoy music with ease.
 </h3>
 
 <p align="center">
-  <a href="http://your-live-hosting-link.com">
+  <a href="cookie-music.up.railway.app">
     <img src="https://img.shields.io/badge/Live-Demo-green" alt="Live Demo">
   </a>
   <a href="https://github.com/Makudzyn/music-platform/issues">
