@@ -17,6 +17,10 @@ export default function TrackCard({ track }: TrackCardProps) {
   const dispatch = useAppDispatch();
   const { paused, currentTrack } = useAppSelector((state) => state.player);
 
+
+  console.log(process.env.NEXT_PUBLIC_API_URL);
+  console.log(process.env.NEXT_PUBLIC_API_PORT);
+  
   //To see if this track is the one that's playing now.
   const isActive = currentTrack && currentTrack._id === track._id;
 

@@ -6,7 +6,7 @@ const nextConfig = {
         protocol: process.env.NEXT_PUBLIC_API_PROTOCOL || 'http',
         hostname: process.env.NEXT_PUBLIC_API_HOSTNAME || 'localhost',
         port: process.env.NEXT_PUBLIC_API_PORT || '5000',
-        pathname: '/**/**',
+        pathname: '/**',
       },
     ],
     dangerouslyAllowSVG: true,
