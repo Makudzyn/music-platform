@@ -32,12 +32,6 @@ export default function TrackCard({ track }: TrackCardProps) {
     }
   };
 
-  const getImageUrl = (apiUrl: string, path: string) => {
-    const baseUrl = apiUrl.endsWith('/') ? apiUrl.slice(0, -1) : apiUrl;
-    const imagePath = path.startsWith('/') ? path : `/${path}`;
-    return `${baseUrl}${imagePath}`;
-  };
-
   return (
     <Card className="w-full max-w-80">
       <CardContent className="flex flex-row items-center p-2">
@@ -54,7 +48,7 @@ export default function TrackCard({ track }: TrackCardProps) {
               )}
             </div>
             <Image
-              src={getImageUrl(process.env.NEXT_PUBLIC_API_URL!, track.thumbnail)}
+              src={`${process.env.NEXT_PUBLIC_API_URL}/${track.thumbnail}`}
               alt={`${track.title} song thumbnail`}
               className="rounded-sm object-cover transition-all duration-300 group-hover:brightness-75"
               width={56}
