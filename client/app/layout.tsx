@@ -13,7 +13,8 @@ export const metadata: Metadata = {
     default: 'Cookie Music',
   },
   description:
-    'Music platform where you can listen to your favorite songs, albums and create your own playlists.',
+    'Cookie music is a platform where you can explore a vast collection of tracks and albums, follow your favorite artists,' +
+    ' enjoy seamless audio playback and a user-friendly interface tailored to music lovers.',
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
