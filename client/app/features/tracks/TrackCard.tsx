@@ -68,7 +68,7 @@ export default function TrackCard({ track }: TrackCardProps) {
           <CustomTooltip content="Go to artist`s page" side="bottom">
             <Link
               className="text-xs text-secondary truncate decoration-foreground hover:underline dark:text-accent"
-              href={`/artist/${track.artist._id}`}
+              href={`/artists/${track.artist._id}`}
             >
               {track.artist.name}
             </Link>

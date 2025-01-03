@@ -12,7 +12,7 @@ export default [
     languageOptions: {
       globals: {
         ...globals.browser,
-        React: true, // Добавляем React в глобальные переменные
+        React: true,
       },
       parser: tseslint.parser,
       parserOptions: {
@@ -32,21 +32,20 @@ export default [
     },
     settings: {
       react: {
-        version: 'detect', // Автоматически определяет версию React
+        version: 'detect',
       },
     },
     rules: {
       ...reactPlugin.configs.recommended.rules,
-      // Отключаем правило необходимости импорта React
-      'react/react-in-jsx-scope': 'off',
-      // Дополнительные полезные правила для React с TypeScript
-      'react/prop-types': 'off', // Отключаем prop-types в пользу TypeScript
-      'react/require-default-props': 'off', // Отключаем для TypeScript
+      'react/react-in-jsx-scope': 'off', // Disable the import rule for React
+      // Additional useful rules for React with TypeScript
+      'react/prop-types': 'off', // Disabling prop-types in favor of TypeScript
+      'react/require-default-props': 'off', // Disable for TypeScript
       'react/jsx-filename-extension': [
         'warn',
         { extensions: ['.tsx', '.jsx'] },
       ],
-      'react/jsx-props-no-spreading': 'off', // Разрешаем spread операторы
+      'react/jsx-props-no-spreading': 'off', // Allow spread operators
       'react/destructuring-assignment': 'warn',
       'react/jsx-key': 'error',
       'react/no-array-index-key': 'warn',
@@ -74,7 +73,7 @@ export default [
             'Use typed hooks `useAppDispatch` and `useAppSelector` instead.',
         },
       ],
-      // Дополнительные правила TypeScript
+      // Additional TypeScript rules
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-explicit-any': 'warn',

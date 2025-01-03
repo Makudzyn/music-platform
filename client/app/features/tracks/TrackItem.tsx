@@ -52,9 +52,9 @@ export default function TrackItem({ track, index }: TrackItemProps) {
           )}
         >
           {!isActive ? (
-            // Показываем Play при наведении на неактивный трек
+            // Show Play when hovering over an inactive track
             <Play className="size-5 fill-foreground" />
-          ) : // Для активного трека показываем Play/Pause в зависимости от состояния
+          ) : // For the active track we show Play/Pause depending on the status
           paused ? (
             <Play className="size-5 fill-foreground" />
           ) : (

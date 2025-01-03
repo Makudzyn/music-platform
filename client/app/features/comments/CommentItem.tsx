@@ -1,6 +1,8 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@ui/avatar';
 import { Comment } from '@lib/defenitions';
 import { formatDate } from '@lib/utils';
+import AvatarFallbackImg from '@app/avatar-fallback.svg'
+import Image from "next/image";
 
 interface CommentItemProps {
   comment: Comment;
@@ -16,7 +18,12 @@ export default function CommentItem({ comment }: CommentItemProps) {
           className="object-cover"
         />
         <AvatarFallback className="bg-gray-100">
-          {comment.user.username}
+          <Image
+            src={AvatarFallbackImg}
+            width={42}
+            height={42}
+            alt={comment.user.username || "User avatar"}
+          />
         </AvatarFallback>
       </Avatar>
 

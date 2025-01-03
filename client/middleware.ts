@@ -22,7 +22,7 @@ export function middleware(req: NextRequest) {
   return NextResponse.next();
 }
 
-// Применить middleware к определённым маршрутам
+// Apply middleware to specific routes
 export const config = {
   matcher: ['/admin'],
 };
